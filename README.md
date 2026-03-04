@@ -6,9 +6,9 @@ A Next.js + Bun + Tailwind website that compares equivalent services across AWS,
 
 - Default table view with all mapped capabilities across clouds.
 - Search by any service name (including Huawei Cloud names).
-- Apple-inspired fullscreen detailed comparison mode.
-- Provider selection toggles to compare Huawei against only selected clouds.
-- Relative comparison text generated per selected cloud provider.
+- Home page keeps the full service-equivalency table plus searchable detail cards.
+- Direct side-by-side comparison now lives on a separate `/compare` page.
+- Single-provider comparison (AWS/Azure/GCP vs Huawei) with Huawei as the migration target column.
 - Real provider logos and service icons for visual scanability.
 
 ## Icon/Logo sources
