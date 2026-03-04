@@ -240,7 +240,42 @@ export function ServiceComparison() {
             <p className="text-sm text-slate-600">{serviceMatrixRows.length > 0 ? `${serviceMatrixRows.length} capability row${serviceMatrixRows.length === 1 ? "" : "s"}` : `No services found for "${query}".`}</p>
           </div>
 
-          <div className="overflow-x-auto">
+          <div className="md:hidden space-y-4">
+            {serviceMatrixRows.map((row, index) => {
+              const showCategoryHeader = index === 0 || serviceMatrixRows[index - 1].category !== row.category;
+
+              return (
+                <div key={row.generalFunction}>
+                  {showCategoryHeader ? (
+                    <p className="mb-2 rounded-lg bg-slate-100 px-3 py-2 text-xs font-bold uppercase tracking-wider text-slate-600">{row.category}</p>
+                  ) : null}
+                  <article className="rounded-xl border border-slate-200 p-4">
+                    <h3 className="text-base font-semibold text-slate-900">{row.generalFunction}</h3>
+                    <div className="mt-3 space-y-3">
+                      <div>
+                        <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-slate-500">AWS</p>
+                        {renderProviderServices(row.aws, true)}
+                      </div>
+                      <div>
+                        <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-slate-500">Azure</p>
+                        {renderProviderServices(row.azure, true)}
+                      </div>
+                      <div>
+                        <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-slate-500">Google Cloud</p>
+                        {renderProviderServices(row.gcp, true)}
+                      </div>
+                      <div>
+                        <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-slate-500">Huawei Cloud</p>
+                        {renderProviderServices(row.huawei, false)}
+                      </div>
+                    </div>
+                  </article>
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="hidden overflow-x-auto md:block">
             <table className="min-w-full border-collapse text-left text-sm">
               <thead>
                 <tr className="border-b border-slate-200 text-xs uppercase tracking-wider text-slate-500">

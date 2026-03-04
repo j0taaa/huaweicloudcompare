@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo } from "react";
-import { serviceMappings } from "@/data/services";
+import { services } from "@/data/services";
 
 type ProviderKey = "aws" | "azure" | "gcp";
 
@@ -33,6 +33,132 @@ const providerMeta = {
     border: "border-[#CF0A2C]/35"
   }
 } as const;
+
+type ServiceMapping = {
+  category: string;
+  capability: string;
+  aws: string[];
+  azure: string[];
+  gcp: string[];
+  huawei: string[];
+  details: {
+    summary: string;
+    relativeComparison: { aws: string; azure: string; gcp: string };
+    huaweiStrengths: string[];
+    notableDifferences: string[];
+    migrationTips: string[];
+  };
+};
+
+function getFunctionCategory(generalFunction: string): string {
+  const normalized = generalFunction.toLowerCase();
+
+  if (normalized.includes("security") || normalized.includes("identity") || normalized.includes("audit") || normalized.includes("cdn and security")) {
+    return "Security";
+  }
+  if (normalized.includes("virtual machines") || normalized.includes("kubernetes") || normalized.includes("container") || normalized.includes("dedicated compute") || normalized.includes("compute")) {
+    return "Compute and Containers";
+  }
+  if (
+    normalized.includes("data warehouse") ||
+    normalized.includes("data lake") ||
+    normalized.includes("data integration") ||
+    normalized.includes("big data") ||
+    normalized.includes("business intelligence") ||
+    normalized.includes("search")
+  ) {
+    return "Data and Analytics";
+  }
+  if (normalized.includes("database") || normalized.includes("caching") || normalized.includes("graph")) {
+    return "Databases";
+  }
+  if (normalized.includes("machine learning") || normalized.includes("iot")) {
+    return "AI and IoT";
+  }
+  if (
+    normalized.includes("devops") ||
+    normalized.includes("code quality") ||
+    normalized.includes("ci") ||
+    normalized.includes("pipeline") ||
+    normalized.includes("artifact") ||
+    normalized.includes("test management") ||
+    normalized.includes("application platform") ||
+    normalized.includes("api management") ||
+    normalized.includes("event bus")
+  ) {
+    return "Application and DevOps";
+  }
+  if (
+    normalized.includes("observability") ||
+    normalized.includes("monitoring") ||
+    normalized.includes("log management") ||
+    normalized.includes("notification") ||
+    normalized.includes("operations") ||
+    normalized.includes("image management")
+  ) {
+    return "Observability and Management";
+  }
+  if (normalized.includes("network")) {
+    return "Networking and Connectivity";
+  }
+  if (
+    normalized.includes("storage") ||
+    normalized.includes("backup") ||
+    normalized.includes("disaster recovery") ||
+    normalized.includes("block storage") ||
+    normalized.includes("file storage") ||
+    normalized.includes("object storage")
+  ) {
+    return "Storage and Backup";
+  }
+  if (normalized.includes("migration")) {
+    return "Migration";
+  }
+  if (normalized.includes("marketplace") || normalized.includes("workspace")) {
+    return "Marketplace and Workspace";
+  }
+
+  return "Other";
+}
+
+function buildServiceMappings(): ServiceMapping[] {
+  const grouped = new Map<string, ServiceMapping>();
+
+  services.forEach((service) => {
+    const key = service.generalFunction;
+    if (!grouped.has(key)) {
+      grouped.set(key, {
+        category: getFunctionCategory(key),
+        capability: key,
+        aws: [],
+        azure: [],
+        gcp: [],
+        huawei: [],
+        details: {
+          summary: `Mapped equivalents for ${key.toLowerCase()} across major cloud providers.`,
+          relativeComparison: {
+            aws: "Service model, defaults, and integrations differ from Huawei Cloud.",
+            azure: "Service model, defaults, and integrations differ from Huawei Cloud.",
+            gcp: "Service model, defaults, and integrations differ from Huawei Cloud."
+          },
+          huaweiStrengths: ["Integrated with broader Huawei Cloud ecosystem.", "Migration path available via mapped capability rows."],
+          notableDifferences: ["Naming, pricing, and operational workflows vary by provider.", "Identity/network defaults often require explicit remapping."],
+          migrationTips: ["Start with pilot workloads and benchmark performance.", "Validate IAM, network, and observability controls before cutover."]
+        }
+      });
+    }
+
+    const mapping = grouped.get(key)!;
+    if (service.cloudProvider === "aws") mapping.aws.push(service.name);
+    if (service.cloudProvider === "azure") mapping.azure.push(service.name);
+    if (service.cloudProvider === "gcp") mapping.gcp.push(service.name);
+    if (service.cloudProvider === "huawei") mapping.huawei.push(service.name);
+  });
+
+  return Array.from(grouped.values());
+}
+
+const serviceMappings = buildServiceMappings();
 
 const serviceIcons: Record<string, string> = {
   "Amazon EC2": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/compute/ec2.png",
