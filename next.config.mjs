@@ -7,6 +7,18 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'raw.githubusercontent.com'
+      },
+      {
+        protocol: 'https',
+        hostname: 'cdn.simpleicons.org'
+      },
+      {
+        protocol: 'https',
+        hostname: 'icons.veryicon.com'
+      },
+      {
+        protocol: 'https',
+        hostname: 'res-static.hc-cdn.cn'
       }
     ]
   }
