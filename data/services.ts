@@ -169,6 +169,7 @@ const nonHuaweiServiceIconById: Record<string, string> = {
   "aws-eventbridge": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/integration/eventbridge.png",
   "aws-guardduty": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/security/guardduty.png",
   "aws-iam": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/security/identity-and-access-management-iam.png",
+  "aws-kinesis-data-streams": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/analytics/kinesis-data-streams.png",
   "aws-kms": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/security/key-management-service.png",
   "aws-lake-formation": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/analytics/lake-formation.png",
   "aws-marketplace": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/general/marketplace.png",
