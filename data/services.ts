@@ -295,13 +295,31 @@ const nonHuaweiServiceIconById: Record<string, string> = {
   "gcp-security-command-center": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/security/security-command-center.png",
   "gcp-security-health-advisor": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/security/security-health-advisor.png",
   "aws-neptune": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/database/neptune.png",
+  "aws-elastic-ip-address": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/network/vpc.png",
+  "aws-certificate-manager": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/security/certificate-manager.png",
+  "aws-datasync-object-migration": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/storage/simple-storage-service-s3.png",
+  "aws-glue-data-migration": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/analytics/glue.png",
+  "aws-migration-hub": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/migration/migration-hub.png",
+  "azure-key-vault-certificates": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/security/key-vaults.png",
+  "azure-purview-data-security": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/databases/azure-purview-accounts.png",
+  "azure-defender-for-sql": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/security/microsoft-defender-for-cloud.png",
+  "azure-storage-mover": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/storage/blob-storage.png",
+  "azure-data-factory-migration": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/analytics/data-factories.png",
+  "azure-server-migration": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/migrate/azure-migrate.png",
   "gcp-source-repositories": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/devtools/source-repositories.png",
   "gcp-vertex-ai": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/ml/vertex-ai.png",
   "gcp-vpc": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/network/virtual-private-cloud.png"
 };
 
 function resolveNonHuaweiServiceIcon(service: NonHuaweiService): string {
-  return nonHuaweiServiceIconById[service.id] ?? service.imageUrl;
+  const mapped = nonHuaweiServiceIconById[service.id];
+  if (mapped) return mapped;
+
+  if (service.imageUrl === "https://cdn.simpleicons.org/amazonaws") return "/logos/aws.svg";
+  if (service.imageUrl === "https://cdn.simpleicons.org/microsoftazure") return "/logos/azure.svg";
+  if (service.imageUrl === "https://cdn.simpleicons.org/googlecloud") return "/logos/gcp.svg";
+
+  return service.imageUrl;
 }
 
 function nh(service: NonHuaweiService): NonHuaweiService {
