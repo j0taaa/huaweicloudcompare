@@ -142,69 +142,135 @@ function hw(service: Omit<HuaweiService, "cloudProvider" | "imageUrl"> & { image
   };
 }
 
-const categoryIconFallbackByProvider: Record<Exclude<CloudProvider, "huawei">, Record<string, string>> = {
-  aws: {
-    compute: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/compute/ec2.png",
-    kubernetes: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/compute/elastic-kubernetes-service.png",
-    storage: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/storage/simple-storage-service-s3.png",
-    database: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/database/rds.png",
-    analytics: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/network/cloudfront.png",
-    network: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/network/cloudfront.png",
-    app: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/compute/lambda.png",
-    ai: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/compute/lambda.png",
-    security: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/network/cloudfront.png",
-    migration: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/compute/ec2.png",
-    workspace: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/compute/ec2.png"
-  },
-  azure: {
-    compute: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/compute/vm.png",
-    kubernetes: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/compute/kubernetes-services.png",
-    storage: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/storage/blob-storage.png",
-    database: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/database/sql-databases.png",
-    analytics: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/network/front-doors.png",
-    network: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/network/front-doors.png",
-    app: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/compute/function-apps.png",
-    ai: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/compute/function-apps.png",
-    security: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/network/front-doors.png",
-    migration: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/compute/vm.png",
-    workspace: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/compute/vm.png"
-  },
-  gcp: {
-    compute: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/compute/compute-engine.png",
-    kubernetes: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/compute/kubernetes-engine.png",
-    storage: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/storage/storage.png",
-    database: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/database/sql.png",
-    analytics: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/analytics/bigquery.png",
-    network: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/network/cdn.png",
-    app: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/compute/functions.png",
-    ai: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/compute/functions.png",
-    security: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/network/cdn.png",
-    migration: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/compute/compute-engine.png",
-    workspace: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/compute/compute-engine.png"
-  }
+const nonHuaweiServiceIconById: Record<string, string> = {
+  "aws-api-gateway": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/network/api-gateway.png",
+  "aws-app-runner": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/compute/app-runner.png",
+  "aws-application-migration-service": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/migration/cloudendure-migration.png",
+  "aws-athena": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/analytics/athena.png",
+  "aws-autoscaling": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/management/auto-scaling.png",
+  "aws-backup": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/storage/backup.png",
+  "aws-cloudtrail": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/management/cloudtrail.png",
+  "aws-cloudwatch": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/management/cloudwatch.png",
+  "aws-cloudwatch-logs": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/management/cloudwatch-logs.png",
+  "aws-codeartifact": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/devtools/codeartifact.png",
+  "aws-codebuild": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/devtools/codebuild.png",
+  "aws-codecommit": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/devtools/codecommit.png",
+  "aws-codepipeline": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/devtools/codepipeline.png",
+  "aws-direct-connect": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/network/direct-connect.png",
+  "aws-dms": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/database/database-migration-service.png",
+  "aws-dynamodb": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/database/dynamodb.png",
+  "aws-ebs": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/storage/elastic-block-store-ebs.png",
+  "aws-ecr": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/compute/ec2-container-registry.png",
+  "aws-efs": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/storage/elastic-file-system-efs.png",
+  "aws-elastic-disaster-recovery": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/storage/cloudendure-disaster-recovery.png",
+  "aws-elasticache": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/database/elasticache.png",
+  "aws-elb": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/network/elastic-load-balancing.png",
+  "aws-emr": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/analytics/emr.png",
+  "aws-eventbridge": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/integration/eventbridge.png",
+  "aws-guardduty": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/security/guardduty.png",
+  "aws-iam": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/security/identity-and-access-management-iam.png",
+  "aws-kms": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/security/key-management-service.png",
+  "aws-lake-formation": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/analytics/lake-formation.png",
+  "aws-marketplace": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/general/marketplace.png",
+  "aws-nat-gateway": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/network/nat-gateway.png",
+  "aws-opensearch-service": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/analytics/amazon-opensearch-service.png",
+  "aws-privatelink": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/network/privatelink.png",
+  "aws-quicksight": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/analytics/quicksight.png",
+  "aws-redshift": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/analytics/redshift.png",
+  "aws-route53": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/network/route-53.png",
+  "aws-sagemaker": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/ml/sagemaker.png",
+  "aws-site-to-site-vpn": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/network/site-to-site-vpn.png",
+  "aws-sns": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/integration/simple-notification-service-sns.png",
+  "aws-sqs": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/integration/simple-queue-service-sqs.png",
+  "aws-vpc": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/network/vpc.png",
+  "aws-waf": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/security/waf.png",
+  "aws-workspaces": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/enduser/workspaces.png",
+  "aws-xray": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/devtools/x-ray.png",
+  "azure-acr": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/containers/container-registries.png",
+  "azure-activity-log": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/monitor/activity-log.png",
+  "azure-ai-search": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/aimachinelearning/cognitive-search.png",
+  "azure-api-management": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/integration/api-management.png",
+  "azure-app-service": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/appservices/app-services.png",
+  "azure-artifacts": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/devops/artifacts.png",
+  "azure-backup": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/other/backup-vault.png",
+  "azure-cache-for-redis": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/database/cache-for-redis.png",
+  "azure-cosmos-db": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/database/cosmos-db.png",
+  "azure-database-migration-service": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/databases/azure-database-migration-services.png",
+  "azure-defender-for-cloud": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/security/microsoft-defender-for-cloud.png",
+  "azure-dns": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/network/dns-zones.png",
+  "azure-entra-id": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/identity/entra-id-protection.png",
+  "azure-event-grid": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/integration/event-grid-topics.png",
+  "azure-event-hubs": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/analytics/event-hubs.png",
+  "azure-expressroute": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/network/expressroute-circuits.png",
+  "azure-files": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/general/files.png",
+  "azure-hdinsight": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/analytics/hd-insight-clusters.png",
+  "azure-key-vault": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/security/key-vaults.png",
+  "azure-load-balancer": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/network/load-balancers.png",
+  "azure-machine-learning": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/ml/machine-learning-service-workspaces.png",
+  "azure-managed-disks": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/compute/disks.png",
+  "azure-marketplace": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/general/marketplace.png",
+  "azure-migrate": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/migrate/azure-migrate.png",
+  "azure-monitor": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/monitor/monitor.png",
+  "azure-monitor-logs": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/monitor/logs.png",
+  "azure-nat-gateway": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/networking/nat.png",
+  "azure-notification-hubs": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/appservices/notification-hubs.png",
+  "azure-pipelines-build": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/devops/pipelines.png",
+  "azure-pipelines-cicd": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/devops/pipelines.png",
+  "azure-power-bi": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/analytics/power-bi-embedded.png",
+  "azure-private-link": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/networking/private-link.png",
+  "azure-purview": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/databases/azure-purview-accounts.png",
+  "azure-repos": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/devops/repos.png",
+  "azure-service-bus": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/integration/service-bus.png",
+  "azure-site-recovery": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/migrate/recovery-services-vaults.png",
+  "azure-synapse-serverless": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/analytics/azure-synapse-analytics.png",
+  "azure-synapse-warehouse": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/database/sql-datawarehouse.png",
+  "azure-virtual-desktop": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/other/azure-virtual-desktop.png",
+  "azure-vmss": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/compute/vm-scale-sets.png",
+  "azure-vnet": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/network/virtual-networks.png",
+  "azure-vpn-gateway": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/network/virtual-network-gateways.png",
+  "azure-waf": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/networking/web-application-firewall-policieswaf.png",
+  "gcp-apigee": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/api/apigee.png",
+  "gcp-artifact-registry-containers": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/devtools/container-registry.png",
+  "gcp-artifact-registry-packages": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/devtools/container-registry.png",
+  "gcp-backup-and-dr": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/storage/persistent-disk.png",
+  "gcp-cloud-armor": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/network/armor.png",
+  "gcp-cloud-audit-logs": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/operations/logging.png",
+  "gcp-cloud-build": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/devtools/build.png",
+  "gcp-cloud-deploy": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/devtools/build.png",
+  "gcp-cloud-dns": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/network/dns.png",
+  "gcp-cloud-iam": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/security/iam.png",
+  "gcp-cloud-interconnect": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/network/dedicated-interconnect.png",
+  "gcp-cloud-kms": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/security/key-management-service.png",
+  "gcp-cloud-logging": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/operations/logging.png",
+  "gcp-cloud-nat": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/network/nat.png",
+  "gcp-cloud-run": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/compute/run.png",
+  "gcp-cloud-vpn": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/network/vpn.png",
+  "gcp-dataplex": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/analytics/data-catalog.png",
+  "gcp-dataproc": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/analytics/dataproc.png",
+  "gcp-datastream": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/analytics/dataflow.png",
+  "gcp-disaster-recovery": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/migration/migrate-compute-engine.png",
+  "gcp-eventarc": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/analytics/pubsub.png",
+  "gcp-filestore": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/storage/filestore.png",
+  "gcp-firestore": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/database/firestore.png",
+  "gcp-load-balancing": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/network/load-balancing.png",
+  "gcp-looker": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/analytics/looker.png",
+  "gcp-marketplace": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/network/virtual-private-cloud.png",
+  "gcp-memorystore": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/database/memorystore.png",
+  "gcp-mig-autoscaler": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/compute/compute-engine.png",
+  "gcp-migrate-to-vms": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/migration/migrate-compute-engine.png",
+  "gcp-operations": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/operations/logging.png",
+  "gcp-persistent-disk": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/storage/persistent-disk.png",
+  "gcp-private-service-connect": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/network/private-service-connect.png",
+  "gcp-pubsub": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/analytics/pubsub.png",
+  "gcp-pubsub-messaging": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/analytics/pubsub.png",
+  "gcp-security-command-center": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/security/security-command-center.png",
+  "gcp-source-repositories": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/devtools/source-repositories.png",
+  "gcp-vertex-ai": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/ml/vertex-ai.png",
+  "gcp-vpc": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/network/virtual-private-cloud.png"
 };
 
-function classifyNonHuaweiServiceIconType(service: NonHuaweiService): keyof (typeof categoryIconFallbackByProvider)["aws"] {
-  const text = `${service.generalFunction} ${service.name} ${service.keywords.join(" ")}`.toLowerCase();
-  if (text.includes("kubernetes") || text.includes("container")) return "kubernetes";
-  if (text.includes("object storage") || text.includes("file storage") || text.includes("block storage") || text.includes("backup")) return "storage";
-  if (text.includes("database") || text.includes("sql") || text.includes("cache") || text.includes("graph") || text.includes("nosql")) return "database";
-  if (text.includes("data warehouse") || text.includes("data lake") || text.includes("analytics") || text.includes("big data") || text.includes("bi")) return "analytics";
-  if (text.includes("network") || text.includes("dns") || text.includes("cdn") || text.includes("vpn") || text.includes("load balanc") || text.includes("nat")) return "network";
-  if (text.includes("security") || text.includes("identity") || text.includes("audit") || text.includes("waf") || text.includes("ddos")) return "security";
-  if (text.includes("machine learning") || text.includes("ml") || text.includes("ai")) return "ai";
-  if (text.includes("migration")) return "migration";
-  if (text.includes("workspace") || text.includes("desktop")) return "workspace";
-  if (text.includes("api") || text.includes("event") || text.includes("devops") || text.includes("pipeline") || text.includes("functions") || text.includes("serverless")) return "app";
-  return "compute";
-}
-
 function resolveNonHuaweiServiceIcon(service: NonHuaweiService): string {
-  if (service.imageUrl.includes("cdn.simpleicons.org")) {
-    const type = classifyNonHuaweiServiceIconType(service);
-    return categoryIconFallbackByProvider[service.cloudProvider][type];
-  }
-  return service.imageUrl;
+  return nonHuaweiServiceIconById[service.id] ?? service.imageUrl;
 }
 
 function nh(service: NonHuaweiService): NonHuaweiService {
