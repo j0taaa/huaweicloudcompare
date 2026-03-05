@@ -240,50 +240,22 @@ export function ServiceComparison() {
             <p className="text-sm text-slate-600">{serviceMatrixRows.length > 0 ? `${serviceMatrixRows.length} capability row${serviceMatrixRows.length === 1 ? "" : "s"}` : `No services found for "${query}".`}</p>
           </div>
 
-          <div className="md:hidden space-y-4">
-            {serviceMatrixRows.map((row, index) => {
-              const showCategoryHeader = index === 0 || serviceMatrixRows[index - 1].category !== row.category;
-
-              return (
-                <div key={row.generalFunction}>
-                  {showCategoryHeader ? (
-                    <p className="mb-2 rounded-lg bg-slate-100 px-3 py-2 text-xs font-bold uppercase tracking-wider text-slate-600">{row.category}</p>
-                  ) : null}
-                  <article className="rounded-xl border border-slate-200 p-4">
-                    <h3 className="text-base font-semibold text-slate-900">{row.generalFunction}</h3>
-                    <div className="mt-3 space-y-3">
-                      <div>
-                        <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-slate-500">AWS</p>
-                        {renderProviderServices(row.aws, true)}
-                      </div>
-                      <div>
-                        <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-slate-500">Azure</p>
-                        {renderProviderServices(row.azure, true)}
-                      </div>
-                      <div>
-                        <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-slate-500">Google Cloud</p>
-                        {renderProviderServices(row.gcp, true)}
-                      </div>
-                      <div>
-                        <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-slate-500">Huawei Cloud</p>
-                        {renderProviderServices(row.huawei, false)}
-                      </div>
-                    </div>
-                  </article>
-                </div>
-              );
-            })}
-          </div>
-
-          <div className="hidden overflow-x-auto md:block">
-            <table className="min-w-full border-collapse text-left text-sm">
+          <div>
+            <table className="w-full table-fixed border-collapse text-left text-[10px] leading-tight md:text-sm md:leading-normal">
+              <colgroup>
+                <col className="w-[22%]" />
+                <col className="w-[19.5%]" />
+                <col className="w-[19.5%]" />
+                <col className="w-[19.5%]" />
+                <col className="w-[19.5%]" />
+              </colgroup>
               <thead>
-                <tr className="border-b border-slate-200 text-xs uppercase tracking-wider text-slate-500">
-                  <th className="px-3 py-3">General function</th>
-                  <th className="px-3 py-3">AWS</th>
-                  <th className="px-3 py-3">Azure</th>
-                  <th className="px-3 py-3">Google Cloud</th>
-                  <th className="px-3 py-3">Huawei Cloud</th>
+                <tr className="border-b border-slate-200 text-[9px] uppercase tracking-tight text-slate-500 md:text-xs md:tracking-wider">
+                  <th className="px-1.5 py-2 md:px-3 md:py-3">General function</th>
+                  <th className="px-1.5 py-2 md:px-3 md:py-3">AWS</th>
+                  <th className="px-1.5 py-2 md:px-3 md:py-3">Azure</th>
+                  <th className="px-1.5 py-2 md:px-3 md:py-3">Google Cloud</th>
+                  <th className="px-1.5 py-2 md:px-3 md:py-3">Huawei Cloud</th>
                 </tr>
               </thead>
               <tbody>
@@ -293,17 +265,17 @@ export function ServiceComparison() {
                   if (showCategoryHeader) {
                     rows.push(
                       <tr key={`${row.category}-header`} className="bg-slate-50 border-y border-slate-200">
-                        <td colSpan={5} className="px-3 py-2 text-xs font-bold uppercase tracking-wider text-slate-600">{row.category}</td>
+                        <td colSpan={5} className="px-1.5 py-1.5 text-[9px] font-bold uppercase tracking-tight text-slate-600 md:px-3 md:py-2 md:text-xs md:tracking-wider">{row.category}</td>
                       </tr>
                     );
                   }
                   rows.push(
                     <tr key={row.generalFunction} className="border-b border-slate-100 align-top">
-                      <td className="px-3 py-3 font-semibold text-slate-800">{row.generalFunction}</td>
-                      <td className="px-3 py-3">{renderProviderServices(row.aws, true)}</td>
-                      <td className="px-3 py-3">{renderProviderServices(row.azure, true)}</td>
-                      <td className="px-3 py-3">{renderProviderServices(row.gcp, true)}</td>
-                      <td className="px-3 py-3">{renderProviderServices(row.huawei, false)}</td>
+                      <td className="break-words px-1.5 py-2 font-semibold text-slate-800 md:px-3 md:py-3">{row.generalFunction}</td>
+                      <td className="break-words px-1.5 py-2 md:px-3 md:py-3">{renderProviderServices(row.aws, true)}</td>
+                      <td className="break-words px-1.5 py-2 md:px-3 md:py-3">{renderProviderServices(row.azure, true)}</td>
+                      <td className="break-words px-1.5 py-2 md:px-3 md:py-3">{renderProviderServices(row.gcp, true)}</td>
+                      <td className="break-words px-1.5 py-2 md:px-3 md:py-3">{renderProviderServices(row.huawei, false)}</td>
                     </tr>
                   );
                   return rows;
@@ -321,29 +293,30 @@ function renderProviderServices(items: Array<NonHuaweiService | HuaweiService>, 
   if (items.length === 0) return <span className="text-slate-400">-</span>;
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-1 md:space-y-2">
       {items.map((service) => {
         const isClickable = clickable && service.cloudProvider !== "huawei";
         const content = (
           <>
-            <Image src={service.imageUrl} alt={`${service.name} icon`} width={18} height={18} className="mt-0.5 rounded-sm" />
+            <Image src={service.imageUrl} alt={`${service.name} icon`} width={18} height={18} className="mt-0.5 hidden rounded-sm md:block" />
             <div>
-              <p className={`font-medium ${isClickable ? "text-[#CF0A2C] hover:underline" : "text-slate-800"}`}>{service.name}</p>
-              <p className="text-xs text-slate-500">{service.shortName}</p>
+              <p className={`font-semibold md:hidden ${isClickable ? "text-[#CF0A2C] hover:underline" : "text-slate-800"}`}>{service.shortName}</p>
+              <p className={`hidden font-medium md:block ${isClickable ? "text-[#CF0A2C] hover:underline" : "text-slate-800"}`}>{service.name}</p>
+              <p className="hidden text-xs text-slate-500 md:block">{service.shortName}</p>
             </div>
           </>
         );
 
         if (isClickable) {
           return (
-            <Link key={service.id} href={`/comparison?serviceId=${encodeURIComponent(service.id)}`} className="flex items-start gap-2 rounded-md px-1 py-1 transition hover:bg-slate-100">
+            <Link key={service.id} href={`/comparison?serviceId=${encodeURIComponent(service.id)}`} className="flex items-start gap-1 rounded-md px-0.5 py-0.5 transition hover:bg-slate-100 md:gap-2 md:px-1 md:py-1">
               {content}
             </Link>
           );
         }
 
         return (
-          <div key={service.id} className="flex items-start gap-2 rounded-md px-1 py-1">
+          <div key={service.id} className="flex items-start gap-1 rounded-md px-0.5 py-0.5 md:gap-2 md:px-1 md:py-1">
             {content}
           </div>
         );
