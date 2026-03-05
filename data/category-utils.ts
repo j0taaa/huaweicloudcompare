@@ -46,6 +46,9 @@ export function getFunctionCategory(generalFunction: string): string {
   if (includesAny(normalized, ["virtual machines", "kubernetes", "container", "dedicated compute", "compute"])) {
     return "Compute and Containers";
   }
+  if (includesAny(normalized, ["dedicated host", "bare metal"])) {
+    return "Compute and Containers";
+  }
   if (
     includesAny(normalized, [
       "data warehouse",
