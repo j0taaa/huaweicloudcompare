@@ -2488,11 +2488,18 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     shortName: "Migration Hub",
     keywords: ["migration", "assessment", "planning", "portfolio"],
     cloudProvider: "aws",
-    description: "Central migration planning, discovery tracking, and progress orchestration service.",
+    description: "Central migration portfolio service that tracks application/server migrations across AWS and partner migration tools.",
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["MGC"],
-    differencesFromHuawei: ["Portfolio discovery and orchestration model differs."],
-    migrationToHuawei: ["Map portfolio assessment and wave plans into MGC.", "Recreate migration KPI tracking and dependency mapping."]
+    differencesFromHuawei: [
+      "Scope differs: Migration Hub focuses on inventory tracking/orchestration, while Huawei splits planning in MGC and execution in services such as SMS/DRS/OMS.",
+      "Pricing model differs: AWS Migration Hub core tracking is positioned as no-additional-charge, while Huawei MGC is no-additional-charge but uses paid underlying resources during execution."
+    ],
+    migrationToHuawei: [
+      "Map Migration Hub inventory, application groupings, and wave plans to MGC migration projects and readiness checkpoints.",
+      "Map execution components by domain: server cutovers to SMS, database replication to DRS, and object movement to OMS.",
+      "Rebuild progress dashboards with MGC plus operational telemetry in Cloud Eye/LTS for migration KPIs and blocker tracking."
+    ]
   }),
   nh({
     id: "gcp-migration-center",
@@ -2501,11 +2508,18 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     shortName: "Migration Center",
     keywords: ["migration", "assessment", "planning", "discovery"],
     cloudProvider: "gcp",
-    description: "Discovery, assessment, and migration planning for infrastructure modernization.",
+    description: "Discovery and assessment platform for infrastructure estates, including dependency signals, sizing recommendations, and migration waves.",
     imageUrl: "https://cdn.simpleicons.org/googlecloud",
     huaweiEquivalentShortNames: ["MGC"],
-    differencesFromHuawei: ["Assessment scoring and recommendation dimensions differ."],
-    migrationToHuawei: ["Map discovered assets and right-sizing recommendations into MGC.", "Rebuild migration wave planning and readiness checks."]
+    differencesFromHuawei: [
+      "Assessment model differs: Google emphasizes fit/sizing recommendations and modernization guidance, while Huawei uses MGC-driven migration readiness with Huawei target patterns.",
+      "Pricing model differs: Migration Center is listed with no additional service cost, while MGC itself is free but execution consumes paid Huawei services."
+    ],
+    migrationToHuawei: [
+      "Map discovered assets, dependency groups, and migration waves from Migration Center into MGC portfolios.",
+      "Translate rightsizing suggestions into Huawei ECS/BMS flavor mapping and storage/network target design.",
+      "Use MGC for governance and pair with SMS/DRS/OMS for execution tasks by workload type."
+    ]
   }),
   nh({
     id: "aws-datasync-object-migration",
@@ -2514,11 +2528,18 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     shortName: "DataSync",
     keywords: ["object storage", "migration", "transfer", "sync"],
     cloudProvider: "aws",
-    description: "Accelerated online data transfer and synchronization into object storage targets.",
+    description: "Managed online transfer service for moving data between storage systems and object stores, with scheduling, filtering, and integrity verification.",
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["OMS"],
-    differencesFromHuawei: ["Task-based transfer controls and scheduling semantics differ."],
-    migrationToHuawei: ["Map source agents/tasks to OMS migration jobs.", "Rebuild filters, scheduling, and integrity verification flow."]
+    differencesFromHuawei: [
+      "Capability scope differs: DataSync supports file and object endpoints with agent-based and managed transfer paths, while OMS focuses on object-storage migration to OBS.",
+      "Pricing model differs: DataSync bills by transferred data volume (plus related storage/network costs), while OMS billing emphasizes migrated-data volume/API requests and source-side network egress."
+    ],
+    migrationToHuawei: [
+      "Map DataSync tasks for object endpoints directly to OMS migration jobs and preserve include/exclude filters, schedules, and retries.",
+      "For DataSync file-share patterns, combine SMS/SFS or CDM with OMS depending on whether data is file-based or object-based.",
+      "Validate checksums, metadata mapping, and storage-class/lifecycle behavior after cutover to OBS."
+    ]
   }),
   nh({
     id: "azure-storage-mover",
@@ -2527,11 +2548,18 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     shortName: "Storage Mover",
     keywords: ["object storage", "migration", "transfer"],
     cloudProvider: "azure",
-    description: "Managed migration orchestration into Azure object storage endpoints.",
+    description: "Managed migration orchestration for moving SMB/NFS file shares into Azure Blob endpoints with centralized project/job control.",
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["OMS"],
-    differencesFromHuawei: ["Endpoint registration and transfer orchestration differ."],
-    migrationToHuawei: ["Translate migration projects and agents into OMS job topology.", "Rebuild transfer windows and post-migration verification."]
+    differencesFromHuawei: [
+      "Capability scope differs: Storage Mover is optimized for file-share-to-Blob migration, while OMS is object-to-OBS focused.",
+      "Pricing model differs: Storage Mover has no additional service fee and relies on storage/network charges, while OMS charges by migrated data/API activity with source egress costs."
+    ],
+    migrationToHuawei: [
+      "Map Blob-target migration projects to OMS jobs where source/target are object-storage compatible.",
+      "For SMB/NFS migration portions, use a combination of SMS/SFS (file workload) and OMS (object workload) instead of OMS alone.",
+      "Rebuild transfer windows, endpoint credentials, and post-copy validation for metadata, ACL expectations, and checksum consistency."
+    ]
   }),
   nh({
     id: "gcp-storage-transfer-service",
@@ -2540,11 +2568,18 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     shortName: "STS",
     keywords: ["object storage", "migration", "transfer", "sync"],
     cloudProvider: "gcp",
-    description: "Managed large-scale transfer and synchronization service for object storage data.",
+    description: "Managed transfer service for moving/synchronizing data into Cloud Storage from cloud object stores, HTTP sources, or file systems.",
     imageUrl: "https://cdn.simpleicons.org/googlecloud",
     huaweiEquivalentShortNames: ["OMS"],
-    differencesFromHuawei: ["Transfer job lifecycle and connector model differ."],
-    migrationToHuawei: ["Map transfer jobs and schedules to OMS tasks.", "Validate object metadata and checksum behavior after migration."]
+    differencesFromHuawei: [
+      "Capability scope differs: STS supports broad cross-cloud/object/http and agent-based file transfer patterns, while OMS is centered on object migrations into OBS.",
+      "Pricing model differs: STS is no-charge for agentless cloud-object transfers and charges per-GB for agent-based file transfers, while OMS charges migrated data/API requests and source egress."
+    ],
+    migrationToHuawei: [
+      "Map STS cloud-object transfer jobs and schedules to OMS tasks with equivalent prefixes and overwrite semantics.",
+      "For STS agent-based file transfer workloads, use SMS/SFS or CDM in combination with OMS based on target data model.",
+      "Validate object metadata, ACL translation constraints, and checksum outcomes after transfer to OBS."
+    ]
   }),
   nh({
     id: "aws-glue-data-migration",
@@ -2553,11 +2588,18 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     shortName: "Glue",
     keywords: ["data migration", "etl", "data movement"],
     cloudProvider: "aws",
-    description: "Managed ETL and data movement pipelines for structured data migration.",
+    description: "Serverless data integration service for ETL/ELT pipelines, schema discovery, and job orchestration used in migration and modernization projects.",
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["CDM"],
-    differencesFromHuawei: ["Job runtime model and connectors differ."],
-    migrationToHuawei: ["Map ETL jobs and connection metadata to CDM.", "Rebuild transformation workflows and scheduling policies."]
+    differencesFromHuawei: [
+      "Capability scope differs: Glue provides serverless ETL jobs, crawlers, and catalog integration, while CDM is migration-oriented data movement/ETL often paired with other Huawei analytics services.",
+      "Pricing model differs: Glue pricing is resource/time and request based (for example job capacity runtime and catalog operations), while CDM pricing is tied to purchased migration compute specifications and duration."
+    ],
+    migrationToHuawei: [
+      "Map Glue connection metadata and transformation logic into CDM jobs; move complex SQL analytics transformations to DLI/DWS when CDM is insufficient.",
+      "Replace Glue Data Catalog dependencies with Huawei metadata/governance services and adjust lineage/governance flow.",
+      "Rebuild job schedules, retry strategy, and parallelism tuning with CDM runtime limits and throughput patterns."
+    ]
   }),
   nh({
     id: "azure-data-factory-migration",
@@ -2566,11 +2608,18 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     shortName: "Data Factory",
     keywords: ["data migration", "etl", "orchestration"],
     cloudProvider: "azure",
-    description: "Data orchestration and movement pipelines for enterprise migration scenarios.",
+    description: "Data integration and orchestration platform for pipeline-driven ingestion, transformation, and migration workflows.",
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["CDM"],
-    differencesFromHuawei: ["Pipeline activity model and integration runtime differ."],
-    migrationToHuawei: ["Translate pipelines, datasets, and linked services to CDM.", "Rebuild schedules, triggers, and dependency flow."]
+    differencesFromHuawei: [
+      "Capability scope differs: ADF emphasizes activity-based orchestration and integration runtimes, while CDM emphasizes data migration jobs and connector-driven execution.",
+      "Pricing model differs: ADF pricing is activity/orchestration and integration-runtime time based, while CDM pricing is primarily by migration cluster specification and runtime period."
+    ],
+    migrationToHuawei: [
+      "Translate ADF pipelines, datasets, and linked services into CDM job graphs, and split heavy transforms into DLI/DWS where needed.",
+      "Map trigger/schedule dependencies and parameterization patterns to CDM scheduling and task chaining.",
+      "Rebuild secret/credential integration and network paths (private links, security groups, VPC routes) for Huawei connectivity."
+    ]
   }),
   nh({
     id: "gcp-dataflow-migration",
@@ -2579,11 +2628,18 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     shortName: "Dataflow",
     keywords: ["data migration", "etl", "pipeline"],
     cloudProvider: "gcp",
-    description: "Managed stream and batch data transformation pipelines used in migration flows.",
+    description: "Managed Apache Beam execution service for batch and streaming pipelines used in large-scale data migration and transformation.",
     imageUrl: "https://cdn.simpleicons.org/googlecloud",
     huaweiEquivalentShortNames: ["CDM"],
-    differencesFromHuawei: ["Pipeline template/runtime model differs."],
-    migrationToHuawei: ["Map Dataflow templates to CDM tasks and scheduling.", "Recreate transformation dependencies and performance tuning."]
+    differencesFromHuawei: [
+      "Capability scope differs: Dataflow is a code-first Beam runtime for streaming and batch, while CDM is more connector/task oriented and may require DLI/MRS for advanced processing parity.",
+      "Pricing model differs: Dataflow is metered by compute/memory and related pipeline resources over runtime, while CDM pricing is based on migration task resources and time windows."
+    ],
+    migrationToHuawei: [
+      "Map Dataflow templates to CDM where transformations are connector-friendly; route complex Beam logic to DLI/MRS jobs.",
+      "Separate streaming CDC-style flows from batch migration flows and map each to the right Huawei service combination (DRS/CDM/DLI).",
+      "Retune parallelism, checkpointing windows, and backpressure behavior for Huawei runtime characteristics."
+    ]
   }),
 
   nh({
@@ -2593,11 +2649,18 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     shortName: "MGN",
     keywords: ["migration", "lift and shift", "server migration"],
     cloudProvider: "aws",
-    description: "Lift-and-shift migration of servers into AWS.",
+    description: "Lift-and-shift server migration service using continuous block-level replication and orchestrated test/cutover workflows.",
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["SMS", "MGC"],
-    differencesFromHuawei: ["Replication agents and cutover workflow differ."],
-    migrationToHuawei: ["Adopt SMS/MGC phases and validation checkpoints."]
+    differencesFromHuawei: [
+      "Execution split differs: MGN combines replication and cutover orchestration in one service, while Huawei commonly combines MGC (planning) + SMS (replication/cutover).",
+      "Pricing model differs: MGN pricing references service and underlying AWS resource consumption during replication/testing/cutover, while Huawei SMS billing depends on migration resource usage plus destination/network resources."
+    ],
+    migrationToHuawei: [
+      "Map MGN source-server inventory and wave plans into MGC; execute replication and cutover in SMS.",
+      "Map MGN replication settings (RPO targets, test windows, cutover sequencing) to SMS migration tasks and validation checkpoints.",
+      "Use IMS for post-migration image standardization and CBR for rollback protection after production cutover."
+    ]
   }),
   nh({
     id: "azure-migrate",
@@ -2606,11 +2669,18 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     shortName: "Azure Migrate",
     keywords: ["migration", "assessment", "planning"],
     cloudProvider: "azure",
-    description: "Assessment and migration hub for infrastructure workloads.",
+    description: "Unified migration hub for discovery, dependency analysis, assessment, and migration tooling across servers, databases, apps, and data.",
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["MGC", "SMS"],
-    differencesFromHuawei: ["Discovery tooling and integration differ."],
-    migrationToHuawei: ["Map assessment output and migration waves."]
+    differencesFromHuawei: [
+      "Capability packaging differs: Azure Migrate bundles assessment and multiple migration tool integrations, while Huawei splits execution into service-specific tools (SMS/DRS/OMS) under MGC governance.",
+      "Pricing model differs: Azure Migrate service is free, with specific metered components (for example dependency analysis/server migration after free periods), while MGC is no-additional-charge and migration execution uses paid Huawei resources."
+    ],
+    migrationToHuawei: [
+      "Map discovered assets, dependency maps, and migration groups from Azure Migrate projects into MGC portfolios and wave plans.",
+      "Map server moves to SMS, database moves to DRS, and object/data moves to OMS/CDM according to workload type.",
+      "Preserve readiness gates by recreating test migration, cutover approval, and post-cutover validation checkpoints in MGC workflows."
+    ]
   }),
   nh({
     id: "azure-server-migration",
@@ -2619,11 +2689,18 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     shortName: "Server Migration",
     keywords: ["migration", "server migration", "replication"],
     cloudProvider: "azure",
-    description: "Agent-based server migration workflow under Azure Migrate for VM workload cutovers.",
+    description: "Azure Migrate execution component for replicating and cutting over physical/virtual servers to Azure VMs with minimal downtime patterns.",
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["SMS"],
-    differencesFromHuawei: ["Replication and cutover orchestration model differ."],
-    migrationToHuawei: ["Map replication waves and cutover runbooks to SMS.", "Rebuild agent deployment and test migration checkpoints."]
+    differencesFromHuawei: [
+      "Workflow differs: Azure Server Migration is a workload-specific module under Azure Migrate, while Huawei uses SMS directly and MGC for portfolio-level governance.",
+      "Pricing model differs: Azure Server Migration has a documented free period then per-instance monthly charge, while SMS pricing is based on Huawei migration/resource consumption plus target infrastructure."
+    ],
+    migrationToHuawei: [
+      "Map Azure replication appliances/agents, replication policy, and wave sequence to SMS task groups.",
+      "Mirror test migration and cutover runbooks in SMS, including downtime windows, rollback criteria, and validation scripts.",
+      "Use MGC for cross-wave tracking and combine with IMS/CBR for image baseline and recovery controls after cutover."
+    ]
   }),
   nh({
     id: "gcp-migrate-to-vms",
@@ -2632,11 +2709,18 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     shortName: "Migrate to VMs",
     keywords: ["migration", "lift and shift", "server migration"],
     cloudProvider: "gcp",
-    description: "Workload migration service into Google Cloud VMs.",
+    description: "Migration service for moving physical, virtual, and other-cloud workloads to Google Compute Engine virtual machines.",
     imageUrl: "https://cdn.simpleicons.org/googlecloud",
     huaweiEquivalentShortNames: ["SMS", "MGC"],
-    differencesFromHuawei: ["Wave planning and tooling capabilities differ."],
-    migrationToHuawei: ["Redesign migration plan and replication sequencing."]
+    differencesFromHuawei: [
+      "Capability scope differs: Migrate to VMs focuses on VM target conversion/orchestration to Compute Engine, while Huawei typically combines MGC planning with SMS replication and cutover.",
+      "Pricing model differs: Migrate to VMs is positioned as no-additional-charge tooling with underlying GCP resource costs, while Huawei SMS/MGC execution incurs Huawei resource and network charges."
+    ],
+    migrationToHuawei: [
+      "Map migration groups and source environment metadata to MGC waves and SMS execution batches.",
+      "Recreate replication sequencing, test migrations, and cutover windows in SMS with Huawei target flavor/network mapping.",
+      "Add post-migration hardening steps for IAM, backup, and observability to match prior GCP operational controls."
+    ]
   }),
 
   nh({
@@ -2646,11 +2730,18 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     shortName: "AWS DMS",
     keywords: ["replication", "database migration", "cdc"],
     cloudProvider: "aws",
-    description: "Database migration and continuous replication service.",
+    description: "Managed database migration service for homogeneous/heterogeneous migrations and continuous change data capture replication.",
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["DRS"],
-    differencesFromHuawei: ["Engine support matrix and task settings differ."],
-    migrationToHuawei: ["Rebuild replication tasks and cutover validations."]
+    differencesFromHuawei: [
+      "Capability scope differs: AWS DMS includes migration modes spanning full load + CDC with engine-specific endpoints, while Huawei DRS separates migration, synchronization, and disaster-recovery task types.",
+      "Pricing model differs: AWS DMS pricing is based on provisioned/serverless replication capacity runtime, while Huawei DRS billing depends on task type and runtime with additional source/target resource costs."
+    ],
+    migrationToHuawei: [
+      "Map DMS tasks to DRS task modes explicitly: one-time migration, ongoing synchronization, or DR replication.",
+      "Translate endpoint settings, table mappings, CDC start positions, and cutover sequencing into DRS task templates.",
+      "Benchmark throughput/latency and retune parallel load/CDC parameters because DMS and DRS task engines have different defaults."
+    ]
   }),
   nh({
     id: "azure-database-migration-service",
@@ -2659,11 +2750,18 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     shortName: "Azure DMS",
     keywords: ["replication", "database migration", "cdc"],
     cloudProvider: "azure",
-    description: "Managed service for online/offline database migrations.",
+    description: "Managed Azure service for offline and online database migrations with guided assessments and migration workflows.",
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["DRS"],
-    differencesFromHuawei: ["Migration workflow and automation differ."],
-    migrationToHuawei: ["Port assessment and migration job definitions."]
+    differencesFromHuawei: [
+      "Capability scope differs: Azure DMS supports classic offline and premium online migration modes, while Huawei DRS offers migration/synchronization/DR task modes with different engine matrices.",
+      "Pricing model differs: Azure DMS classic Standard tier is free and Premium is billed hourly after its free period, while Huawei DRS is billed by task/resource mode plus related infrastructure/network charges."
+    ],
+    migrationToHuawei: [
+      "Map Azure DMS project types to DRS modes (offline migration vs near-zero-downtime sync/CDC).",
+      "Translate assessment output, schema/data migration sequence, and cutover playbooks into DRS task orchestration.",
+      "Validate unsupported objects/features early and pair DRS with manual schema remediation where engine compatibility differs."
+    ]
   }),
   nh({
     id: "gcp-datastream",
@@ -2672,11 +2770,18 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     shortName: "Datastream",
     keywords: ["replication", "database migration", "cdc"],
     cloudProvider: "gcp",
-    description: "Serverless change data capture and replication pipeline.",
+    description: "Serverless change data capture service that streams database changes to Google Cloud targets for replication and modernization pipelines.",
     imageUrl: "https://cdn.simpleicons.org/googlecloud",
     huaweiEquivalentShortNames: ["DRS"],
-    differencesFromHuawei: ["CDC pipeline architecture differs."],
-    migrationToHuawei: ["Translate stream topology and downstream targets."]
+    differencesFromHuawei: [
+      "Pipeline model differs: Datastream focuses on CDC stream delivery into downstream analytics/processing targets, while DRS focuses on database migration/synchronization/DR task execution.",
+      "Pricing model differs: Datastream is metered by processed data volume, while DRS pricing is tied to migration/sync task specification and runtime model."
+    ],
+    migrationToHuawei: [
+      "Map Datastream source configs, objects, and CDC positions to DRS synchronization tasks for target databases.",
+      "If Datastream feeds analytics lakes instead of databases, combine DRS/CDM/DLI depending on whether the target is transactional or analytical.",
+      "Rebuild stream monitoring, lag alerting, and cutover criteria with DRS task metrics and Huawei observability services."
+    ]
   }),
 
   nh({
@@ -3228,7 +3333,7 @@ const additionalHuaweiServices: HuaweiService[] = [
   hw({ id: "huawei-cci2", name: "Cloud Container Instance 2.0", generalFunction: "Container Runtime", shortName: "CCI 2.0", keywords: ["container", "serverless", "runtime"], description: "Next-generation serverless container runtime." }),
   hw({ id: "huawei-swr", name: "SoftWare Repository for Container", generalFunction: "Container Registry", shortName: "SWR", keywords: ["container registry", "image repo", "artifact"], description: "Container image repository service." }),
 
-  hw({ id: "huawei-drs", name: "Data Replication Service", generalFunction: "Database Migration and Replication", shortName: "DRS", keywords: ["replication", "database migration", "cdc"], description: "Database replication and synchronization service." }),
+  hw({ id: "huawei-drs", name: "Data Replication Service", generalFunction: "Database Migration and Replication", shortName: "DRS", keywords: ["replication", "database migration", "cdc"], description: "Database migration, synchronization, and disaster recovery service with full-load and incremental replication modes." }),
   hw({ id: "huawei-ddm", name: "Distributed Database Middleware", generalFunction: "Database Middleware", shortName: "DDM", keywords: ["middleware", "sharding", "distributed db"], description: "Middleware for distributed relational databases." }),
   hw({ id: "huawei-dds", name: "Document Database Service", generalFunction: "Managed NoSQL Database", shortName: "DDS", keywords: ["document db", "nosql", "mongodb"], description: "Managed document database service." }),
   hw({ id: "huawei-gaussdb", name: "GaussDB", generalFunction: "Managed Relational Database", shortName: "GaussDB", keywords: ["database", "relational", "distributed"], description: "Huawei enterprise-grade distributed relational database." }),
@@ -3278,10 +3383,10 @@ const additionalHuaweiServices: HuaweiService[] = [
   hw({ id: "huawei-dms-rocket", name: "Distributed Message Service (for RocketMQ)", generalFunction: "Messaging", shortName: "DMS RocketMQ", keywords: ["rocketmq", "queue", "messaging"], description: "Managed RocketMQ messaging service." }),
   hw({ id: "huawei-eventgrid", name: "EventGrid", generalFunction: "Event Bus", shortName: "EventGrid", keywords: ["event", "event bus", "integration"], description: "Event routing and integration service." }),
 
-  hw({ id: "huawei-cdm", name: "Cloud Data Migration", generalFunction: "Data Migration", shortName: "CDM", keywords: ["data migration", "etl", "sync"], description: "Cloud data migration for structured and unstructured data." }),
-  hw({ id: "huawei-mgc", name: "Migration Center", generalFunction: "Migration Planning and Assessment", shortName: "MGC", keywords: ["migration", "assessment", "planning"], description: "Migration planning and execution center." }),
-  hw({ id: "huawei-oms", name: "Object Storage Migration Service", generalFunction: "Object Storage Migration", shortName: "OMS", keywords: ["object storage", "migration", "transfer"], description: "Object storage data migration service." }),
-  hw({ id: "huawei-sms", name: "Server Migration Service", generalFunction: "Server Migration", shortName: "SMS", keywords: ["server migration", "lift and shift", "replication"], description: "Server lift-and-shift migration service." }),
+  hw({ id: "huawei-cdm", name: "Cloud Data Migration", generalFunction: "Data Migration", shortName: "CDM", keywords: ["data migration", "etl", "sync"], description: "Connector-based data migration and transformation service for structured and semi-structured data movement." }),
+  hw({ id: "huawei-mgc", name: "Migration Center", generalFunction: "Migration Planning and Assessment", shortName: "MGC", keywords: ["migration", "assessment", "planning"], description: "Central migration planning and governance hub that coordinates discovery, assessment, and execution workflows." }),
+  hw({ id: "huawei-oms", name: "Object Storage Migration Service", generalFunction: "Object Storage Migration", shortName: "OMS", keywords: ["object storage", "migration", "transfer"], description: "Managed service for migrating object data from third-party object stores into Huawei OBS." }),
+  hw({ id: "huawei-sms", name: "Server Migration Service", generalFunction: "Server Migration", shortName: "SMS", keywords: ["server migration", "lift and shift", "replication"], description: "Server migration service for replicating and cutting over workloads from physical or virtual sources to Huawei cloud servers." }),
 
   hw({ id: "huawei-dc", name: "Direct Connect", generalFunction: "Dedicated Connectivity", shortName: "DC", keywords: ["private link", "dedicated connection", "network"], description: "Dedicated private network connectivity service." }),
   hw({ id: "huawei-dns", name: "Domain Name Service", generalFunction: "DNS", shortName: "DNS", keywords: ["dns", "domain", "resolution"], description: "Managed domain name resolution service." }),
