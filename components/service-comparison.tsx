@@ -298,6 +298,7 @@ function renderProviderServices(items: Array<NonHuaweiService | HuaweiService>, 
         const isClickable = clickable && service.cloudProvider !== "huawei";
         const content = (
           <>
+            <Image src={service.imageUrl} alt={`${service.name} icon`} width={14} height={14} className="rounded-sm md:hidden" />
             <Image src={service.imageUrl} alt={`${service.name} icon`} width={18} height={18} className="mt-0.5 hidden rounded-sm md:block" />
             <div>
               <p className={`font-semibold md:hidden ${isClickable ? "text-[#CF0A2C] hover:underline" : "text-slate-800"}`}>{service.shortName}</p>
@@ -309,14 +310,18 @@ function renderProviderServices(items: Array<NonHuaweiService | HuaweiService>, 
 
         if (isClickable) {
           return (
-            <Link key={service.id} href={`/comparison?serviceId=${encodeURIComponent(service.id)}`} className="flex items-start gap-1 rounded-md px-0.5 py-0.5 transition hover:bg-slate-100 md:gap-2 md:px-1 md:py-1">
+            <Link
+              key={service.id}
+              href={`/comparison?serviceId=${encodeURIComponent(service.id)}`}
+              className="flex flex-col items-center gap-1 rounded-md px-0.5 py-0.5 text-center transition hover:bg-slate-100 md:flex-row md:items-start md:gap-2 md:px-1 md:py-1 md:text-left"
+            >
               {content}
             </Link>
           );
         }
 
         return (
-          <div key={service.id} className="flex items-start gap-1 rounded-md px-0.5 py-0.5 md:gap-2 md:px-1 md:py-1">
+          <div key={service.id} className="flex flex-col items-center gap-1 rounded-md px-0.5 py-0.5 text-center md:flex-row md:items-start md:gap-2 md:px-1 md:py-1 md:text-left">
             {content}
           </div>
         );
