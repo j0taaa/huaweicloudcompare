@@ -30,7 +30,6 @@ export function getFunctionCategory(generalFunction: string): string {
       "security",
       "identity",
       "audit",
-      "cdn and security",
       "waf",
       "firewall",
       "ddos",
@@ -103,7 +102,9 @@ export function getFunctionCategory(generalFunction: string): string {
       "connectivity",
       "public ip",
       "routing",
-      "vpc"
+      "vpc",
+      "cdn",
+      "content delivery"
     ])
   ) {
     return "Networking and Connectivity";

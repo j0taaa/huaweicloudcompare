@@ -525,33 +525,33 @@ const coreServices: ServiceInfo[] = [
   nh({
     id: "aws-cloudfront",
     name: "Amazon CloudFront",
-    generalFunction: "CDN and Security",
+    generalFunction: "Content Delivery Network (CDN)",
     shortName: "CloudFront",
     keywords: ["cdn", "edge", "cache", "security"],
     cloudProvider: "aws",
     description: "Global edge caching and acceleration service.",
     imageUrl: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/network/cloudfront.png",
-    huaweiEquivalentShortNames: ["CDN", "WAF"],
+    huaweiEquivalentShortNames: ["CDN"],
     differencesFromHuawei: ["Edge rule syntax differs.", "Security integrations differ."],
     migrationToHuawei: ["Translate cache/routing rules.", "Recreate certificates and security settings."]
   }),
   nh({
     id: "azure-front-door",
     name: "Azure Front Door",
-    generalFunction: "CDN and Security",
+    generalFunction: "Content Delivery Network (CDN)",
     shortName: "Front Door",
     keywords: ["cdn", "edge", "security", "routing"],
     cloudProvider: "azure",
     description: "Edge routing, acceleration, and security entry point.",
     imageUrl: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/network/front-doors.png",
-    huaweiEquivalentShortNames: ["CDN", "WAF"],
+    huaweiEquivalentShortNames: ["CDN"],
     differencesFromHuawei: ["Rule engine behavior differs.", "Feature scope differs by tier."],
     migrationToHuawei: ["Map front-end domains and routes.", "Retest latency and failover behavior."]
   }),
   nh({
     id: "gcp-cloud-cdn",
     name: "Cloud CDN",
-    generalFunction: "CDN and Security",
+    generalFunction: "Content Delivery Network (CDN)",
     shortName: "Cloud CDN",
     keywords: ["cdn", "edge", "cache"],
     cloudProvider: "gcp",
@@ -564,7 +564,7 @@ const coreServices: ServiceInfo[] = [
   hw({
     id: "huawei-cdn",
     name: "Content Delivery Network",
-    generalFunction: "CDN and Security",
+    generalFunction: "Content Delivery Network (CDN)",
     shortName: "CDN",
     keywords: ["cdn", "edge", "cache"],
     description: "Huawei CDN for edge acceleration and cache delivery."
@@ -1937,7 +1937,7 @@ const additionalEquivalentServices: NonHuaweiService[] = [
   nh({
     id: "aws-application-migration-service",
     name: "AWS Application Migration Service",
-    generalFunction: "Migration",
+    generalFunction: "Server Migration",
     shortName: "MGN",
     keywords: ["migration", "lift and shift", "server migration"],
     cloudProvider: "aws",
@@ -1950,7 +1950,7 @@ const additionalEquivalentServices: NonHuaweiService[] = [
   nh({
     id: "azure-migrate",
     name: "Azure Migrate",
-    generalFunction: "Migration",
+    generalFunction: "Migration Planning and Assessment",
     shortName: "Azure Migrate",
     keywords: ["migration", "assessment", "planning"],
     cloudProvider: "azure",
@@ -1963,7 +1963,7 @@ const additionalEquivalentServices: NonHuaweiService[] = [
   nh({
     id: "gcp-migrate-to-vms",
     name: "Migrate to Virtual Machines",
-    generalFunction: "Migration",
+    generalFunction: "Server Migration",
     shortName: "Migrate to VMs",
     keywords: ["migration", "lift and shift", "server migration"],
     cloudProvider: "gcp",
@@ -2587,10 +2587,10 @@ const additionalHuaweiServices: HuaweiService[] = [
   hw({ id: "huawei-dms-rocket", name: "Distributed Message Service (for RocketMQ)", generalFunction: "Messaging", shortName: "DMS RocketMQ", keywords: ["rocketmq", "queue", "messaging"], description: "Managed RocketMQ messaging service." }),
   hw({ id: "huawei-eventgrid", name: "EventGrid", generalFunction: "Event Bus", shortName: "EventGrid", keywords: ["event", "event bus", "integration"], description: "Event routing and integration service." }),
 
-  hw({ id: "huawei-cdm", name: "Cloud Data Migration", generalFunction: "Migration", shortName: "CDM", keywords: ["data migration", "etl", "sync"], description: "Cloud data migration for structured and unstructured data." }),
-  hw({ id: "huawei-mgc", name: "Migration Center", generalFunction: "Migration", shortName: "MGC", keywords: ["migration", "assessment", "planning"], description: "Migration planning and execution center." }),
-  hw({ id: "huawei-oms", name: "Object Storage Migration Service", generalFunction: "Migration", shortName: "OMS", keywords: ["object storage", "migration", "transfer"], description: "Object storage data migration service." }),
-  hw({ id: "huawei-sms", name: "Server Migration Service", generalFunction: "Migration", shortName: "SMS", keywords: ["server migration", "lift and shift", "replication"], description: "Server lift-and-shift migration service." }),
+  hw({ id: "huawei-cdm", name: "Cloud Data Migration", generalFunction: "Data Migration", shortName: "CDM", keywords: ["data migration", "etl", "sync"], description: "Cloud data migration for structured and unstructured data." }),
+  hw({ id: "huawei-mgc", name: "Migration Center", generalFunction: "Migration Planning and Assessment", shortName: "MGC", keywords: ["migration", "assessment", "planning"], description: "Migration planning and execution center." }),
+  hw({ id: "huawei-oms", name: "Object Storage Migration Service", generalFunction: "Object Storage Migration", shortName: "OMS", keywords: ["object storage", "migration", "transfer"], description: "Object storage data migration service." }),
+  hw({ id: "huawei-sms", name: "Server Migration Service", generalFunction: "Server Migration", shortName: "SMS", keywords: ["server migration", "lift and shift", "replication"], description: "Server lift-and-shift migration service." }),
 
   hw({ id: "huawei-dc", name: "Direct Connect", generalFunction: "Dedicated Connectivity", shortName: "DC", keywords: ["private link", "dedicated connection", "network"], description: "Dedicated private network connectivity service." }),
   hw({ id: "huawei-dns", name: "Domain Name Service", generalFunction: "DNS", shortName: "DNS", keywords: ["dns", "domain", "resolution"], description: "Managed domain name resolution service." }),
