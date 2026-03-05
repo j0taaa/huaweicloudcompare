@@ -142,8 +142,24 @@ function hw(service: Omit<HuaweiService, "cloudProvider" | "imageUrl"> & { image
   };
 }
 
+const providerDefaultIcon: Record<Exclude<CloudProvider, "huawei">, string> = {
+  aws: "/logos/aws.svg",
+  azure: "/logos/azure.svg",
+  gcp: "/logos/gcp.svg"
+};
+
+function resolveNonHuaweiServiceIcon(service: NonHuaweiService): string {
+  if (service.imageUrl.includes("cdn.simpleicons.org")) {
+    return providerDefaultIcon[service.cloudProvider];
+  }
+  return service.imageUrl;
+}
+
 function nh(service: NonHuaweiService): NonHuaweiService {
-  return service;
+  return {
+    ...service,
+    imageUrl: resolveNonHuaweiServiceIcon(service)
+  };
 }
 
 const coreServices: ServiceInfo[] = [

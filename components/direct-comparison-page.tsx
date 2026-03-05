@@ -189,6 +189,15 @@ const serviceIcons: Record<string, string> = {
   "Content Delivery Network (CDN)": "/service-icons/huawei-cdn.svg"
 };
 
+const providerDefaultIcon: Record<ProviderKey | "huawei", string> = {
+  aws: "/logos/aws.svg",
+  azure: "/logos/azure.svg",
+  gcp: "/logos/gcp.svg",
+  huawei: "/logos/huawei.svg"
+};
+
+const serviceIconByName = new Map(services.map((service) => [service.name, service.imageUrl]));
+
 export function DirectComparisonPage({
   providerParam,
   initialQuery
@@ -263,7 +272,13 @@ function ProviderColumn({ provider, mapping, main = false }: { provider: Provide
         <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">Service</p>
         {services.map((service) => (
           <div key={service} className="flex items-center gap-2">
-            <Image src={serviceIcons[service] ?? "/service-icons/huawei-cloud.svg"} alt={`${service} icon`} width={18} height={18} className="rounded-sm" />
+            <Image
+              src={serviceIconByName.get(service) ?? serviceIcons[service] ?? providerDefaultIcon[provider]}
+              alt={`${service} icon`}
+              width={18}
+              height={18}
+              className="rounded-sm"
+            />
             <span className="text-sm font-medium text-slate-800">{service}</span>
           </div>
         ))}
