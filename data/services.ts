@@ -142,15 +142,67 @@ function hw(service: Omit<HuaweiService, "cloudProvider" | "imageUrl"> & { image
   };
 }
 
-const providerDefaultIcon: Record<Exclude<CloudProvider, "huawei">, string> = {
-  aws: "/logos/aws.svg",
-  azure: "/logos/azure.svg",
-  gcp: "/logos/gcp.svg"
+const categoryIconFallbackByProvider: Record<Exclude<CloudProvider, "huawei">, Record<string, string>> = {
+  aws: {
+    compute: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/compute/ec2.png",
+    kubernetes: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/compute/elastic-kubernetes-service.png",
+    storage: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/storage/simple-storage-service-s3.png",
+    database: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/database/rds.png",
+    analytics: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/network/cloudfront.png",
+    network: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/network/cloudfront.png",
+    app: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/compute/lambda.png",
+    ai: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/compute/lambda.png",
+    security: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/network/cloudfront.png",
+    migration: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/compute/ec2.png",
+    workspace: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/compute/ec2.png"
+  },
+  azure: {
+    compute: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/compute/vm.png",
+    kubernetes: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/compute/kubernetes-services.png",
+    storage: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/storage/blob-storage.png",
+    database: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/database/sql-databases.png",
+    analytics: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/network/front-doors.png",
+    network: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/network/front-doors.png",
+    app: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/compute/function-apps.png",
+    ai: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/compute/function-apps.png",
+    security: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/network/front-doors.png",
+    migration: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/compute/vm.png",
+    workspace: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/compute/vm.png"
+  },
+  gcp: {
+    compute: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/compute/compute-engine.png",
+    kubernetes: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/compute/kubernetes-engine.png",
+    storage: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/storage/storage.png",
+    database: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/database/sql.png",
+    analytics: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/analytics/bigquery.png",
+    network: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/network/cdn.png",
+    app: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/compute/functions.png",
+    ai: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/compute/functions.png",
+    security: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/network/cdn.png",
+    migration: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/compute/compute-engine.png",
+    workspace: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/compute/compute-engine.png"
+  }
 };
+
+function classifyNonHuaweiServiceIconType(service: NonHuaweiService): keyof (typeof categoryIconFallbackByProvider)["aws"] {
+  const text = `${service.generalFunction} ${service.name} ${service.keywords.join(" ")}`.toLowerCase();
+  if (text.includes("kubernetes") || text.includes("container")) return "kubernetes";
+  if (text.includes("object storage") || text.includes("file storage") || text.includes("block storage") || text.includes("backup")) return "storage";
+  if (text.includes("database") || text.includes("sql") || text.includes("cache") || text.includes("graph") || text.includes("nosql")) return "database";
+  if (text.includes("data warehouse") || text.includes("data lake") || text.includes("analytics") || text.includes("big data") || text.includes("bi")) return "analytics";
+  if (text.includes("network") || text.includes("dns") || text.includes("cdn") || text.includes("vpn") || text.includes("load balanc") || text.includes("nat")) return "network";
+  if (text.includes("security") || text.includes("identity") || text.includes("audit") || text.includes("waf") || text.includes("ddos")) return "security";
+  if (text.includes("machine learning") || text.includes("ml") || text.includes("ai")) return "ai";
+  if (text.includes("migration")) return "migration";
+  if (text.includes("workspace") || text.includes("desktop")) return "workspace";
+  if (text.includes("api") || text.includes("event") || text.includes("devops") || text.includes("pipeline") || text.includes("functions") || text.includes("serverless")) return "app";
+  return "compute";
+}
 
 function resolveNonHuaweiServiceIcon(service: NonHuaweiService): string {
   if (service.imageUrl.includes("cdn.simpleicons.org")) {
-    return providerDefaultIcon[service.cloudProvider];
+    const type = classifyNonHuaweiServiceIconType(service);
+    return categoryIconFallbackByProvider[service.cloudProvider][type];
   }
   return service.imageUrl;
 }
