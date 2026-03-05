@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { services, type CloudProvider, type HuaweiService, type NonHuaweiService } from "@/data/services";
+import { categoryRank, getFunctionCategory } from "@/data/category-utils";
 
 type CompareProviderKey = CloudProvider;
 
@@ -57,108 +58,6 @@ const providerMeta: Record<CompareProviderKey, ProviderMeta> = {
 };
 
 const providers = [providerMeta.aws, providerMeta.azure, providerMeta.gcp, providerMeta.huawei] as const;
-
-const categoryOrder = [
-  "Compute and Containers",
-  "Data and Analytics",
-  "Databases",
-  "AI and IoT",
-  "Application and DevOps",
-  "Observability and Management",
-  "Networking and Connectivity",
-  "Security",
-  "Storage and Backup",
-  "Migration",
-  "Marketplace and Workspace",
-  "Other"
-] as const;
-
-function categoryRank(category: string): number {
-  const idx = categoryOrder.indexOf(category as (typeof categoryOrder)[number]);
-  return idx === -1 ? categoryOrder.length : idx;
-}
-
-function getFunctionCategory(generalFunction: string): string {
-  const normalized = generalFunction.toLowerCase();
-
-  if (normalized.includes("security") || normalized.includes("identity") || normalized.includes("audit") || normalized.includes("cdn and security")) {
-    return "Security";
-  }
-  if (normalized.includes("virtual machines") || normalized.includes("kubernetes") || normalized.includes("container") || normalized.includes("dedicated compute") || normalized.includes("compute")) {
-    return "Compute and Containers";
-  }
-  if (
-    normalized.includes("data warehouse") ||
-    normalized.includes("data lake") ||
-    normalized.includes("data integration") ||
-    normalized.includes("big data") ||
-    normalized.includes("business intelligence") ||
-    normalized.includes("search")
-  ) {
-    return "Data and Analytics";
-  }
-  if (normalized.includes("database") || normalized.includes("caching") || normalized.includes("graph")) {
-    return "Databases";
-  }
-  if (normalized.includes("machine learning") || normalized.includes("iot")) {
-    return "AI and IoT";
-  }
-  if (
-    normalized.includes("devops") ||
-    normalized.includes("code quality") ||
-    normalized.includes("ci") ||
-    normalized.includes("pipeline") ||
-    normalized.includes("artifact") ||
-    normalized.includes("test management") ||
-    normalized.includes("application platform") ||
-    normalized.includes("api management") ||
-    normalized.includes("event bus")
-  ) {
-    return "Application and DevOps";
-  }
-  if (
-    normalized.includes("observability") ||
-    normalized.includes("monitoring") ||
-    normalized.includes("log management") ||
-    normalized.includes("notification") ||
-    normalized.includes("operations") ||
-    normalized.includes("image management")
-  ) {
-    return "Observability and Management";
-  }
-  if (
-    normalized.includes("network") ||
-    normalized.includes("dns") ||
-    normalized.includes("nat") ||
-    normalized.includes("vpn") ||
-    normalized.includes("load balanc") ||
-    normalized.includes("private endpoint") ||
-    normalized.includes("connectivity") ||
-    normalized.includes("public ip") ||
-    normalized.includes("routing") ||
-    normalized.includes("vpc")
-  ) {
-    return "Networking and Connectivity";
-  }
-  if (
-    normalized.includes("storage") ||
-    normalized.includes("backup") ||
-    normalized.includes("disaster recovery") ||
-    normalized.includes("block storage") ||
-    normalized.includes("file storage") ||
-    normalized.includes("object storage")
-  ) {
-    return "Storage and Backup";
-  }
-  if (normalized.includes("migration")) {
-    return "Migration";
-  }
-  if (normalized.includes("marketplace") || normalized.includes("workspace")) {
-    return "Marketplace and Workspace";
-  }
-
-  return "Other";
-}
 
 export function ServiceComparison() {
   const [query, setQuery] = useState("");
