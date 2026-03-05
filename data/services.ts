@@ -999,7 +999,7 @@ const additionalEquivalentServices: NonHuaweiService[] = [
   nh({
     id: "aws-vpc",
     name: "Amazon VPC",
-    generalFunction: "Networking",
+    generalFunction: "Networking Core",
     shortName: "VPC",
     keywords: ["network", "vpc", "subnet"],
     cloudProvider: "aws",
@@ -1012,7 +1012,7 @@ const additionalEquivalentServices: NonHuaweiService[] = [
   nh({
     id: "azure-vnet",
     name: "Azure Virtual Network",
-    generalFunction: "Networking",
+    generalFunction: "Networking Core",
     shortName: "VNet",
     keywords: ["network", "vnet", "subnet"],
     cloudProvider: "azure",
@@ -1025,7 +1025,7 @@ const additionalEquivalentServices: NonHuaweiService[] = [
   nh({
     id: "gcp-vpc",
     name: "Google Cloud VPC",
-    generalFunction: "Networking",
+    generalFunction: "Networking Core",
     shortName: "VPC",
     keywords: ["network", "vpc", "subnet"],
     cloudProvider: "gcp",
@@ -1038,7 +1038,7 @@ const additionalEquivalentServices: NonHuaweiService[] = [
   nh({
     id: "aws-route53",
     name: "Amazon Route 53",
-    generalFunction: "Networking",
+    generalFunction: "Networking Utilities",
     shortName: "Route 53",
     keywords: ["dns", "network", "domain"],
     cloudProvider: "aws",
@@ -1051,7 +1051,7 @@ const additionalEquivalentServices: NonHuaweiService[] = [
   nh({
     id: "azure-dns",
     name: "Azure DNS",
-    generalFunction: "Networking",
+    generalFunction: "Networking Utilities",
     shortName: "Azure DNS",
     keywords: ["dns", "network", "domain"],
     cloudProvider: "azure",
@@ -1064,7 +1064,7 @@ const additionalEquivalentServices: NonHuaweiService[] = [
   nh({
     id: "gcp-cloud-dns",
     name: "Cloud DNS",
-    generalFunction: "Networking",
+    generalFunction: "Networking Utilities",
     shortName: "Cloud DNS",
     keywords: ["dns", "network", "domain"],
     cloudProvider: "gcp",
@@ -1077,7 +1077,7 @@ const additionalEquivalentServices: NonHuaweiService[] = [
   nh({
     id: "aws-elb",
     name: "Elastic Load Balancing",
-    generalFunction: "Networking",
+    generalFunction: "Networking Utilities",
     shortName: "ELB",
     keywords: ["load balancer", "network", "traffic"],
     cloudProvider: "aws",
@@ -1090,7 +1090,7 @@ const additionalEquivalentServices: NonHuaweiService[] = [
   nh({
     id: "azure-load-balancer",
     name: "Azure Load Balancer",
-    generalFunction: "Networking",
+    generalFunction: "Networking Utilities",
     shortName: "Azure LB",
     keywords: ["load balancer", "network", "traffic"],
     cloudProvider: "azure",
@@ -1103,7 +1103,7 @@ const additionalEquivalentServices: NonHuaweiService[] = [
   nh({
     id: "gcp-load-balancing",
     name: "Cloud Load Balancing",
-    generalFunction: "Networking",
+    generalFunction: "Networking Utilities",
     shortName: "GCLB",
     keywords: ["load balancer", "network", "traffic"],
     cloudProvider: "gcp",
@@ -1116,7 +1116,7 @@ const additionalEquivalentServices: NonHuaweiService[] = [
   nh({
     id: "aws-nat-gateway",
     name: "NAT Gateway",
-    generalFunction: "Networking",
+    generalFunction: "Networking Utilities",
     shortName: "NAT Gateway",
     keywords: ["nat", "egress", "network"],
     cloudProvider: "aws",
@@ -1129,7 +1129,7 @@ const additionalEquivalentServices: NonHuaweiService[] = [
   nh({
     id: "azure-nat-gateway",
     name: "Azure NAT Gateway",
-    generalFunction: "Networking",
+    generalFunction: "Networking Utilities",
     shortName: "NAT Gateway",
     keywords: ["nat", "egress", "network"],
     cloudProvider: "azure",
@@ -1142,7 +1142,7 @@ const additionalEquivalentServices: NonHuaweiService[] = [
   nh({
     id: "gcp-cloud-nat",
     name: "Cloud NAT",
-    generalFunction: "Networking",
+    generalFunction: "Networking Utilities",
     shortName: "Cloud NAT",
     keywords: ["nat", "egress", "network"],
     cloudProvider: "gcp",
@@ -1155,7 +1155,7 @@ const additionalEquivalentServices: NonHuaweiService[] = [
   nh({
     id: "aws-site-to-site-vpn",
     name: "AWS Site-to-Site VPN",
-    generalFunction: "Networking",
+    generalFunction: "Networking Utilities",
     shortName: "AWS VPN",
     keywords: ["vpn", "network", "site-to-site"],
     cloudProvider: "aws",
@@ -1168,7 +1168,7 @@ const additionalEquivalentServices: NonHuaweiService[] = [
   nh({
     id: "azure-vpn-gateway",
     name: "Azure VPN Gateway",
-    generalFunction: "Networking",
+    generalFunction: "Networking Utilities",
     shortName: "VPN Gateway",
     keywords: ["vpn", "network", "site-to-site"],
     cloudProvider: "azure",
@@ -1181,7 +1181,7 @@ const additionalEquivalentServices: NonHuaweiService[] = [
   nh({
     id: "gcp-cloud-vpn",
     name: "Cloud VPN",
-    generalFunction: "Networking",
+    generalFunction: "Networking Utilities",
     shortName: "Cloud VPN",
     keywords: ["vpn", "network", "site-to-site"],
     cloudProvider: "gcp",
@@ -1194,7 +1194,7 @@ const additionalEquivalentServices: NonHuaweiService[] = [
   nh({
     id: "aws-direct-connect",
     name: "AWS Direct Connect",
-    generalFunction: "Networking",
+    generalFunction: "Networking Utilities",
     shortName: "Direct Connect",
     keywords: ["private link", "dedicated connection", "network"],
     cloudProvider: "aws",
@@ -1207,7 +1207,7 @@ const additionalEquivalentServices: NonHuaweiService[] = [
   nh({
     id: "azure-expressroute",
     name: "Azure ExpressRoute",
-    generalFunction: "Networking",
+    generalFunction: "Networking Utilities",
     shortName: "ExpressRoute",
     keywords: ["private link", "dedicated connection", "network"],
     cloudProvider: "azure",
@@ -1220,7 +1220,7 @@ const additionalEquivalentServices: NonHuaweiService[] = [
   nh({
     id: "gcp-cloud-interconnect",
     name: "Cloud Interconnect",
-    generalFunction: "Networking",
+    generalFunction: "Networking Utilities",
     shortName: "Interconnect",
     keywords: ["private link", "dedicated connection", "network"],
     cloudProvider: "gcp",
@@ -1233,7 +1233,7 @@ const additionalEquivalentServices: NonHuaweiService[] = [
   nh({
     id: "aws-privatelink",
     name: "AWS PrivateLink",
-    generalFunction: "Networking",
+    generalFunction: "Networking Utilities",
     shortName: "PrivateLink",
     keywords: ["private endpoint", "network", "service access"],
     cloudProvider: "aws",
@@ -1246,7 +1246,7 @@ const additionalEquivalentServices: NonHuaweiService[] = [
   nh({
     id: "azure-private-link",
     name: "Azure Private Link",
-    generalFunction: "Networking",
+    generalFunction: "Networking Utilities",
     shortName: "Private Link",
     keywords: ["private endpoint", "network", "service access"],
     cloudProvider: "azure",
@@ -1259,7 +1259,7 @@ const additionalEquivalentServices: NonHuaweiService[] = [
   nh({
     id: "gcp-private-service-connect",
     name: "Private Service Connect",
-    generalFunction: "Networking",
+    generalFunction: "Networking Utilities",
     shortName: "PSC",
     keywords: ["private endpoint", "network", "service access"],
     cloudProvider: "gcp",
@@ -2591,15 +2591,15 @@ const additionalHuaweiServices: HuaweiService[] = [
   hw({ id: "huawei-oms", name: "Object Storage Migration Service", generalFunction: "Migration", shortName: "OMS", keywords: ["object storage", "migration", "transfer"], description: "Object storage data migration service." }),
   hw({ id: "huawei-sms", name: "Server Migration Service", generalFunction: "Migration", shortName: "SMS", keywords: ["server migration", "lift and shift", "replication"], description: "Server lift-and-shift migration service." }),
 
-  hw({ id: "huawei-dc", name: "Direct Connect", generalFunction: "Networking", shortName: "DC", keywords: ["private link", "dedicated connection", "network"], description: "Dedicated private network connectivity service." }),
-  hw({ id: "huawei-dns", name: "Domain Name Service", generalFunction: "Networking", shortName: "DNS", keywords: ["dns", "domain", "resolution"], description: "Managed domain name resolution service." }),
-  hw({ id: "huawei-eip", name: "Elastic IP", generalFunction: "Networking", shortName: "EIP", keywords: ["public ip", "elastic ip", "network"], description: "Elastic public IP addressing service." }),
-  hw({ id: "huawei-elb", name: "Elastic Load Balance", generalFunction: "Networking", shortName: "ELB", keywords: ["load balancer", "traffic", "lb"], description: "Layer 4/7 load balancing service." }),
-  hw({ id: "huawei-er", name: "Enterprise Router", generalFunction: "Networking", shortName: "ER", keywords: ["router", "transit", "network"], description: "Enterprise-grade inter-VPC routing service." }),
-  hw({ id: "huawei-nat", name: "NAT Gateway", generalFunction: "Networking", shortName: "NAT", keywords: ["nat", "egress", "network"], description: "Network address translation gateway service." }),
-  hw({ id: "huawei-vpc", name: "Virtual Private Cloud", generalFunction: "Networking", shortName: "VPC", keywords: ["vpc", "network isolation", "subnet"], description: "Isolated virtual network service." }),
-  hw({ id: "huawei-vpn", name: "Virtual Private Network", generalFunction: "Networking", shortName: "VPN", keywords: ["vpn", "site-to-site", "secure network"], description: "Secure encrypted network connectivity service." }),
-  hw({ id: "huawei-vpcep", name: "VPC Endpoint", generalFunction: "Networking", shortName: "VPCEP", keywords: ["private endpoint", "service access", "network"], description: "Private endpoint access for cloud services." }),
+  hw({ id: "huawei-dc", name: "Direct Connect", generalFunction: "Networking Utilities", shortName: "DC", keywords: ["private link", "dedicated connection", "network"], description: "Dedicated private network connectivity service." }),
+  hw({ id: "huawei-dns", name: "Domain Name Service", generalFunction: "Networking Utilities", shortName: "DNS", keywords: ["dns", "domain", "resolution"], description: "Managed domain name resolution service." }),
+  hw({ id: "huawei-eip", name: "Elastic IP", generalFunction: "Networking Utilities", shortName: "EIP", keywords: ["public ip", "elastic ip", "network"], description: "Elastic public IP addressing service." }),
+  hw({ id: "huawei-elb", name: "Elastic Load Balance", generalFunction: "Networking Utilities", shortName: "ELB", keywords: ["load balancer", "traffic", "lb"], description: "Layer 4/7 load balancing service." }),
+  hw({ id: "huawei-er", name: "Enterprise Router", generalFunction: "Networking Core", shortName: "ER", keywords: ["router", "transit", "network"], description: "Enterprise-grade inter-VPC routing service." }),
+  hw({ id: "huawei-nat", name: "NAT Gateway", generalFunction: "Networking Utilities", shortName: "NAT", keywords: ["nat", "egress", "network"], description: "Network address translation gateway service." }),
+  hw({ id: "huawei-vpc", name: "Virtual Private Cloud", generalFunction: "Networking Core", shortName: "VPC", keywords: ["vpc", "network isolation", "subnet"], description: "Isolated virtual network service." }),
+  hw({ id: "huawei-vpn", name: "Virtual Private Network", generalFunction: "Networking Utilities", shortName: "VPN", keywords: ["vpn", "site-to-site", "secure network"], description: "Secure encrypted network connectivity service." }),
+  hw({ id: "huawei-vpcep", name: "VPC Endpoint", generalFunction: "Networking Utilities", shortName: "VPCEP", keywords: ["private endpoint", "service access", "network"], description: "Private endpoint access for cloud services." }),
 
   hw({ id: "huawei-cbh", name: "Cloud Bastion Host", generalFunction: "Security", shortName: "CBH", keywords: ["bastion", "privileged access", "audit"], description: "Privileged access and operation audit bastion service." }),
   hw({ id: "huawei-ccm", name: "Cloud Certificate & Manager", generalFunction: "Security", shortName: "CCM", keywords: ["certificate", "tls", "pki"], description: "Certificate lifecycle and management service." }),
