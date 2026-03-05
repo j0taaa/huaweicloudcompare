@@ -329,6 +329,45 @@ const coreServices: ServiceInfo[] = [
     keywords: ["vm", "compute", "instance", "elastic"],
     description: "Huawei Cloud virtual machine service for scalable compute workloads."
   }),
+  nh({
+    id: "aws-dedicated-hosts",
+    name: "AWS Dedicated Hosts",
+    generalFunction: "Dedicated Compute",
+    shortName: "Dedicated Hosts",
+    keywords: ["dedicated", "host", "bare metal", "isolation"],
+    cloudProvider: "aws",
+    description: "Single-tenant physical hosts for license-bound and isolation-sensitive workloads.",
+    imageUrl: "https://cdn.simpleicons.org/amazonaws",
+    huaweiEquivalentShortNames: ["DeH", "BMS"],
+    differencesFromHuawei: ["Host allocation and placement workflows differ.", "License affinity controls differ."],
+    migrationToHuawei: ["Map host isolation and affinity requirements to DeH/BMS.", "Validate BYOL and compliance placement policies."]
+  }),
+  nh({
+    id: "azure-dedicated-host",
+    name: "Azure Dedicated Host",
+    generalFunction: "Dedicated Compute",
+    shortName: "Dedicated Host",
+    keywords: ["dedicated", "host", "single tenant", "isolation"],
+    cloudProvider: "azure",
+    description: "Dedicated physical servers to host Azure VMs with tenant isolation.",
+    imageUrl: "https://cdn.simpleicons.org/microsoftazure",
+    huaweiEquivalentShortNames: ["DeH", "BMS"],
+    differencesFromHuawei: ["Host group/fault domain model differs.", "Maintenance and allocation controls differ."],
+    migrationToHuawei: ["Map host groups and isolation boundaries to DeH.", "Recreate placement and maintenance policies."]
+  }),
+  nh({
+    id: "gcp-bare-metal-solution",
+    name: "Bare Metal Solution",
+    generalFunction: "Dedicated Compute",
+    shortName: "BMS",
+    keywords: ["bare metal", "dedicated", "single tenant", "compute"],
+    cloudProvider: "gcp",
+    description: "Dedicated bare metal infrastructure for performance and licensing-sensitive workloads.",
+    imageUrl: "https://cdn.simpleicons.org/googlecloud",
+    huaweiEquivalentShortNames: ["BMS", "DeH"],
+    differencesFromHuawei: ["Provisioning model and connectivity topology differ.", "Managed operations scope differs."],
+    migrationToHuawei: ["Map hardware profiles and network integration to Huawei BMS.", "Rebuild backup and operational runbooks."]
+  }),
 
   nh({
     id: "aws-eks",
@@ -1933,6 +1972,110 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     differencesFromHuawei: ["Pattern-based implementation differs from a single service."],
     migrationToHuawei: ["Convert DR architecture and replication policy."]
   }),
+  nh({
+    id: "aws-migration-hub",
+    name: "AWS Migration Hub",
+    generalFunction: "Migration Planning and Assessment",
+    shortName: "Migration Hub",
+    keywords: ["migration", "assessment", "planning", "portfolio"],
+    cloudProvider: "aws",
+    description: "Central migration planning, discovery tracking, and progress orchestration service.",
+    imageUrl: "https://cdn.simpleicons.org/amazonaws",
+    huaweiEquivalentShortNames: ["MGC"],
+    differencesFromHuawei: ["Portfolio discovery and orchestration model differs."],
+    migrationToHuawei: ["Map portfolio assessment and wave plans into MGC.", "Recreate migration KPI tracking and dependency mapping."]
+  }),
+  nh({
+    id: "gcp-migration-center",
+    name: "Migration Center",
+    generalFunction: "Migration Planning and Assessment",
+    shortName: "Migration Center",
+    keywords: ["migration", "assessment", "planning", "discovery"],
+    cloudProvider: "gcp",
+    description: "Discovery, assessment, and migration planning for infrastructure modernization.",
+    imageUrl: "https://cdn.simpleicons.org/googlecloud",
+    huaweiEquivalentShortNames: ["MGC"],
+    differencesFromHuawei: ["Assessment scoring and recommendation dimensions differ."],
+    migrationToHuawei: ["Map discovered assets and right-sizing recommendations into MGC.", "Rebuild migration wave planning and readiness checks."]
+  }),
+  nh({
+    id: "aws-datasync-object-migration",
+    name: "AWS DataSync",
+    generalFunction: "Object Storage Migration",
+    shortName: "DataSync",
+    keywords: ["object storage", "migration", "transfer", "sync"],
+    cloudProvider: "aws",
+    description: "Accelerated online data transfer and synchronization into object storage targets.",
+    imageUrl: "https://cdn.simpleicons.org/amazonaws",
+    huaweiEquivalentShortNames: ["OMS"],
+    differencesFromHuawei: ["Task-based transfer controls and scheduling semantics differ."],
+    migrationToHuawei: ["Map source agents/tasks to OMS migration jobs.", "Rebuild filters, scheduling, and integrity verification flow."]
+  }),
+  nh({
+    id: "azure-storage-mover",
+    name: "Azure Storage Mover",
+    generalFunction: "Object Storage Migration",
+    shortName: "Storage Mover",
+    keywords: ["object storage", "migration", "transfer"],
+    cloudProvider: "azure",
+    description: "Managed migration orchestration into Azure object storage endpoints.",
+    imageUrl: "https://cdn.simpleicons.org/microsoftazure",
+    huaweiEquivalentShortNames: ["OMS"],
+    differencesFromHuawei: ["Endpoint registration and transfer orchestration differ."],
+    migrationToHuawei: ["Translate migration projects and agents into OMS job topology.", "Rebuild transfer windows and post-migration verification."]
+  }),
+  nh({
+    id: "gcp-storage-transfer-service",
+    name: "Storage Transfer Service",
+    generalFunction: "Object Storage Migration",
+    shortName: "STS",
+    keywords: ["object storage", "migration", "transfer", "sync"],
+    cloudProvider: "gcp",
+    description: "Managed large-scale transfer and synchronization service for object storage data.",
+    imageUrl: "https://cdn.simpleicons.org/googlecloud",
+    huaweiEquivalentShortNames: ["OMS"],
+    differencesFromHuawei: ["Transfer job lifecycle and connector model differ."],
+    migrationToHuawei: ["Map transfer jobs and schedules to OMS tasks.", "Validate object metadata and checksum behavior after migration."]
+  }),
+  nh({
+    id: "aws-glue-data-migration",
+    name: "AWS Glue",
+    generalFunction: "Data Migration",
+    shortName: "Glue",
+    keywords: ["data migration", "etl", "data movement"],
+    cloudProvider: "aws",
+    description: "Managed ETL and data movement pipelines for structured data migration.",
+    imageUrl: "https://cdn.simpleicons.org/amazonaws",
+    huaweiEquivalentShortNames: ["CDM"],
+    differencesFromHuawei: ["Job runtime model and connectors differ."],
+    migrationToHuawei: ["Map ETL jobs and connection metadata to CDM.", "Rebuild transformation workflows and scheduling policies."]
+  }),
+  nh({
+    id: "azure-data-factory-migration",
+    name: "Azure Data Factory",
+    generalFunction: "Data Migration",
+    shortName: "Data Factory",
+    keywords: ["data migration", "etl", "orchestration"],
+    cloudProvider: "azure",
+    description: "Data orchestration and movement pipelines for enterprise migration scenarios.",
+    imageUrl: "https://cdn.simpleicons.org/microsoftazure",
+    huaweiEquivalentShortNames: ["CDM"],
+    differencesFromHuawei: ["Pipeline activity model and integration runtime differ."],
+    migrationToHuawei: ["Translate pipelines, datasets, and linked services to CDM.", "Rebuild schedules, triggers, and dependency flow."]
+  }),
+  nh({
+    id: "gcp-dataflow-migration",
+    name: "Dataflow",
+    generalFunction: "Data Migration",
+    shortName: "Dataflow",
+    keywords: ["data migration", "etl", "pipeline"],
+    cloudProvider: "gcp",
+    description: "Managed stream and batch data transformation pipelines used in migration flows.",
+    imageUrl: "https://cdn.simpleicons.org/googlecloud",
+    huaweiEquivalentShortNames: ["CDM"],
+    differencesFromHuawei: ["Pipeline template/runtime model differs."],
+    migrationToHuawei: ["Map Dataflow templates to CDM tasks and scheduling.", "Recreate transformation dependencies and performance tuning."]
+  }),
 
   nh({
     id: "aws-application-migration-service",
@@ -1959,6 +2102,19 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     huaweiEquivalentShortNames: ["MGC", "SMS"],
     differencesFromHuawei: ["Discovery tooling and integration differ."],
     migrationToHuawei: ["Map assessment output and migration waves."]
+  }),
+  nh({
+    id: "azure-server-migration",
+    name: "Azure Migrate: Server Migration",
+    generalFunction: "Server Migration",
+    shortName: "Server Migration",
+    keywords: ["migration", "server migration", "replication"],
+    cloudProvider: "azure",
+    description: "Agent-based server migration workflow under Azure Migrate for VM workload cutovers.",
+    imageUrl: "https://cdn.simpleicons.org/microsoftazure",
+    huaweiEquivalentShortNames: ["SMS"],
+    differencesFromHuawei: ["Replication and cutover orchestration model differ."],
+    migrationToHuawei: ["Map replication waves and cutover runbooks to SMS.", "Rebuild agent deployment and test migration checkpoints."]
   }),
   nh({
     id: "gcp-migrate-to-vms",
