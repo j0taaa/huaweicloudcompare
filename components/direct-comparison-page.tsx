@@ -98,7 +98,18 @@ function getFunctionCategory(generalFunction: string): string {
   ) {
     return "Observability and Management";
   }
-  if (normalized.includes("network")) {
+  if (
+    normalized.includes("network") ||
+    normalized.includes("dns") ||
+    normalized.includes("nat") ||
+    normalized.includes("vpn") ||
+    normalized.includes("load balanc") ||
+    normalized.includes("private endpoint") ||
+    normalized.includes("connectivity") ||
+    normalized.includes("public ip") ||
+    normalized.includes("routing") ||
+    normalized.includes("vpc")
+  ) {
     return "Networking and Connectivity";
   }
   if (
