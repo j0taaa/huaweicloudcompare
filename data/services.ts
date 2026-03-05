@@ -347,7 +347,11 @@ const coreServices: ServiceInfo[] = [
     imageUrl: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/compute/ec2.png",
     huaweiEquivalentShortNames: ["ECS"],
     differencesFromHuawei: ["Instance naming and pricing models differ.", "Default networking and IAM patterns differ."],
-    migrationToHuawei: ["Map instance sizes to ECS by CPU/RAM.", "Recreate security groups and startup scripts."]
+    migrationToHuawei: [
+      "Map compute shape/runtime, OS-image behavior, scaling policy, and placement/isolation semantics. For AWS Amazon EC2, the direct Huawei equivalence layer is ECS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: ECS + IMS + AS. Treat ECS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills primarily instance/runtime hours (often per-second) plus attached storage and network transfer; Huawei usually bills ECS/BMS/CCE/CCI runtime with EVS, bandwidth/traffic, and optional management add-ons. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-vm",
@@ -360,7 +364,11 @@ const coreServices: ServiceInfo[] = [
     imageUrl: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/compute/vm.png",
     huaweiEquivalentShortNames: ["ECS", "BMS"],
     differencesFromHuawei: ["VM family naming differs.", "Diagnostics and network defaults differ."],
-    migrationToHuawei: ["Map VM sizing to ECS/BMS flavors.", "Recreate NSG and route behavior in Huawei VPC."]
+    migrationToHuawei: [
+      "Map compute shape/runtime, OS-image behavior, scaling policy, and placement/isolation semantics. For Azure Azure Virtual Machines, the direct Huawei equivalence layer is ECS + BMS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: ECS + IMS + AS. Treat ECS + BMS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills primarily VM/runtime units plus managed control-plane charges and storage/network transfer; Huawei usually bills ECS/BMS/CCE/CCI runtime with EVS, bandwidth/traffic, and optional management add-ons. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-compute-engine",
@@ -373,7 +381,11 @@ const coreServices: ServiceInfo[] = [
     imageUrl: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/compute/compute-engine.png",
     huaweiEquivalentShortNames: ["ECS"],
     differencesFromHuawei: ["Custom machine type workflows differ.", "Metadata and IAM integration differ."],
-    migrationToHuawei: ["Map machine types to ECS flavors.", "Translate startup metadata and firewall rules."]
+    migrationToHuawei: [
+      "Map compute shape/runtime, OS-image behavior, scaling policy, and placement/isolation semantics. For Google Cloud Compute Engine, the direct Huawei equivalence layer is ECS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: ECS + IMS + AS. Treat ECS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills primarily per-second runtime/compute units plus storage and network transfer; Huawei usually bills ECS/BMS/CCE/CCI runtime with EVS, bandwidth/traffic, and optional management add-ons. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   hw({
     id: "huawei-ecs",
@@ -394,7 +406,11 @@ const coreServices: ServiceInfo[] = [
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["DeH"],
     differencesFromHuawei: ["Host allocation and placement workflows differ.", "License affinity controls differ."],
-    migrationToHuawei: ["Map host isolation and affinity requirements to DeH.", "Validate BYOL and compliance placement policies."]
+    migrationToHuawei: [
+      "Map compute shape/runtime, OS-image behavior, scaling policy, and placement/isolation semantics. For AWS AWS Dedicated Hosts, the direct Huawei equivalence layer is DeH; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: DeH + ECS. Treat DeH as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills primarily instance/runtime hours (often per-second) plus attached storage and network transfer; Huawei usually bills ECS/BMS/CCE/CCI runtime with EVS, bandwidth/traffic, and optional management add-ons. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-dedicated-host",
@@ -407,7 +423,11 @@ const coreServices: ServiceInfo[] = [
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["DeH"],
     differencesFromHuawei: ["Host group/fault domain model differs.", "Maintenance and allocation controls differ."],
-    migrationToHuawei: ["Map host groups and isolation boundaries to DeH.", "Recreate placement and maintenance policies."]
+    migrationToHuawei: [
+      "Map compute shape/runtime, OS-image behavior, scaling policy, and placement/isolation semantics. For Azure Azure Dedicated Host, the direct Huawei equivalence layer is DeH; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: DeH + ECS. Treat DeH as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills primarily VM/runtime units plus managed control-plane charges and storage/network transfer; Huawei usually bills ECS/BMS/CCE/CCI runtime with EVS, bandwidth/traffic, and optional management add-ons. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-sole-tenant-nodes",
@@ -420,7 +440,11 @@ const coreServices: ServiceInfo[] = [
     imageUrl: "https://cdn.simpleicons.org/googlecloud",
     huaweiEquivalentShortNames: ["DeH"],
     differencesFromHuawei: ["Node group and host maintenance semantics differ.", "Placement policies and capacity model differ."],
-    migrationToHuawei: ["Map sole-tenant node groups to DeH host groups.", "Reconfigure placement/maintenance behavior."]
+    migrationToHuawei: [
+      "Map compute shape/runtime, OS-image behavior, scaling policy, and placement/isolation semantics. For Google Cloud Sole-tenant Nodes, the direct Huawei equivalence layer is DeH; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: DeH + ECS. Treat DeH as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills primarily per-second runtime/compute units plus storage and network transfer; Huawei usually bills ECS/BMS/CCE/CCI runtime with EVS, bandwidth/traffic, and optional management add-ons. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "aws-ec2-bare-metal-instances",
@@ -433,7 +457,11 @@ const coreServices: ServiceInfo[] = [
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["BMS"],
     differencesFromHuawei: ["Instance family and hardware portfolio differ.", "Provisioning lifecycle and automation primitives differ."],
-    migrationToHuawei: ["Map hardware profiles and performance baselines to BMS.", "Rebuild host-level automation and backup operations."]
+    migrationToHuawei: [
+      "Map compute shape/runtime, OS-image behavior, scaling policy, and placement/isolation semantics. For AWS EC2 Bare Metal Instances, the direct Huawei equivalence layer is BMS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: BMS + CBR. Treat BMS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills primarily instance/runtime hours (often per-second) plus attached storage and network transfer; Huawei usually bills ECS/BMS/CCE/CCI runtime with EVS, bandwidth/traffic, and optional management add-ons. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-baremetal-infrastructure",
@@ -446,7 +474,11 @@ const coreServices: ServiceInfo[] = [
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["BMS"],
     differencesFromHuawei: ["Provisioning and region/service availability model differ.", "Operational ownership boundaries differ."],
-    migrationToHuawei: ["Map deployment topology and host sizing to BMS.", "Recreate operational runbooks and lifecycle controls."]
+    migrationToHuawei: [
+      "Map compute shape/runtime, OS-image behavior, scaling policy, and placement/isolation semantics. For Azure Azure BareMetal Infrastructure, the direct Huawei equivalence layer is BMS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: BMS + CBR. Treat BMS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills primarily VM/runtime units plus managed control-plane charges and storage/network transfer; Huawei usually bills ECS/BMS/CCE/CCI runtime with EVS, bandwidth/traffic, and optional management add-ons. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-bare-metal-solution",
@@ -459,7 +491,11 @@ const coreServices: ServiceInfo[] = [
     imageUrl: "https://cdn.simpleicons.org/googlecloud",
     huaweiEquivalentShortNames: ["BMS"],
     differencesFromHuawei: ["Provisioning model and connectivity topology differ.", "Managed operations scope differs."],
-    migrationToHuawei: ["Map hardware profiles and network integration to Huawei BMS.", "Rebuild backup and operational runbooks."]
+    migrationToHuawei: [
+      "Map compute shape/runtime, OS-image behavior, scaling policy, and placement/isolation semantics. For Google Cloud Bare Metal Solution, the direct Huawei equivalence layer is BMS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: BMS + CBR. Treat BMS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills primarily per-second runtime/compute units plus storage and network transfer; Huawei usually bills ECS/BMS/CCE/CCI runtime with EVS, bandwidth/traffic, and optional management add-ons. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "aws-ec2-ami-catalog",
@@ -472,7 +508,11 @@ const coreServices: ServiceInfo[] = [
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["IMS"],
     differencesFromHuawei: ["Image lifecycle and sharing permissions differ.", "Region replication workflows differ."],
-    migrationToHuawei: ["Map base image catalog and versioning into IMS.", "Recreate image sharing and approval policies."]
+    migrationToHuawei: [
+      "Map compute shape/runtime, OS-image behavior, scaling policy, and placement/isolation semantics. For AWS Amazon Machine Images (AMI), the direct Huawei equivalence layer is IMS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: IMS + ECS. Treat IMS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills primarily instance/runtime hours (often per-second) plus attached storage and network transfer; Huawei usually bills ECS/BMS/CCE/CCI runtime with EVS, bandwidth/traffic, and optional management add-ons. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-compute-gallery",
@@ -485,7 +525,11 @@ const coreServices: ServiceInfo[] = [
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["IMS"],
     differencesFromHuawei: ["Gallery replication and version model differ.", "Target region publishing controls differ."],
-    migrationToHuawei: ["Translate gallery versions and replication targets into IMS.", "Rebuild image publication and rollout workflow."]
+    migrationToHuawei: [
+      "Map compute shape/runtime, OS-image behavior, scaling policy, and placement/isolation semantics. For Azure Azure Compute Gallery, the direct Huawei equivalence layer is IMS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: IMS + ECS. Treat IMS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills primarily VM/runtime units plus managed control-plane charges and storage/network transfer; Huawei usually bills ECS/BMS/CCE/CCI runtime with EVS, bandwidth/traffic, and optional management add-ons. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-compute-images",
@@ -498,7 +542,11 @@ const coreServices: ServiceInfo[] = [
     imageUrl: "https://cdn.simpleicons.org/googlecloud",
     huaweiEquivalentShortNames: ["IMS"],
     differencesFromHuawei: ["Image family model and deprecation policies differ.", "Project-level sharing semantics differ."],
-    migrationToHuawei: ["Map image families and versions into IMS catalogs.", "Reconfigure image permissions and distribution policies."]
+    migrationToHuawei: [
+      "Map compute shape/runtime, OS-image behavior, scaling policy, and placement/isolation semantics. For Google Cloud Compute Engine Images, the direct Huawei equivalence layer is IMS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: IMS + ECS. Treat IMS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills primarily per-second runtime/compute units plus storage and network transfer; Huawei usually bills ECS/BMS/CCE/CCI runtime with EVS, bandwidth/traffic, and optional management add-ons. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
 
   nh({
@@ -512,7 +560,11 @@ const coreServices: ServiceInfo[] = [
     imageUrl: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/compute/elastic-kubernetes-service.png",
     huaweiEquivalentShortNames: ["CCE", "CCI"],
     differencesFromHuawei: ["Add-on ecosystems differ.", "Autoscaling workflows differ."],
-    migrationToHuawei: ["Replace provider-specific add-ons.", "Validate ingress and storage classes in CCE/CCI."]
+    migrationToHuawei: [
+      "Map compute shape/runtime, OS-image behavior, scaling policy, and placement/isolation semantics. For AWS Amazon EKS, the direct Huawei equivalence layer is CCE + CCI; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CCE + CCI + SWR + ELB. Treat CCE + CCI as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills cluster control plane plus node compute/storage/network usage; Huawei usually bills ECS/BMS/CCE/CCI runtime with EVS, bandwidth/traffic, and optional management add-ons. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-aks",
@@ -525,7 +577,11 @@ const coreServices: ServiceInfo[] = [
     imageUrl: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/compute/kubernetes-services.png",
     huaweiEquivalentShortNames: ["CCE", "CCI"],
     differencesFromHuawei: ["Identity and network plugin defaults differ.", "Managed features differ by tier."],
-    migrationToHuawei: ["Port manifests and Helm charts.", "Reconfigure load balancers and persistent volume classes."]
+    migrationToHuawei: [
+      "Map compute shape/runtime, OS-image behavior, scaling policy, and placement/isolation semantics. For Azure Azure Kubernetes Service (AKS), the direct Huawei equivalence layer is CCE + CCI; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CCE + CCI + SWR + ELB. Treat CCE + CCI as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills cluster management tier plus node compute/storage/network usage; Huawei usually bills ECS/BMS/CCE/CCI runtime with EVS, bandwidth/traffic, and optional management add-ons. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-gke",
@@ -538,7 +594,11 @@ const coreServices: ServiceInfo[] = [
     imageUrl: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/compute/kubernetes-engine.png",
     huaweiEquivalentShortNames: ["CCE", "CCI"],
     differencesFromHuawei: ["Autopilot-style behavior differs.", "Monitoring and policy tooling differs."],
-    migrationToHuawei: ["Remove GKE-specific features from manifests.", "Validate HPA/network policies in CCE."]
+    migrationToHuawei: [
+      "Map compute shape/runtime, OS-image behavior, scaling policy, and placement/isolation semantics. For Google Cloud Google Kubernetes Engine (GKE), the direct Huawei equivalence layer is CCE + CCI; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CCE + CCI + SWR + ELB. Treat CCE + CCI as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills cluster management fee plus node compute/storage/network usage; Huawei usually bills ECS/BMS/CCE/CCI runtime with EVS, bandwidth/traffic, and optional management add-ons. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   hw({
     id: "huawei-cce",
@@ -560,7 +620,11 @@ const coreServices: ServiceInfo[] = [
     imageUrl: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/storage/simple-storage-service-s3.png",
     huaweiEquivalentShortNames: ["OBS", "DOS"],
     differencesFromHuawei: ["Policy and IAM syntax differ.", "Lifecycle configuration differs."],
-    migrationToHuawei: ["Migrate buckets/objects with sync tools.", "Rebuild lifecycle and replication settings."]
+    migrationToHuawei: [
+      "Map data durability tier, lifecycle policy, encryption, retention, and restore objectives. For AWS Amazon S3, the direct Huawei equivalence layer is OBS + DOS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: OBS + OMS + CBR. Treat OBS + DOS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills storage class GB-month, API requests, retrieval, and egress; Huawei usually bills OBS/EVS/SFS/CBR capacity, requests, retrieval/replication, and transfer. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-blob",
@@ -573,7 +637,11 @@ const coreServices: ServiceInfo[] = [
     imageUrl: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/storage/blob-storage.png",
     huaweiEquivalentShortNames: ["OBS", "DOS"],
     differencesFromHuawei: ["Container terminology differs from buckets.", "Tiering and SDK patterns differ."],
-    migrationToHuawei: ["Map blob containers to OBS buckets.", "Validate metadata and lifecycle behavior."]
+    migrationToHuawei: [
+      "Map data durability tier, lifecycle policy, encryption, retention, and restore objectives. For Azure Azure Blob Storage, the direct Huawei equivalence layer is OBS + DOS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: OBS + OMS + CBR. Treat OBS + DOS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills blob capacity, transactions, retrieval, and egress; Huawei usually bills OBS/EVS/SFS/CBR capacity, requests, retrieval/replication, and transfer. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-cloud-storage",
@@ -586,7 +654,11 @@ const coreServices: ServiceInfo[] = [
     imageUrl: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/storage/storage.png",
     huaweiEquivalentShortNames: ["OBS", "DOS"],
     differencesFromHuawei: ["Storage class naming differs.", "ACL and IAM defaults differ."],
-    migrationToHuawei: ["Plan phased transfer and checksum verification.", "Recreate lifecycle/event rules in OBS."]
+    migrationToHuawei: [
+      "Map data durability tier, lifecycle policy, encryption, retention, and restore objectives. For Google Cloud Cloud Storage, the direct Huawei equivalence layer is OBS + DOS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: OBS + OMS + CBR. Treat OBS + DOS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills storage class GB-month, operations, retrieval, and egress; Huawei usually bills OBS/EVS/SFS/CBR capacity, requests, retrieval/replication, and transfer. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   hw({
     id: "huawei-obs",
@@ -608,7 +680,11 @@ const coreServices: ServiceInfo[] = [
     imageUrl: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/database/rds.png",
     huaweiEquivalentShortNames: ["RDS", "GaussDB", "TaurusDB"],
     differencesFromHuawei: ["Engine options and editions differ.", "Replica/failover setup differs."],
-    migrationToHuawei: ["Validate engine version compatibility.", "Benchmark before cutover."]
+    migrationToHuawei: [
+      "Map engine/version compatibility, HA topology, replication mode, and backup/restore behavior. For AWS Amazon RDS, the direct Huawei equivalence layer is RDS + GaussDB + TaurusDB; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: RDS + DRS + DBSS. Treat RDS + GaussDB + TaurusDB as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills instance/serverless runtime, storage, I/O, backup, and transfer; Huawei usually bills RDS/GaussDB/DDS runtime or DRS task billing plus storage, backup, and transfer. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-sql-database",
@@ -621,7 +697,11 @@ const coreServices: ServiceInfo[] = [
     imageUrl: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/database/sql-databases.png",
     huaweiEquivalentShortNames: ["RDS", "GaussDB"],
     differencesFromHuawei: ["Pricing/tier models differ.", "Platform features differ."],
-    migrationToHuawei: ["Assess SQL Server feature compatibility.", "Migrate backup/restore operations."]
+    migrationToHuawei: [
+      "Map engine/version compatibility, HA topology, replication mode, and backup/restore behavior. For Azure Azure SQL Database, the direct Huawei equivalence layer is RDS + GaussDB; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: RDS + DRS + DBSS. Treat RDS + GaussDB as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills vCore/DTU or serverless runtime, storage, backup, and transfer; Huawei usually bills RDS/GaussDB/DDS runtime or DRS task billing plus storage, backup, and transfer. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-cloud-sql",
@@ -634,7 +714,11 @@ const coreServices: ServiceInfo[] = [
     imageUrl: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/database/sql.png",
     huaweiEquivalentShortNames: ["RDS", "GaussDB"],
     differencesFromHuawei: ["HA topology differs.", "IAM and networking integration differs."],
-    migrationToHuawei: ["Verify engine-level compatibility.", "Tune parameters post-migration."]
+    migrationToHuawei: [
+      "Map engine/version compatibility, HA topology, replication mode, and backup/restore behavior. For Google Cloud Cloud SQL, the direct Huawei equivalence layer is RDS + GaussDB; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: RDS + DRS + DBSS. Treat RDS + GaussDB as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills instance runtime, storage, backup, and transfer; Huawei usually bills RDS/GaussDB/DDS runtime or DRS task billing plus storage, backup, and transfer. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   hw({
     id: "huawei-rds",
@@ -656,7 +740,11 @@ const coreServices: ServiceInfo[] = [
     imageUrl: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/compute/lambda.png",
     huaweiEquivalentShortNames: ["FunctionGraph"],
     differencesFromHuawei: ["Triggers and event sources differ.", "Runtime defaults differ."],
-    migrationToHuawei: ["Adapt event payload contracts.", "Remap permissions and triggers."]
+    migrationToHuawei: [
+      "Map compute shape/runtime, OS-image behavior, scaling policy, and placement/isolation semantics. For AWS AWS Lambda, the direct Huawei equivalence layer is FunctionGraph; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: FunctionGraph + APIG + SMN. Treat FunctionGraph as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills request count and execution duration with additional network/edge integrations; Huawei usually bills ECS/BMS/CCE/CCI runtime with EVS, bandwidth/traffic, and optional management add-ons. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-functions",
@@ -669,7 +757,11 @@ const coreServices: ServiceInfo[] = [
     imageUrl: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/compute/function-apps.png",
     huaweiEquivalentShortNames: ["FunctionGraph"],
     differencesFromHuawei: ["Binding and trigger models differ.", "Host plan behavior differs."],
-    migrationToHuawei: ["Refactor binding-specific code.", "Move configuration/secrets to Huawei services."]
+    migrationToHuawei: [
+      "Map compute shape/runtime, OS-image behavior, scaling policy, and placement/isolation semantics. For Azure Azure Functions, the direct Huawei equivalence layer is FunctionGraph; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: FunctionGraph + APIG + SMN. Treat FunctionGraph as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills execution/request volume and execution time by hosting plan; Huawei usually bills ECS/BMS/CCE/CCI runtime with EVS, bandwidth/traffic, and optional management add-ons. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-cloud-functions",
@@ -682,7 +774,11 @@ const coreServices: ServiceInfo[] = [
     imageUrl: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/compute/functions.png",
     huaweiEquivalentShortNames: ["FunctionGraph"],
     differencesFromHuawei: ["Deployment/runtime packaging differs.", "Event integrations differ."],
-    migrationToHuawei: ["Repackage runtime dependencies.", "Map triggers to Huawei event services."]
+    migrationToHuawei: [
+      "Map compute shape/runtime, OS-image behavior, scaling policy, and placement/isolation semantics. For Google Cloud Cloud Functions, the direct Huawei equivalence layer is FunctionGraph; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: FunctionGraph + APIG + SMN. Treat FunctionGraph as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills invocation count, compute time, and networking usage; Huawei usually bills ECS/BMS/CCE/CCI runtime with EVS, bandwidth/traffic, and optional management add-ons. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   hw({
     id: "huawei-functiongraph",
@@ -704,7 +800,11 @@ const coreServices: ServiceInfo[] = [
     imageUrl: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/network/cloudfront.png",
     huaweiEquivalentShortNames: ["CDN"],
     differencesFromHuawei: ["Edge rule syntax differs.", "Security integrations differ."],
-    migrationToHuawei: ["Translate cache/routing rules.", "Recreate certificates and security settings."]
+    migrationToHuawei: [
+      "Map topology, route propagation, policy order, and failover behavior. For AWS Amazon CloudFront, the direct Huawei equivalence layer is CDN; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CDN + WAF + CCM. Treat CDN as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills data transfer out, HTTP/HTTPS requests, and optional edge features; Huawei usually bills EIP/ELB/NAT/ER/DC resource-hours, bandwidth plans, and processed traffic. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-front-door",
@@ -717,7 +817,11 @@ const coreServices: ServiceInfo[] = [
     imageUrl: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/network/front-doors.png",
     huaweiEquivalentShortNames: ["CDN"],
     differencesFromHuawei: ["Rule engine behavior differs.", "Feature scope differs by tier."],
-    migrationToHuawei: ["Map front-end domains and routes.", "Retest latency and failover behavior."]
+    migrationToHuawei: [
+      "Map topology, route propagation, policy order, and failover behavior. For Azure Azure Front Door, the direct Huawei equivalence layer is CDN; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CDN + WAF + CCM. Treat CDN as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills outbound data transfer, request volume, and rules/security options; Huawei usually bills EIP/ELB/NAT/ER/DC resource-hours, bandwidth plans, and processed traffic. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-cloud-cdn",
@@ -730,7 +834,11 @@ const coreServices: ServiceInfo[] = [
     imageUrl: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/network/cdn.png",
     huaweiEquivalentShortNames: ["CDN"],
     differencesFromHuawei: ["Backend integration model differs.", "Cache rule semantics differ."],
-    migrationToHuawei: ["Recreate cache key policies.", "Validate origin/TLS/cache hit behavior."]
+    migrationToHuawei: [
+      "Map topology, route propagation, policy order, and failover behavior. For Google Cloud Cloud CDN, the direct Huawei equivalence layer is CDN; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CDN + WAF + CCM. Treat CDN as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills cache egress, cache fill traffic, and request volume; Huawei usually bills EIP/ELB/NAT/ER/DC resource-hours, bandwidth plans, and processed traffic. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   hw({
     id: "huawei-cdn",
@@ -752,7 +860,11 @@ const coreServices: ServiceInfo[] = [
     imageUrl: huaweiDefaultIcon,
     huaweiEquivalentShortNames: [],
     differencesFromHuawei: ["No direct 1:1 managed runtime in current catalog."],
-    migrationToHuawei: ["Use ServiceStage + CCE/CCI design pattern."]
+    migrationToHuawei: [
+      "Map API/workflow stages, integration points, pipeline gates, and release controls. For AWS AWS App Runner, the direct Huawei equivalence layer is ; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: . Treat  as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills pipeline/build/runtime minutes, request volume, artifact storage, or seat-based components; Huawei usually bills CodeArts/APIG/DMS runtime or request volume plus artifact/storage usage. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   })
 ];
 
@@ -768,7 +880,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["DIS"],
     differencesFromHuawei: ["Sharding and throughput units differ."],
-    migrationToHuawei: ["Map stream partitions and retention settings to DIS."]
+    migrationToHuawei: [
+      "Map ingestion, transformation, query semantics, and governance/metadata dependencies. For AWS Amazon Kinesis Data Streams, the direct Huawei equivalence layer is DIS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: DataArts Fabric + CDM + DLI. Treat DIS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills query/compute runtime, scanned or processed data, and storage; Huawei usually bills DLI/DWS/MRS/CDM runtime or cluster-spec billing plus storage and transfer. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-event-hubs",
@@ -781,7 +897,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["DIS"],
     differencesFromHuawei: ["Namespace and partition model differ."],
-    migrationToHuawei: ["Translate producer/consumer and checkpoint behavior."]
+    migrationToHuawei: [
+      "Map ingestion, transformation, query semantics, and governance/metadata dependencies. For Azure Azure Event Hubs, the direct Huawei equivalence layer is DIS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: DataArts Fabric + CDM + DLI. Treat DIS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills activity/runtime units, compute pools, and stored/processed data; Huawei usually bills DLI/DWS/MRS/CDM runtime or cluster-spec billing plus storage and transfer. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-pubsub",
@@ -794,7 +914,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/googlecloud",
     huaweiEquivalentShortNames: ["DIS", "DMS"],
     differencesFromHuawei: ["Subscription delivery semantics differ."],
-    migrationToHuawei: ["Rebuild topic/subscription topology in DIS or DMS."]
+    migrationToHuawei: [
+      "Map ingestion, transformation, query semantics, and governance/metadata dependencies. For Google Cloud Google Cloud Pub/Sub, the direct Huawei equivalence layer is DIS + DMS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: DataArts Fabric + CDM + DLI. Treat DIS + DMS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills runtime/processing units, processed data, and storage; Huawei usually bills DLI/DWS/MRS/CDM runtime or cluster-spec billing plus storage and transfer. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
 
   nh({
@@ -808,7 +932,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["DLI"],
     differencesFromHuawei: ["Query engines and connectors differ."],
-    migrationToHuawei: ["Port SQL and metadata catalog settings."]
+    migrationToHuawei: [
+      "Map ingestion, transformation, query semantics, and governance/metadata dependencies. For AWS Amazon Athena, the direct Huawei equivalence layer is DLI; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: DLI + DWS + DataArts Fabric. Treat DLI as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills query runtime/data scanned plus catalog/storage charges; Huawei usually bills DLI/DWS/MRS/CDM runtime or cluster-spec billing plus storage and transfer. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-synapse-serverless",
@@ -821,7 +949,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["DLI", "DWS"],
     differencesFromHuawei: ["Workspace and pool architecture differ."],
-    migrationToHuawei: ["Separate warehouse and lake analytics into DWS/DLI."]
+    migrationToHuawei: [
+      "Map ingestion, transformation, query semantics, and governance/metadata dependencies. For Azure Azure Synapse Analytics, the direct Huawei equivalence layer is DLI + DWS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: DLI + DWS + DataArts Fabric. Treat DLI + DWS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills serverless/dedicated compute runtime and data processed; Huawei usually bills DLI/DWS/MRS/CDM runtime or cluster-spec billing plus storage and transfer. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-bigquery",
@@ -834,7 +966,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/analytics/bigquery.png",
     huaweiEquivalentShortNames: ["DWS", "DLI"],
     differencesFromHuawei: ["Serverless model differs from cluster-based DWS."],
-    migrationToHuawei: ["Map datasets, partitioning, and SQL compatibility."]
+    migrationToHuawei: [
+      "Map ingestion, transformation, query semantics, and governance/metadata dependencies. For Google Cloud BigQuery, the direct Huawei equivalence layer is DWS + DLI; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: DWS + DLI + CDM. Treat DWS + DLI as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills slot/compute runtime plus storage and processed data; Huawei usually bills DLI/DWS/MRS/CDM runtime or cluster-spec billing plus storage and transfer. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "aws-redshift",
@@ -847,7 +983,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["DWS"],
     differencesFromHuawei: ["Node types and workload management differ."],
-    migrationToHuawei: ["Migrate schemas and ETL with performance retuning."]
+    migrationToHuawei: [
+      "Map ingestion, transformation, query semantics, and governance/metadata dependencies. For AWS Amazon Redshift, the direct Huawei equivalence layer is DWS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: DWS + DLI + CDM. Treat DWS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills cluster/serverless warehouse runtime plus storage and data scanned; Huawei usually bills DLI/DWS/MRS/CDM runtime or cluster-spec billing plus storage and transfer. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-synapse-warehouse",
@@ -860,7 +1000,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["DWS"],
     differencesFromHuawei: ["Distribution and compute scaling differ."],
-    migrationToHuawei: ["Map distribution keys and tuning profiles."]
+    migrationToHuawei: [
+      "Map ingestion, transformation, query semantics, and governance/metadata dependencies. For Azure Azure Synapse Dedicated SQL Pool, the direct Huawei equivalence layer is DWS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: DWS + DLI + CDM. Treat DWS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills SQL pool/runtime units plus storage and data processing; Huawei usually bills DLI/DWS/MRS/CDM runtime or cluster-spec billing plus storage and transfer. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
 
   nh({
@@ -874,7 +1018,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["Lake Formation", "DataArts Fabric"],
     differencesFromHuawei: ["Permission and catalog constructs differ."],
-    migrationToHuawei: ["Migrate metadata and access governance models."]
+    migrationToHuawei: [
+      "Map ingestion, transformation, query semantics, and governance/metadata dependencies. For AWS AWS Lake Formation, the direct Huawei equivalence layer is Lake Formation + DataArts Fabric; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: DataArts Fabric + DGC + OBS. Treat Lake Formation + DataArts Fabric as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills query/compute runtime, scanned or processed data, and storage; Huawei usually bills DLI/DWS/MRS/CDM runtime or cluster-spec billing plus storage and transfer. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-purview",
@@ -887,7 +1035,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["DataArts Fabric", "DGC"],
     differencesFromHuawei: ["Classification and policy features vary."],
-    migrationToHuawei: ["Rebuild catalog/lineage and governance policies."]
+    migrationToHuawei: [
+      "Map ingestion, transformation, query semantics, and governance/metadata dependencies. For Azure Microsoft Purview, the direct Huawei equivalence layer is DataArts Fabric + DGC; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: DataArts Fabric + DGC. Treat DataArts Fabric + DGC as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills activity/runtime units, compute pools, and stored/processed data; Huawei usually bills DLI/DWS/MRS/CDM runtime or cluster-spec billing plus storage and transfer. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-dataplex",
@@ -900,7 +1052,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/googlecloud",
     huaweiEquivalentShortNames: ["DataArts Fabric", "Lake Formation"],
     differencesFromHuawei: ["Control plane and policy scope differ."],
-    migrationToHuawei: ["Migrate zones/assets metadata and permissions."]
+    migrationToHuawei: [
+      "Map ingestion, transformation, query semantics, and governance/metadata dependencies. For Google Cloud Google Cloud Dataplex, the direct Huawei equivalence layer is DataArts Fabric + Lake Formation; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: DataArts Fabric + Lake Formation. Treat DataArts Fabric + Lake Formation as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills runtime/processing units, processed data, and storage; Huawei usually bills DLI/DWS/MRS/CDM runtime or cluster-spec billing plus storage and transfer. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "aws-quicksight",
@@ -913,7 +1069,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["DataArts Insight"],
     differencesFromHuawei: ["Visualization components differ."],
-    migrationToHuawei: ["Recreate datasets and dashboards in DataArts Insight."]
+    migrationToHuawei: [
+      "Map ingestion, transformation, query semantics, and governance/metadata dependencies. For AWS Amazon QuickSight, the direct Huawei equivalence layer is DataArts Insight; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: DataArts Insight + DWS. Treat DataArts Insight as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills query/compute runtime, scanned or processed data, and storage; Huawei usually bills DLI/DWS/MRS/CDM runtime or cluster-spec billing plus storage and transfer. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-power-bi",
@@ -926,7 +1086,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/powerbi",
     huaweiEquivalentShortNames: ["DataArts Insight"],
     differencesFromHuawei: ["Semantic model and sharing model differ."],
-    migrationToHuawei: ["Migrate reports and data models manually."]
+    migrationToHuawei: [
+      "Map ingestion, transformation, query semantics, and governance/metadata dependencies. For Azure Power BI, the direct Huawei equivalence layer is DataArts Insight; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: DataArts Insight + DWS. Treat DataArts Insight as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills activity/runtime units, compute pools, and stored/processed data; Huawei usually bills DLI/DWS/MRS/CDM runtime or cluster-spec billing plus storage and transfer. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-looker",
@@ -939,7 +1103,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/looker",
     huaweiEquivalentShortNames: ["DataArts Insight"],
     differencesFromHuawei: ["Modeling layer differs significantly."],
-    migrationToHuawei: ["Rebuild explores/models into target BI datasets."]
+    migrationToHuawei: [
+      "Map ingestion, transformation, query semantics, and governance/metadata dependencies. For Google Cloud Looker, the direct Huawei equivalence layer is DataArts Insight; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: DataArts Insight + DWS. Treat DataArts Insight as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills runtime/processing units, processed data, and storage; Huawei usually bills DLI/DWS/MRS/CDM runtime or cluster-spec billing plus storage and transfer. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
 
   nh({
@@ -953,7 +1121,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["MRS"],
     differencesFromHuawei: ["Managed stack defaults differ."],
-    migrationToHuawei: ["Port cluster configs and job orchestration."]
+    migrationToHuawei: [
+      "Map ingestion, transformation, query semantics, and governance/metadata dependencies. For AWS Amazon EMR, the direct Huawei equivalence layer is MRS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: MRS + DLI + OBS. Treat MRS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills query/compute runtime, scanned or processed data, and storage; Huawei usually bills DLI/DWS/MRS/CDM runtime or cluster-spec billing plus storage and transfer. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-hdinsight",
@@ -966,7 +1138,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["MRS"],
     differencesFromHuawei: ["Cluster service versions differ."],
-    migrationToHuawei: ["Validate workload compatibility and tuning."]
+    migrationToHuawei: [
+      "Map ingestion, transformation, query semantics, and governance/metadata dependencies. For Azure Azure HDInsight, the direct Huawei equivalence layer is MRS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: MRS + DLI + OBS. Treat MRS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills activity/runtime units, compute pools, and stored/processed data; Huawei usually bills DLI/DWS/MRS/CDM runtime or cluster-spec billing plus storage and transfer. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-dataproc",
@@ -979,7 +1155,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/googlecloud",
     huaweiEquivalentShortNames: ["MRS"],
     differencesFromHuawei: ["Autoscaling and image defaults differ."],
-    migrationToHuawei: ["Migrate jobs and cluster bootstrap scripts."]
+    migrationToHuawei: [
+      "Map ingestion, transformation, query semantics, and governance/metadata dependencies. For Google Cloud Cloud Dataproc, the direct Huawei equivalence layer is MRS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: MRS + DLI + OBS. Treat MRS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills runtime/processing units, processed data, and storage; Huawei usually bills DLI/DWS/MRS/CDM runtime or cluster-spec billing plus storage and transfer. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
 
   nh({
@@ -993,7 +1173,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["AOM", "CES", "LTS"],
     differencesFromHuawei: ["Metric namespace and alarm semantics differ."],
-    migrationToHuawei: ["Recreate dashboards, alerts, and log pipelines."]
+    migrationToHuawei: [
+      "Map telemetry schema, retention, alert semantics, and audit/compliance workflows. For AWS Amazon CloudWatch, the direct Huawei equivalence layer is AOM + CES + LTS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CES + LTS + APM + AOM. Treat AOM + CES + LTS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills telemetry ingestion, retention, query volume, and alert executions; Huawei usually bills CES/LTS/APM/AOM ingestion, retention, analysis, and alerting volume. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "aws-xray",
@@ -1006,7 +1190,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["APM"],
     differencesFromHuawei: ["Trace context and telemetry models differ."],
-    migrationToHuawei: ["Adjust instrumentation exporters and sampling."]
+    migrationToHuawei: [
+      "Map telemetry schema, retention, alert semantics, and audit/compliance workflows. For AWS AWS X-Ray, the direct Huawei equivalence layer is APM; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CES + LTS + APM + AOM. Treat APM as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills telemetry ingestion, retention, query volume, and alert executions; Huawei usually bills CES/LTS/APM/AOM ingestion, retention, analysis, and alerting volume. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-monitor",
@@ -1019,7 +1207,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["AOM", "CES", "LTS", "APM"],
     differencesFromHuawei: ["Workspace model and queries differ."],
-    migrationToHuawei: ["Translate alerts/queries and tracing pipeline."]
+    migrationToHuawei: [
+      "Map telemetry schema, retention, alert semantics, and audit/compliance workflows. For Azure Azure Monitor, the direct Huawei equivalence layer is AOM + CES + LTS + APM; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CES + LTS + APM + AOM. Treat AOM + CES + LTS + APM as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills ingested/retained telemetry plus query and alert execution volume; Huawei usually bills CES/LTS/APM/AOM ingestion, retention, analysis, and alerting volume. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-operations",
@@ -1032,7 +1224,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/googlecloud",
     huaweiEquivalentShortNames: ["AOM", "APM", "LTS", "CES"],
     differencesFromHuawei: ["SLO/metric abstractions differ."],
-    migrationToHuawei: ["Rebuild monitoring and tracing dashboards."]
+    migrationToHuawei: [
+      "Map telemetry schema, retention, alert semantics, and audit/compliance workflows. For Google Cloud Google Cloud Operations, the direct Huawei equivalence layer is AOM + APM + LTS + CES; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CES + LTS + APM + AOM. Treat AOM + APM + LTS + CES as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills log/metric/trace ingestion, retention, and query volume; Huawei usually bills CES/LTS/APM/AOM ingestion, retention, analysis, and alerting volume. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
 
   nh({
@@ -1046,7 +1242,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["ServiceStage", "FunctionGraph"],
     differencesFromHuawei: ["Runtime and deployment slots differ."],
-    migrationToHuawei: ["Map runtime settings and CI/CD deployment flow."]
+    migrationToHuawei: [
+      "Map API/workflow stages, integration points, pipeline gates, and release controls. For Azure Azure App Service, the direct Huawei equivalence layer is ServiceStage + FunctionGraph; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: ServiceStage + CCE + APIG. Treat ServiceStage + FunctionGraph as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills pipeline/runtime minutes, request units, artifact storage, or seat-based components; Huawei usually bills CodeArts/APIG/DMS runtime or request volume plus artifact/storage usage. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-cloud-run",
@@ -1059,7 +1259,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/googlecloud",
     huaweiEquivalentShortNames: ["ServiceStage", "CCI"],
     differencesFromHuawei: ["Concurrency and revision behavior differ."],
-    migrationToHuawei: ["Adjust container deploy and scaling policies."]
+    migrationToHuawei: [
+      "Map API/workflow stages, integration points, pipeline gates, and release controls. For Google Cloud Cloud Run, the direct Huawei equivalence layer is ServiceStage + CCI; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: ServiceStage + CCE + APIG. Treat ServiceStage + CCI as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills runtime/request usage and artifact/data storage volume; Huawei usually bills CodeArts/APIG/DMS runtime or request volume plus artifact/storage usage. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "aws-workspaces",
@@ -1072,7 +1276,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["Workspace"],
     differencesFromHuawei: ["Desktop images and directory integration differ."],
-    migrationToHuawei: ["Recreate pools and user profiles."]
+    migrationToHuawei: [
+      "Map listing/workspace lifecycle, access controls, and commercial dependencies. For AWS Amazon WorkSpaces, the direct Huawei equivalence layer is Workspace; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: Workspace + IAM + CBH. Treat Workspace as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills per-user/workspace-hour or monthly desktop and bundle pricing; Huawei usually bills offer-specific licensing/usage or seat-based charges. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-virtual-desktop",
@@ -1085,7 +1293,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["Workspace"],
     differencesFromHuawei: ["Host pool design and identity model differ."],
-    migrationToHuawei: ["Reconfigure desktop pools and access policies."]
+    migrationToHuawei: [
+      "Map listing/workspace lifecycle, access controls, and commercial dependencies. For Azure Azure Virtual Desktop, the direct Huawei equivalence layer is Workspace; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: Workspace + IAM + CBH. Treat Workspace as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills desktop/session host runtime plus user licensing prerequisites; Huawei usually bills offer-specific licensing/usage or seat-based charges. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
 
   nh({
@@ -1099,7 +1311,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["AS"],
     differencesFromHuawei: ["Policy targets and cooldown logic differ."],
-    migrationToHuawei: ["Port scaling alarms and policy thresholds."]
+    migrationToHuawei: [
+      "Map compute shape/runtime, OS-image behavior, scaling policy, and placement/isolation semantics. For AWS AWS Auto Scaling, the direct Huawei equivalence layer is AS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: AS + ECS + CES. Treat AS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills primarily instance/runtime hours (often per-second) plus attached storage and network transfer; Huawei usually bills ECS/BMS/CCE/CCI runtime with EVS, bandwidth/traffic, and optional management add-ons. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-vmss",
@@ -1112,7 +1328,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["AS"],
     differencesFromHuawei: ["Scale set model differs from AS policies."],
-    migrationToHuawei: ["Re-map scaling rules and health checks."]
+    migrationToHuawei: [
+      "Map compute shape/runtime, OS-image behavior, scaling policy, and placement/isolation semantics. For Azure Azure Virtual Machine Scale Sets, the direct Huawei equivalence layer is AS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: AS + ECS + CES. Treat AS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills primarily VM/runtime units plus managed control-plane charges and storage/network transfer; Huawei usually bills ECS/BMS/CCE/CCI runtime with EVS, bandwidth/traffic, and optional management add-ons. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-mig-autoscaler",
@@ -1125,7 +1345,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/googlecloud",
     huaweiEquivalentShortNames: ["AS"],
     differencesFromHuawei: ["Group templates and update policies differ."],
-    migrationToHuawei: ["Translate templates and autoscaler settings."]
+    migrationToHuawei: [
+      "Map compute shape/runtime, OS-image behavior, scaling policy, and placement/isolation semantics. For Google Cloud Managed Instance Groups, the direct Huawei equivalence layer is AS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: AS + ECS + CES. Treat AS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills primarily per-second runtime/compute units plus storage and network transfer; Huawei usually bills ECS/BMS/CCE/CCI runtime with EVS, bandwidth/traffic, and optional management add-ons. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
 
   nh({
@@ -1139,7 +1363,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["KooGallery"],
     differencesFromHuawei: ["Catalog and procurement flows differ."],
-    migrationToHuawei: ["Re-list products and adapt billing integration."]
+    migrationToHuawei: [
+      "Map listing/workspace lifecycle, access controls, and commercial dependencies. For AWS AWS Marketplace, the direct Huawei equivalence layer is KooGallery; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: KooGallery + IAM. Treat KooGallery as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills seller-defined license or usage meters plus infrastructure usage; Huawei usually bills offer-specific licensing/usage or seat-based charges. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-marketplace",
@@ -1152,7 +1380,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["KooGallery"],
     differencesFromHuawei: ["Offer publishing flow differs."],
-    migrationToHuawei: ["Adapt offer packaging and publication steps."]
+    migrationToHuawei: [
+      "Map listing/workspace lifecycle, access controls, and commercial dependencies. For Azure Azure Marketplace, the direct Huawei equivalence layer is KooGallery; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: KooGallery + IAM. Treat KooGallery as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills offer-defined license or usage meters plus infrastructure usage; Huawei usually bills offer-specific licensing/usage or seat-based charges. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-marketplace",
@@ -1165,7 +1397,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/googlecloud",
     huaweiEquivalentShortNames: ["KooGallery"],
     differencesFromHuawei: ["Procurement API and listing standards differ."],
-    migrationToHuawei: ["Rework listing and billing integration."]
+    migrationToHuawei: [
+      "Map listing/workspace lifecycle, access controls, and commercial dependencies. For Google Cloud Google Cloud Marketplace, the direct Huawei equivalence layer is KooGallery; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: KooGallery + IAM. Treat KooGallery as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills offer-defined license or usage meters plus infrastructure usage; Huawei usually bills offer-specific licensing/usage or seat-based charges. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
 
   nh({
@@ -1179,7 +1415,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["VPC"],
     differencesFromHuawei: ["Routing and endpoint configuration patterns differ."],
-    migrationToHuawei: ["Recreate CIDR/subnet plan and route/security policies."]
+    migrationToHuawei: [
+      "Map topology, route propagation, policy order, and failover behavior. For AWS Amazon VPC, the direct Huawei equivalence layer is VPC; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: VPC + ER + EIP + NAT. Treat VPC as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills resource-hours plus processed traffic, request volume, and data transfer; Huawei usually bills EIP/ELB/NAT/ER/DC resource-hours, bandwidth plans, and processed traffic. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-vnet",
@@ -1192,7 +1432,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["VPC"],
     differencesFromHuawei: ["Addressing and peering options differ."],
-    migrationToHuawei: ["Map VNet/subnet design and security controls to VPC."]
+    migrationToHuawei: [
+      "Map topology, route propagation, policy order, and failover behavior. For Azure Azure Virtual Network, the direct Huawei equivalence layer is VPC; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: VPC + ER + EIP + NAT. Treat VPC as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills gateway/resource-hours plus processed traffic and outbound transfer; Huawei usually bills EIP/ELB/NAT/ER/DC resource-hours, bandwidth plans, and processed traffic. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-vpc",
@@ -1205,7 +1449,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/googlecloud",
     huaweiEquivalentShortNames: ["VPC"],
     differencesFromHuawei: ["Global VPC behavior differs from regional constructs."],
-    migrationToHuawei: ["Convert global/subnet topology to regional VPC model."]
+    migrationToHuawei: [
+      "Map topology, route propagation, policy order, and failover behavior. For Google Cloud Google Cloud VPC, the direct Huawei equivalence layer is VPC; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: VPC + ER + EIP + NAT. Treat VPC as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills resource/runtime plus processed traffic and outbound transfer; Huawei usually bills EIP/ELB/NAT/ER/DC resource-hours, bandwidth plans, and processed traffic. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "aws-transit-gateway",
@@ -1218,7 +1466,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["ER"],
     differencesFromHuawei: ["Route domain and attachment model differ.", "Propagation and association semantics differ."],
-    migrationToHuawei: ["Map attachment topology and route domains to ER.", "Rebuild propagation/association and route policies."]
+    migrationToHuawei: [
+      "Map topology, route propagation, policy order, and failover behavior. For AWS AWS Transit Gateway, the direct Huawei equivalence layer is ER; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: ER + VPC + VPN. Treat ER as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills resource-hours plus processed traffic, request volume, and data transfer; Huawei usually bills EIP/ELB/NAT/ER/DC resource-hours, bandwidth plans, and processed traffic. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-route-tables",
@@ -1231,7 +1483,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["ER"],
     differencesFromHuawei: ["User-defined routing and next-hop model differ.", "Association scope and defaults differ."],
-    migrationToHuawei: ["Translate route tables and next-hop logic to ER/VPC routes.", "Recreate traffic segmentation and propagation behavior."]
+    migrationToHuawei: [
+      "Map topology, route propagation, policy order, and failover behavior. For Azure Azure Route Tables, the direct Huawei equivalence layer is ER; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: ER + VPC + VPN. Treat ER as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills gateway/resource-hours plus processed traffic and outbound transfer; Huawei usually bills EIP/ELB/NAT/ER/DC resource-hours, bandwidth plans, and processed traffic. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-cloud-router",
@@ -1244,7 +1500,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/googlecloud",
     huaweiEquivalentShortNames: ["ER"],
     differencesFromHuawei: ["BGP policy and advertisement controls differ.", "Integration touchpoints differ across connectivity services."],
-    migrationToHuawei: ["Map BGP sessions and route advertisements to ER.", "Rebuild dynamic routing policy and failover behavior."]
+    migrationToHuawei: [
+      "Map topology, route propagation, policy order, and failover behavior. For Google Cloud Cloud Router, the direct Huawei equivalence layer is ER; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: ER + VPC + VPN. Treat ER as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills resource/runtime plus processed traffic and outbound transfer; Huawei usually bills EIP/ELB/NAT/ER/DC resource-hours, bandwidth plans, and processed traffic. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "aws-elastic-ip-address",
@@ -1257,7 +1517,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["EIP"],
     differencesFromHuawei: ["Allocation and association quota model differ.", "Idle address charging behavior differs."],
-    migrationToHuawei: ["Map static public IP inventory to EIP pools.", "Recreate association and failover workflows."]
+    migrationToHuawei: [
+      "Map topology, route propagation, policy order, and failover behavior. For AWS Elastic IP Address, the direct Huawei equivalence layer is EIP; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: EIP + NAT + ELB. Treat EIP as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills allocated/attached address hours and associated transfer; Huawei usually bills EIP/ELB/NAT/ER/DC resource-hours, bandwidth plans, and processed traffic. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-public-ip-address",
@@ -1270,7 +1534,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["EIP"],
     differencesFromHuawei: ["SKU/tier behavior and routing preference options differ.", "Attachment scope across resources differs."],
-    migrationToHuawei: ["Map address SKU/tier strategy to EIP selection.", "Rebind public IP dependencies and routing behavior."]
+    migrationToHuawei: [
+      "Map topology, route propagation, policy order, and failover behavior. For Azure Azure Public IP Address, the direct Huawei equivalence layer is EIP; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: EIP + NAT + ELB. Treat EIP as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills public IP SKU/availability usage and transfer; Huawei usually bills EIP/ELB/NAT/ER/DC resource-hours, bandwidth plans, and processed traffic. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-external-ip-address",
@@ -1283,7 +1551,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/googlecloud",
     huaweiEquivalentShortNames: ["EIP"],
     differencesFromHuawei: ["Ephemeral versus reserved addressing model differs.", "Global/regional scope options differ."],
-    migrationToHuawei: ["Map reserved address inventory to EIP configuration.", "Recreate attachment and DNS update flow."]
+    migrationToHuawei: [
+      "Map topology, route propagation, policy order, and failover behavior. For Google Cloud External IP Address, the direct Huawei equivalence layer is EIP; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: EIP + NAT + ELB. Treat EIP as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills reserved/used external IP pricing and transfer; Huawei usually bills EIP/ELB/NAT/ER/DC resource-hours, bandwidth plans, and processed traffic. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "aws-route53",
@@ -1296,7 +1568,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["DNS"],
     differencesFromHuawei: ["Routing policy types and health checks differ."],
-    migrationToHuawei: ["Recreate hosted zones, records, and routing policies."]
+    migrationToHuawei: [
+      "Map topology, route propagation, policy order, and failover behavior. For AWS Amazon Route 53, the direct Huawei equivalence layer is DNS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: DNS + ELB + CDN. Treat DNS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills resource-hours plus processed traffic, request volume, and data transfer; Huawei usually bills EIP/ELB/NAT/ER/DC resource-hours, bandwidth plans, and processed traffic. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-dns",
@@ -1309,7 +1585,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["DNS"],
     differencesFromHuawei: ["Zone management and permission model differ."],
-    migrationToHuawei: ["Move record sets and validate DNS propagation."]
+    migrationToHuawei: [
+      "Map topology, route propagation, policy order, and failover behavior. For Azure Azure DNS, the direct Huawei equivalence layer is DNS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: DNS + ELB + CDN. Treat DNS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills gateway/resource-hours plus processed traffic and outbound transfer; Huawei usually bills EIP/ELB/NAT/ER/DC resource-hours, bandwidth plans, and processed traffic. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-cloud-dns",
@@ -1322,7 +1602,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/googlecloud",
     huaweiEquivalentShortNames: ["DNS"],
     differencesFromHuawei: ["IAM integration and logging options differ."],
-    migrationToHuawei: ["Migrate zones/records and update resolver settings."]
+    migrationToHuawei: [
+      "Map topology, route propagation, policy order, and failover behavior. For Google Cloud Cloud DNS, the direct Huawei equivalence layer is DNS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: DNS + ELB + CDN. Treat DNS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills resource/runtime plus processed traffic and outbound transfer; Huawei usually bills EIP/ELB/NAT/ER/DC resource-hours, bandwidth plans, and processed traffic. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "aws-elb",
@@ -1335,7 +1619,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["ELB"],
     differencesFromHuawei: ["Balancer types and listener features differ."],
-    migrationToHuawei: ["Map ALB/NLB settings to Huawei ELB listeners and pools."]
+    migrationToHuawei: [
+      "Map API/workflow stages, integration points, pipeline gates, and release controls. For AWS Elastic Load Balancing, the direct Huawei equivalence layer is ELB; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: ELB + EIP + WAF. Treat ELB as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills load balancer hours plus processed bytes/new connections/rule evaluations; Huawei usually bills CodeArts/APIG/DMS runtime or request volume plus artifact/storage usage. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-load-balancer",
@@ -1348,7 +1636,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["ELB"],
     differencesFromHuawei: ["SKU and availability zone behavior differ."],
-    migrationToHuawei: ["Recreate frontend/backend pools and health probes."]
+    migrationToHuawei: [
+      "Map API/workflow stages, integration points, pipeline gates, and release controls. For Azure Azure Load Balancer, the direct Huawei equivalence layer is ELB; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: ELB + EIP + WAF. Treat ELB as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills load balancer rules/data processing and related public IP usage; Huawei usually bills CodeArts/APIG/DMS runtime or request volume plus artifact/storage usage. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-load-balancing",
@@ -1361,7 +1653,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/googlecloud",
     huaweiEquivalentShortNames: ["ELB"],
     differencesFromHuawei: ["Global front-end model differs."],
-    migrationToHuawei: ["Convert backend services and traffic policies to ELB."]
+    migrationToHuawei: [
+      "Map API/workflow stages, integration points, pipeline gates, and release controls. For Google Cloud Cloud Load Balancing, the direct Huawei equivalence layer is ELB; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: ELB + EIP + WAF. Treat ELB as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills forwarding rules/proxies and processed data volume; Huawei usually bills CodeArts/APIG/DMS runtime or request volume plus artifact/storage usage. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "aws-nat-gateway",
@@ -1374,7 +1670,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["NAT"],
     differencesFromHuawei: ["Throughput and billing model differ."],
-    migrationToHuawei: ["Recreate route table and NAT egress architecture."]
+    migrationToHuawei: [
+      "Map topology, route propagation, policy order, and failover behavior. For AWS NAT Gateway, the direct Huawei equivalence layer is NAT; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: NAT + EIP + VPC. Treat NAT as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills gateway-hour and processed traffic; Huawei usually bills EIP/ELB/NAT/ER/DC resource-hours, bandwidth plans, and processed traffic. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-nat-gateway",
@@ -1387,7 +1687,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["NAT"],
     differencesFromHuawei: ["Subnet association behavior differs."],
-    migrationToHuawei: ["Map outbound connectivity paths and route settings."]
+    migrationToHuawei: [
+      "Map topology, route propagation, policy order, and failover behavior. For Azure Azure NAT Gateway, the direct Huawei equivalence layer is NAT; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: NAT + EIP + VPC. Treat NAT as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills gateway-hour and processed outbound data; Huawei usually bills EIP/ELB/NAT/ER/DC resource-hours, bandwidth plans, and processed traffic. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-cloud-nat",
@@ -1400,7 +1704,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/googlecloud",
     huaweiEquivalentShortNames: ["NAT"],
     differencesFromHuawei: ["Cloud Router integration differs."],
-    migrationToHuawei: ["Translate NAT rules and external connectivity design."]
+    migrationToHuawei: [
+      "Map topology, route propagation, policy order, and failover behavior. For Google Cloud Cloud NAT, the direct Huawei equivalence layer is NAT; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: NAT + EIP + VPC. Treat NAT as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills NAT gateway usage and processed outbound traffic; Huawei usually bills EIP/ELB/NAT/ER/DC resource-hours, bandwidth plans, and processed traffic. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "aws-site-to-site-vpn",
@@ -1413,7 +1721,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["VPN"],
     differencesFromHuawei: ["Tunnel options and failover handling differ."],
-    migrationToHuawei: ["Reconfigure BGP/IPSec settings and route priorities."]
+    migrationToHuawei: [
+      "Map topology, route propagation, policy order, and failover behavior. For AWS AWS Site-to-Site VPN, the direct Huawei equivalence layer is VPN; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: VPN + ER + DC. Treat VPN as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills resource-hours plus processed traffic, request volume, and data transfer; Huawei usually bills EIP/ELB/NAT/ER/DC resource-hours, bandwidth plans, and processed traffic. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-vpn-gateway",
@@ -1426,7 +1738,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["VPN"],
     differencesFromHuawei: ["Gateway SKUs and throughput limits differ."],
-    migrationToHuawei: ["Port tunnel configuration and route tables."]
+    migrationToHuawei: [
+      "Map topology, route propagation, policy order, and failover behavior. For Azure Azure VPN Gateway, the direct Huawei equivalence layer is VPN; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: VPN + ER + DC. Treat VPN as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills gateway/resource-hours plus processed traffic and outbound transfer; Huawei usually bills EIP/ELB/NAT/ER/DC resource-hours, bandwidth plans, and processed traffic. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-cloud-vpn",
@@ -1439,7 +1755,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/googlecloud",
     huaweiEquivalentShortNames: ["VPN"],
     differencesFromHuawei: ["HA VPN architecture differs."],
-    migrationToHuawei: ["Adjust tunnel redundancy and routing integration."]
+    migrationToHuawei: [
+      "Map topology, route propagation, policy order, and failover behavior. For Google Cloud Cloud VPN, the direct Huawei equivalence layer is VPN; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: VPN + ER + DC. Treat VPN as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills resource/runtime plus processed traffic and outbound transfer; Huawei usually bills EIP/ELB/NAT/ER/DC resource-hours, bandwidth plans, and processed traffic. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "aws-direct-connect",
@@ -1452,7 +1772,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["DC"],
     differencesFromHuawei: ["Partner models and virtual interface options differ."],
-    migrationToHuawei: ["Recreate private circuits and BGP connectivity."]
+    migrationToHuawei: [
+      "Map topology, route propagation, policy order, and failover behavior. For AWS AWS Direct Connect, the direct Huawei equivalence layer is DC; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: DC + ER + VPC. Treat DC as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills resource-hours plus processed traffic, request volume, and data transfer; Huawei usually bills EIP/ELB/NAT/ER/DC resource-hours, bandwidth plans, and processed traffic. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-expressroute",
@@ -1465,7 +1789,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["DC"],
     differencesFromHuawei: ["Peering and redundancy options differ."],
-    migrationToHuawei: ["Map circuit and peering design to Direct Connect."]
+    migrationToHuawei: [
+      "Map topology, route propagation, policy order, and failover behavior. For Azure Azure ExpressRoute, the direct Huawei equivalence layer is DC; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: DC + ER + VPC. Treat DC as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills gateway/resource-hours plus processed traffic and outbound transfer; Huawei usually bills EIP/ELB/NAT/ER/DC resource-hours, bandwidth plans, and processed traffic. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-cloud-interconnect",
@@ -1478,7 +1806,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/googlecloud",
     huaweiEquivalentShortNames: ["DC"],
     differencesFromHuawei: ["Attachment and VLAN configuration differs."],
-    migrationToHuawei: ["Rebuild physical/partner links and routing policies."]
+    migrationToHuawei: [
+      "Map topology, route propagation, policy order, and failover behavior. For Google Cloud Cloud Interconnect, the direct Huawei equivalence layer is DC; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: DC + ER + VPC. Treat DC as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills resource/runtime plus processed traffic and outbound transfer; Huawei usually bills EIP/ELB/NAT/ER/DC resource-hours, bandwidth plans, and processed traffic. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "aws-privatelink",
@@ -1491,7 +1823,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["VPCEP"],
     differencesFromHuawei: ["Endpoint service publishing models differ."],
-    migrationToHuawei: ["Map interface endpoints to VPCEP services."]
+    migrationToHuawei: [
+      "Map topology, route propagation, policy order, and failover behavior. For AWS AWS PrivateLink, the direct Huawei equivalence layer is VPCEP; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: VPCEP + VPC + ER. Treat VPCEP as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills resource-hours plus processed traffic, request volume, and data transfer; Huawei usually bills EIP/ELB/NAT/ER/DC resource-hours, bandwidth plans, and processed traffic. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-private-link",
@@ -1504,7 +1840,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["VPCEP"],
     differencesFromHuawei: ["DNS integration flow differs."],
-    migrationToHuawei: ["Recreate endpoint and DNS resolution patterns."]
+    migrationToHuawei: [
+      "Map topology, route propagation, policy order, and failover behavior. For Azure Azure Private Link, the direct Huawei equivalence layer is VPCEP; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: VPCEP + VPC + ER. Treat VPCEP as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills gateway/resource-hours plus processed traffic and outbound transfer; Huawei usually bills EIP/ELB/NAT/ER/DC resource-hours, bandwidth plans, and processed traffic. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-private-service-connect",
@@ -1517,7 +1857,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/googlecloud",
     huaweiEquivalentShortNames: ["VPCEP"],
     differencesFromHuawei: ["Consumer/producer endpoint abstractions differ."],
-    migrationToHuawei: ["Translate endpoint topology to VPCEP design."]
+    migrationToHuawei: [
+      "Map topology, route propagation, policy order, and failover behavior. For Google Cloud Private Service Connect, the direct Huawei equivalence layer is VPCEP; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: VPCEP + VPC + ER. Treat VPCEP as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills resource/runtime plus processed traffic and outbound transfer; Huawei usually bills EIP/ELB/NAT/ER/DC resource-hours, bandwidth plans, and processed traffic. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
 
   nh({
@@ -1531,7 +1875,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["SWR"],
     differencesFromHuawei: ["Repository policies and scanning features differ."],
-    migrationToHuawei: ["Mirror images and migrate auth/policy settings."]
+    migrationToHuawei: [
+      "Map compute shape/runtime, OS-image behavior, scaling policy, and placement/isolation semantics. For AWS Amazon ECR, the direct Huawei equivalence layer is SWR; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: SWR + CCE. Treat SWR as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills primarily instance/runtime hours (often per-second) plus attached storage and network transfer; Huawei usually bills ECS/BMS/CCE/CCI runtime with EVS, bandwidth/traffic, and optional management add-ons. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-acr",
@@ -1544,7 +1892,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["SWR"],
     differencesFromHuawei: ["Geo-replication and RBAC model differ."],
-    migrationToHuawei: ["Recreate repositories and image sync policies."]
+    migrationToHuawei: [
+      "Map compute shape/runtime, OS-image behavior, scaling policy, and placement/isolation semantics. For Azure Azure Container Registry, the direct Huawei equivalence layer is SWR; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: SWR + CCE. Treat SWR as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills primarily VM/runtime units plus managed control-plane charges and storage/network transfer; Huawei usually bills ECS/BMS/CCE/CCI runtime with EVS, bandwidth/traffic, and optional management add-ons. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-artifact-registry-containers",
@@ -1557,7 +1909,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/googlecloud",
     huaweiEquivalentShortNames: ["SWR"],
     differencesFromHuawei: ["Repository format and permission controls differ."],
-    migrationToHuawei: ["Move images and update pull/push credentials."]
+    migrationToHuawei: [
+      "Map compute shape/runtime, OS-image behavior, scaling policy, and placement/isolation semantics. For Google Cloud Artifact Registry (Containers), the direct Huawei equivalence layer is SWR; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: SWR + CCE. Treat SWR as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills primarily per-second runtime/compute units plus storage and network transfer; Huawei usually bills ECS/BMS/CCE/CCI runtime with EVS, bandwidth/traffic, and optional management add-ons. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
 
   nh({
@@ -1571,7 +1927,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["GeminiDB", "DDS"],
     differencesFromHuawei: ["Data models and consistency defaults differ."],
-    migrationToHuawei: ["Rework key/index design and throughput settings."]
+    migrationToHuawei: [
+      "Map engine/version compatibility, HA topology, replication mode, and backup/restore behavior. For AWS Amazon DynamoDB, the direct Huawei equivalence layer is GeminiDB + DDS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: DDS + GeminiDB + DRS. Treat GeminiDB + DDS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills provisioned/on-demand throughput plus storage and backup; Huawei usually bills RDS/GaussDB/DDS runtime or DRS task billing plus storage, backup, and transfer. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-cosmos-db",
@@ -1584,7 +1944,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["GeminiDB", "DDS"],
     differencesFromHuawei: ["API model and partitioning behavior differ."],
-    migrationToHuawei: ["Map API/partition strategy and data consistency."]
+    migrationToHuawei: [
+      "Map engine/version compatibility, HA topology, replication mode, and backup/restore behavior. For Azure Azure Cosmos DB, the direct Huawei equivalence layer is GeminiDB + DDS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: DDS + GeminiDB + DRS. Treat GeminiDB + DDS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills throughput units/requests plus storage and backup; Huawei usually bills RDS/GaussDB/DDS runtime or DRS task billing plus storage, backup, and transfer. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-firestore",
@@ -1597,7 +1961,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/googlecloud",
     huaweiEquivalentShortNames: ["GeminiDB", "DDS"],
     differencesFromHuawei: ["Client SDK and query/index behavior differ."],
-    migrationToHuawei: ["Transform data model and indexing strategy."]
+    migrationToHuawei: [
+      "Map engine/version compatibility, HA topology, replication mode, and backup/restore behavior. For Google Cloud Cloud Firestore, the direct Huawei equivalence layer is GeminiDB + DDS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: DDS + GeminiDB + DRS. Treat GeminiDB + DDS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills node/throughput/runtime plus storage and transfer; Huawei usually bills RDS/GaussDB/DDS runtime or DRS task billing plus storage, backup, and transfer. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "aws-neptune",
@@ -1610,7 +1978,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["GES"],
     differencesFromHuawei: ["Query engines and operational tooling differ.", "Graph model feature coverage differs."],
-    migrationToHuawei: ["Map graph schema and query workloads to GES.", "Rebuild graph import pipeline and access controls."]
+    migrationToHuawei: [
+      "Map engine/version compatibility, HA topology, replication mode, and backup/restore behavior. For AWS Amazon Neptune, the direct Huawei equivalence layer is GES; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: GES + DGC. Treat GES as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills instance or serverless capacity runtime plus storage, I/O, backup, and transfer; Huawei usually bills RDS/GaussDB/DDS runtime or DRS task billing plus storage, backup, and transfer. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-cosmos-db-gremlin",
@@ -1623,7 +1995,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["GES"],
     differencesFromHuawei: ["Partitioning and consistency model differ.", "API compatibility nuances differ."],
-    migrationToHuawei: ["Map graph partitions and traversal patterns to GES.", "Reconfigure consistency and indexing strategy."]
+    migrationToHuawei: [
+      "Map engine/version compatibility, HA topology, replication mode, and backup/restore behavior. For Azure Azure Cosmos DB (Gremlin), the direct Huawei equivalence layer is GES; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: GES + DGC. Treat GES as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills vCore/DTU or serverless runtime plus storage, backup, and transfer; Huawei usually bills RDS/GaussDB/DDS runtime or DRS task billing plus storage, backup, and transfer. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
 
   nh({
@@ -1637,7 +2013,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["DCS"],
     differencesFromHuawei: ["Cluster topology options differ."],
-    migrationToHuawei: ["Migrate cache data and parameter groups."]
+    migrationToHuawei: [
+      "Map engine/version compatibility, HA topology, replication mode, and backup/restore behavior. For AWS Amazon ElastiCache, the direct Huawei equivalence layer is DCS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: DCS. Treat DCS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills instance or serverless capacity runtime plus storage, I/O, backup, and transfer; Huawei usually bills RDS/GaussDB/DDS runtime or DRS task billing plus storage, backup, and transfer. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-cache-for-redis",
@@ -1650,7 +2030,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["DCS"],
     differencesFromHuawei: ["Tiering and persistence options differ."],
-    migrationToHuawei: ["Recreate Redis settings and failover design."]
+    migrationToHuawei: [
+      "Map engine/version compatibility, HA topology, replication mode, and backup/restore behavior. For Azure Azure Cache for Redis, the direct Huawei equivalence layer is DCS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: DCS. Treat DCS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills vCore/DTU or serverless runtime plus storage, backup, and transfer; Huawei usually bills RDS/GaussDB/DDS runtime or DRS task billing plus storage, backup, and transfer. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-memorystore",
@@ -1663,7 +2047,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/googlecloud",
     huaweiEquivalentShortNames: ["DCS"],
     differencesFromHuawei: ["Scaling and network integration differ."],
-    migrationToHuawei: ["Map instance sizing and network peering settings."]
+    migrationToHuawei: [
+      "Map engine/version compatibility, HA topology, replication mode, and backup/restore behavior. For Google Cloud Memorystore, the direct Huawei equivalence layer is DCS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: DCS. Treat DCS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills instance/runtime pricing plus storage, backup, and transfer; Huawei usually bills RDS/GaussDB/DDS runtime or DRS task billing plus storage, backup, and transfer. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
 
   nh({
@@ -1677,7 +2065,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["DMS"],
     differencesFromHuawei: ["Queue semantics and visibility settings differ."],
-    migrationToHuawei: ["Map queue types and retry/dead-letter strategy."]
+    migrationToHuawei: [
+      "Map API/workflow stages, integration points, pipeline gates, and release controls. For AWS Amazon SQS, the direct Huawei equivalence layer is DMS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: DMS + SMN + EventGrid. Treat DMS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills request/message volume and throughput/storage where applicable; Huawei usually bills CodeArts/APIG/DMS runtime or request volume plus artifact/storage usage. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-service-bus",
@@ -1690,7 +2082,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["DMS"],
     differencesFromHuawei: ["Protocol support and ordering guarantees differ."],
-    migrationToHuawei: ["Translate topic/subscription routing and retries."]
+    migrationToHuawei: [
+      "Map API/workflow stages, integration points, pipeline gates, and release controls. For Azure Azure Service Bus, the direct Huawei equivalence layer is DMS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: DMS + SMN + EventGrid. Treat DMS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills operation/message volume plus throughput tier capacity; Huawei usually bills CodeArts/APIG/DMS runtime or request volume plus artifact/storage usage. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-pubsub-messaging",
@@ -1703,7 +2099,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/googlecloud",
     huaweiEquivalentShortNames: ["DMS", "DIS"],
     differencesFromHuawei: ["Ack/dead-letter handling differs."],
-    migrationToHuawei: ["Rebuild topic/subscription and delivery workflow."]
+    migrationToHuawei: [
+      "Map API/workflow stages, integration points, pipeline gates, and release controls. For Google Cloud Pub/Sub, the direct Huawei equivalence layer is DMS + DIS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: DMS + SMN + EventGrid. Treat DMS + DIS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills message ingestion/delivery volume and retained data; Huawei usually bills CodeArts/APIG/DMS runtime or request volume plus artifact/storage usage. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
 
   nh({
@@ -1717,7 +2117,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["APIG"],
     differencesFromHuawei: ["Policy and auth integrations differ."],
-    migrationToHuawei: ["Port routes, authorizers, and throttling settings."]
+    migrationToHuawei: [
+      "Map API/workflow stages, integration points, pipeline gates, and release controls. For AWS Amazon API Gateway, the direct Huawei equivalence layer is APIG; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: APIG + IAM + WAF. Treat APIG as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills API request volume, caching, and optional edge/regional options; Huawei usually bills CodeArts/APIG/DMS runtime or request volume plus artifact/storage usage. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-api-management",
@@ -1730,7 +2134,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["APIG"],
     differencesFromHuawei: ["Policy syntax and gateway tiers differ."],
-    migrationToHuawei: ["Recreate API policies and products in APIG."]
+    migrationToHuawei: [
+      "Map API/workflow stages, integration points, pipeline gates, and release controls. For Azure Azure API Management, the direct Huawei equivalence layer is APIG; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: APIG + IAM + WAF. Treat APIG as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills gateway unit capacity and request volume by APIM tier; Huawei usually bills CodeArts/APIG/DMS runtime or request volume plus artifact/storage usage. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-apigee",
@@ -1743,7 +2151,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/googlecloud",
     huaweiEquivalentShortNames: ["APIG"],
     differencesFromHuawei: ["Developer portal and policy capabilities differ."],
-    migrationToHuawei: ["Port proxies and API products to APIG."]
+    migrationToHuawei: [
+      "Map API/workflow stages, integration points, pipeline gates, and release controls. For Google Cloud Apigee, the direct Huawei equivalence layer is APIG; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: APIG + IAM + WAF. Treat APIG as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills request volume and gateway/proxy runtime by product tier; Huawei usually bills CodeArts/APIG/DMS runtime or request volume plus artifact/storage usage. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
 
   nh({
@@ -1757,7 +2169,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["EventGrid"],
     differencesFromHuawei: ["Rule syntax and partner integrations differ."],
-    migrationToHuawei: ["Remap event buses, rules, and targets."]
+    migrationToHuawei: [
+      "Map API/workflow stages, integration points, pipeline gates, and release controls. For AWS Amazon EventBridge, the direct Huawei equivalence layer is EventGrid; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: EventGrid + SMN + DMS. Treat EventGrid as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills published events, matched rules, and target invocations; Huawei usually bills CodeArts/APIG/DMS runtime or request volume plus artifact/storage usage. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-event-grid",
@@ -1770,7 +2186,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["EventGrid"],
     differencesFromHuawei: ["Subscription filters and delivery options differ."],
-    migrationToHuawei: ["Rebuild topic/subscription and event handlers."]
+    migrationToHuawei: [
+      "Map API/workflow stages, integration points, pipeline gates, and release controls. For Azure Azure Event Grid, the direct Huawei equivalence layer is EventGrid; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: EventGrid + SMN + DMS. Treat EventGrid as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills operations/events and delivery attempts by tier; Huawei usually bills CodeArts/APIG/DMS runtime or request volume plus artifact/storage usage. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-eventarc",
@@ -1783,7 +2203,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/googlecloud",
     huaweiEquivalentShortNames: ["EventGrid"],
     differencesFromHuawei: ["Trigger and transport behavior differ."],
-    migrationToHuawei: ["Map event channels and target invocation flow."]
+    migrationToHuawei: [
+      "Map API/workflow stages, integration points, pipeline gates, and release controls. For Google Cloud Eventarc, the direct Huawei equivalence layer is EventGrid; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: EventGrid + SMN + DMS. Treat EventGrid as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills event volume and downstream delivery/processing usage; Huawei usually bills CodeArts/APIG/DMS runtime or request volume plus artifact/storage usage. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
 
   nh({
@@ -1797,7 +2221,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["IAM", "IAM Identity Center"],
     differencesFromHuawei: ["Role federation and policy language differ."],
-    migrationToHuawei: ["Translate users, roles, and policy boundaries."]
+    migrationToHuawei: [
+      "Map detection/prevention policy scope, enforcement points, and response workflows. For AWS AWS Identity and Access Management, the direct Huawei equivalence layer is IAM + IAM Identity Center; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: IAM + IAM Identity Center + CBH. Treat IAM + IAM Identity Center as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills protected resources, rule/policy count, request/event volume, or scan volume; Huawei usually bills WAF/CFW/DEW/DBSS/DSC billing by edition, protected assets, requests/events, or scans. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-entra-id",
@@ -1810,7 +2238,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["IAM", "IAM Identity Center"],
     differencesFromHuawei: ["Directory model and conditional access differ."],
-    migrationToHuawei: ["Map SSO/federation flows and user lifecycle."]
+    migrationToHuawei: [
+      "Map detection/prevention policy scope, enforcement points, and response workflows. For Azure Microsoft Entra ID, the direct Huawei equivalence layer is IAM + IAM Identity Center; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: IAM + IAM Identity Center + CBH. Treat IAM + IAM Identity Center as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills policy/protected-resource tiers plus request/event/scan volume; Huawei usually bills WAF/CFW/DEW/DBSS/DSC billing by edition, protected assets, requests/events, or scans. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-cloud-iam",
@@ -1823,7 +2255,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/googlecloud",
     huaweiEquivalentShortNames: ["IAM"],
     differencesFromHuawei: ["Hierarchy and role inheritance differ."],
-    migrationToHuawei: ["Recreate groups, roles, and project/account bindings."]
+    migrationToHuawei: [
+      "Map detection/prevention policy scope, enforcement points, and response workflows. For Google Cloud Cloud IAM, the direct Huawei equivalence layer is IAM; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: IAM + IAM Identity Center + CBH. Treat IAM as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills policy/protected-resource tiers plus request/event/scan volume; Huawei usually bills WAF/CFW/DEW/DBSS/DSC billing by edition, protected assets, requests/events, or scans. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
 
   nh({
@@ -1837,7 +2273,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["CTS"],
     differencesFromHuawei: ["Event categories and retention defaults differ."],
-    migrationToHuawei: ["Rebuild trail storage, filtering, and alerts."]
+    migrationToHuawei: [
+      "Map detection/prevention policy scope, enforcement points, and response workflows. For AWS AWS CloudTrail, the direct Huawei equivalence layer is CTS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CTS + LTS + SecMaster. Treat CTS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills protected resources, rule/policy count, request/event volume, or scan volume; Huawei usually bills WAF/CFW/DEW/DBSS/DSC billing by edition, protected assets, requests/events, or scans. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-activity-log",
@@ -1850,7 +2290,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["CTS"],
     differencesFromHuawei: ["Log scope and schema differ."],
-    migrationToHuawei: ["Map audit event subscriptions and storage pipeline."]
+    migrationToHuawei: [
+      "Map detection/prevention policy scope, enforcement points, and response workflows. For Azure Azure Activity Log, the direct Huawei equivalence layer is CTS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CTS + LTS + SecMaster. Treat CTS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills policy/protected-resource tiers plus request/event/scan volume; Huawei usually bills WAF/CFW/DEW/DBSS/DSC billing by edition, protected assets, requests/events, or scans. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-cloud-audit-logs",
@@ -1863,7 +2307,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/googlecloud",
     huaweiEquivalentShortNames: ["CTS"],
     differencesFromHuawei: ["Audit log categories and sinks differ."],
-    migrationToHuawei: ["Recreate sinks, retention, and access controls."]
+    migrationToHuawei: [
+      "Map detection/prevention policy scope, enforcement points, and response workflows. For Google Cloud Cloud Audit Logs, the direct Huawei equivalence layer is CTS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CTS + LTS + SecMaster. Treat CTS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills policy/protected-resource tiers plus request/event/scan volume; Huawei usually bills WAF/CFW/DEW/DBSS/DSC billing by edition, protected assets, requests/events, or scans. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
 
   nh({
@@ -1877,7 +2325,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["LTS"],
     differencesFromHuawei: ["Query language and retention controls differ."],
-    migrationToHuawei: ["Move log shippers and rebuild search dashboards."]
+    migrationToHuawei: [
+      "Map telemetry schema, retention, alert semantics, and audit/compliance workflows. For AWS CloudWatch Logs, the direct Huawei equivalence layer is LTS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: LTS. Treat LTS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills telemetry ingestion, retention, query volume, and alert executions; Huawei usually bills CES/LTS/APM/AOM ingestion, retention, analysis, and alerting volume. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-monitor-logs",
@@ -1890,7 +2342,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["LTS"],
     differencesFromHuawei: ["Query model and workspace structure differ."],
-    migrationToHuawei: ["Port queries, data collection rules, and alerts."]
+    migrationToHuawei: [
+      "Map telemetry schema, retention, alert semantics, and audit/compliance workflows. For Azure Azure Monitor Logs, the direct Huawei equivalence layer is LTS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: LTS. Treat LTS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills ingested/retained telemetry plus query and alert execution volume; Huawei usually bills CES/LTS/APM/AOM ingestion, retention, analysis, and alerting volume. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-cloud-logging",
@@ -1903,7 +2359,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/googlecloud",
     huaweiEquivalentShortNames: ["LTS"],
     differencesFromHuawei: ["Sink/export and indexing behavior differ."],
-    migrationToHuawei: ["Reconfigure log routes and retention policies."]
+    migrationToHuawei: [
+      "Map telemetry schema, retention, alert semantics, and audit/compliance workflows. For Google Cloud Cloud Logging, the direct Huawei equivalence layer is LTS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: LTS. Treat LTS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills log/metric/trace ingestion, retention, and query volume; Huawei usually bills CES/LTS/APM/AOM ingestion, retention, analysis, and alerting volume. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
 
   nh({
@@ -1917,7 +2377,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["SMN"],
     differencesFromHuawei: ["Protocol and subscription management differ."],
-    migrationToHuawei: ["Rebuild topics/subscriptions and delivery policy."]
+    migrationToHuawei: [
+      "Map API/workflow stages, integration points, pipeline gates, and release controls. For AWS Amazon SNS, the direct Huawei equivalence layer is SMN; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: SMN + DMS. Treat SMN as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills publish/delivery requests and protocol-specific delivery charges; Huawei usually bills CodeArts/APIG/DMS runtime or request volume plus artifact/storage usage. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-notification-hubs",
@@ -1930,7 +2394,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["SMN"],
     differencesFromHuawei: ["Push device platform integration differs."],
-    migrationToHuawei: ["Map notification topics and endpoint registrations."]
+    migrationToHuawei: [
+      "Map API/workflow stages, integration points, pipeline gates, and release controls. For Azure Azure Notification Hubs, the direct Huawei equivalence layer is SMN; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: SMN + DMS. Treat SMN as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills hub tier/capacity and push operation volume; Huawei usually bills CodeArts/APIG/DMS runtime or request volume plus artifact/storage usage. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
 
   nh({
@@ -1944,7 +2412,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["DEW"],
     differencesFromHuawei: ["Key policies and grant models differ."],
-    migrationToHuawei: ["Migrate key hierarchy and encryption workflow."]
+    migrationToHuawei: [
+      "Map detection/prevention policy scope, enforcement points, and response workflows. For AWS AWS Key Management Service, the direct Huawei equivalence layer is DEW; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: DEW + CCM. Treat DEW as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills KMS key storage and API request volume; Huawei usually bills WAF/CFW/DEW/DBSS/DSC billing by edition, protected assets, requests/events, or scans. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-key-vault",
@@ -1957,7 +2429,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["DEW", "CCM"],
     differencesFromHuawei: ["Secret/cert integration patterns differ."],
-    migrationToHuawei: ["Move key/cert lifecycle and access policies."]
+    migrationToHuawei: [
+      "Map detection/prevention policy scope, enforcement points, and response workflows. For Azure Azure Key Vault, the direct Huawei equivalence layer is DEW + CCM; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: DEW + CCM. Treat DEW + CCM as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills key operations, key versions, and premium key material tiers; Huawei usually bills WAF/CFW/DEW/DBSS/DSC billing by edition, protected assets, requests/events, or scans. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-cloud-kms",
@@ -1970,7 +2446,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/googlecloud",
     huaweiEquivalentShortNames: ["DEW"],
     differencesFromHuawei: ["IAM and keyring hierarchy differ."],
-    migrationToHuawei: ["Rebuild keyrings and key access boundaries."]
+    migrationToHuawei: [
+      "Map detection/prevention policy scope, enforcement points, and response workflows. For Google Cloud Cloud KMS, the direct Huawei equivalence layer is DEW; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: DEW + CCM. Treat DEW as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills key versions and cryptographic operation requests; Huawei usually bills WAF/CFW/DEW/DBSS/DSC billing by edition, protected assets, requests/events, or scans. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "aws-certificate-manager",
@@ -1983,7 +2463,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["CCM"],
     differencesFromHuawei: ["Certificate issuance and DNS validation flow differ.", "Private CA integration differs."],
-    migrationToHuawei: ["Map certificate inventories and renewal policies to CCM.", "Rebuild validation, rotation, and deployment workflow."]
+    migrationToHuawei: [
+      "Map detection/prevention policy scope, enforcement points, and response workflows. For AWS AWS Certificate Manager, the direct Huawei equivalence layer is CCM; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CCM + DEW. Treat CCM as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills protected resources, rule/policy count, request/event volume, or scan volume; Huawei usually bills WAF/CFW/DEW/DBSS/DSC billing by edition, protected assets, requests/events, or scans. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-key-vault-certificates",
@@ -1996,7 +2480,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["CCM"],
     differencesFromHuawei: ["Certificate policy and issuer integration differ.", "Lifecycle automation model differs."],
-    migrationToHuawei: ["Translate certificate objects and policies to CCM.", "Recreate issuance and rotation integrations."]
+    migrationToHuawei: [
+      "Map detection/prevention policy scope, enforcement points, and response workflows. For Azure Azure Key Vault Certificates, the direct Huawei equivalence layer is CCM; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CCM + DEW. Treat CCM as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills policy/protected-resource tiers plus request/event/scan volume; Huawei usually bills WAF/CFW/DEW/DBSS/DSC billing by edition, protected assets, requests/events, or scans. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-certificate-manager",
@@ -2009,7 +2497,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/googlecloud",
     huaweiEquivalentShortNames: ["CCM"],
     differencesFromHuawei: ["Attachment and certificate map model differ.", "Issuance automation differs."],
-    migrationToHuawei: ["Map certificate maps and issuance policies to CCM.", "Reconfigure binding and renewal automation."]
+    migrationToHuawei: [
+      "Map detection/prevention policy scope, enforcement points, and response workflows. For Google Cloud Certificate Manager, the direct Huawei equivalence layer is CCM; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CCM + DEW. Treat CCM as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills policy/protected-resource tiers plus request/event/scan volume; Huawei usually bills WAF/CFW/DEW/DBSS/DSC billing by edition, protected assets, requests/events, or scans. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "aws-systems-manager-session-manager",
@@ -2022,7 +2514,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["CBH"],
     differencesFromHuawei: ["Agent and session brokering model differ.", "Command/session audit controls differ."],
-    migrationToHuawei: ["Map privileged access workflows to CBH.", "Rebuild session auditing and approval policies."]
+    migrationToHuawei: [
+      "Map detection/prevention policy scope, enforcement points, and response workflows. For AWS AWS Systems Manager Session Manager, the direct Huawei equivalence layer is CBH; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CBH + IAM. Treat CBH as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills protected resources, rule/policy count, request/event volume, or scan volume; Huawei usually bills WAF/CFW/DEW/DBSS/DSC billing by edition, protected assets, requests/events, or scans. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-bastion",
@@ -2035,7 +2531,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["CBH"],
     differencesFromHuawei: ["Session model and identity integration differ.", "Connectivity and protocol behavior differ."],
-    migrationToHuawei: ["Map bastion connectivity model to CBH.", "Reconfigure privileged operation auditing and controls."]
+    migrationToHuawei: [
+      "Map detection/prevention policy scope, enforcement points, and response workflows. For Azure Azure Bastion, the direct Huawei equivalence layer is CBH; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CBH + IAM. Treat CBH as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills policy/protected-resource tiers plus request/event/scan volume; Huawei usually bills WAF/CFW/DEW/DBSS/DSC billing by edition, protected assets, requests/events, or scans. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-iap-tcp-forwarding",
@@ -2048,7 +2548,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/googlecloud",
     huaweiEquivalentShortNames: ["CBH"],
     differencesFromHuawei: ["Identity-aware proxy access model differs.", "Audit telemetry and policy granularity differ."],
-    migrationToHuawei: ["Translate IAP access policies to CBH controls.", "Rebuild privileged access logging and approval workflow."]
+    migrationToHuawei: [
+      "Map detection/prevention policy scope, enforcement points, and response workflows. For Google Cloud IAP TCP Forwarding, the direct Huawei equivalence layer is CBH; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CBH + IAM. Treat CBH as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills policy/protected-resource tiers plus request/event/scan volume; Huawei usually bills WAF/CFW/DEW/DBSS/DSC billing by edition, protected assets, requests/events, or scans. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "aws-waf",
@@ -2061,7 +2565,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["WAF"],
     differencesFromHuawei: ["Managed rule groups and ACL behavior differ."],
-    migrationToHuawei: ["Translate rule sets and rate limits to Huawei WAF."]
+    migrationToHuawei: [
+      "Map detection/prevention policy scope, enforcement points, and response workflows. For AWS AWS WAF, the direct Huawei equivalence layer is WAF; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: WAF + CFW + DDoS. Treat WAF as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills web ACL/rule count and inspected request volume; Huawei usually bills WAF/CFW/DEW/DBSS/DSC billing by edition, protected assets, requests/events, or scans. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-waf",
@@ -2074,7 +2582,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["WAF"],
     differencesFromHuawei: ["Policy model and tuning workflow differ."],
-    migrationToHuawei: ["Rebuild managed/custom rules and exclusions."]
+    migrationToHuawei: [
+      "Map detection/prevention policy scope, enforcement points, and response workflows. For Azure Azure Web Application Firewall, the direct Huawei equivalence layer is WAF; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: WAF + CFW + DDoS. Treat WAF as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills WAF policy tier and processed requests; Huawei usually bills WAF/CFW/DEW/DBSS/DSC billing by edition, protected assets, requests/events, or scans. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-cloud-armor",
@@ -2087,7 +2599,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/googlecloud",
     huaweiEquivalentShortNames: ["WAF", "DDoS"],
     differencesFromHuawei: ["Security policy semantics differ."],
-    migrationToHuawei: ["Map L7 policies, threat feeds, and rate limits."]
+    migrationToHuawei: [
+      "Map detection/prevention policy scope, enforcement points, and response workflows. For Google Cloud Cloud Armor, the direct Huawei equivalence layer is WAF + DDoS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: WAF + CFW + DDoS. Treat WAF + DDoS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills policy/rule charges and protected request volume; Huawei usually bills WAF/CFW/DEW/DBSS/DSC billing by edition, protected assets, requests/events, or scans. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "aws-network-firewall",
@@ -2100,7 +2616,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["CFW", "DDoS"],
     differencesFromHuawei: ["Rule group model and stateful inspection semantics differ."],
-    migrationToHuawei: ["Map firewall policies and rule groups to CFW.", "Recreate network segmentation and threat filtering controls."]
+    migrationToHuawei: [
+      "Map detection/prevention policy scope, enforcement points, and response workflows. For AWS AWS Network Firewall, the direct Huawei equivalence layer is CFW + DDoS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CFW + DDoS + SecMaster. Treat CFW + DDoS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills protected resources, rule/policy count, request/event volume, or scan volume; Huawei usually bills WAF/CFW/DEW/DBSS/DSC billing by edition, protected assets, requests/events, or scans. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-firewall",
@@ -2113,7 +2633,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["CFW", "DDoS"],
     differencesFromHuawei: ["Policy hierarchy and rule collection behavior differ."],
-    migrationToHuawei: ["Translate firewall policies and rule collections to CFW.", "Map threat intelligence mode and routing paths."]
+    migrationToHuawei: [
+      "Map detection/prevention policy scope, enforcement points, and response workflows. For Azure Azure Firewall, the direct Huawei equivalence layer is CFW + DDoS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CFW + DDoS + SecMaster. Treat CFW + DDoS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills policy/protected-resource tiers plus request/event/scan volume; Huawei usually bills WAF/CFW/DEW/DBSS/DSC billing by edition, protected assets, requests/events, or scans. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-firewall-rules",
@@ -2126,7 +2650,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/googlecloud",
     huaweiEquivalentShortNames: ["CFW", "DDoS"],
     differencesFromHuawei: ["Rule target model and distributed enforcement differ."],
-    migrationToHuawei: ["Map rule priorities and targets into CFW policies.", "Rebuild network threat segmentation and inspection strategy."]
+    migrationToHuawei: [
+      "Map detection/prevention policy scope, enforcement points, and response workflows. For Google Cloud VPC Firewall Rules, the direct Huawei equivalence layer is CFW + DDoS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CFW + DDoS + SecMaster. Treat CFW + DDoS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills policy/protected-resource tiers plus request/event/scan volume; Huawei usually bills WAF/CFW/DEW/DBSS/DSC billing by edition, protected assets, requests/events, or scans. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "aws-macie",
@@ -2139,7 +2667,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["DSC"],
     differencesFromHuawei: ["Discovery scope and managed data identifier model differ."],
-    migrationToHuawei: ["Map classification jobs and findings workflows to DSC.", "Rebuild sensitive data alerting and remediation process."]
+    migrationToHuawei: [
+      "Map detection/prevention policy scope, enforcement points, and response workflows. For AWS Amazon Macie, the direct Huawei equivalence layer is DSC; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: DSC + DBSS + SecMaster. Treat DSC as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills protected resources, rule/policy count, request/event volume, or scan volume; Huawei usually bills WAF/CFW/DEW/DBSS/DSC billing by edition, protected assets, requests/events, or scans. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-purview-data-security",
@@ -2152,7 +2684,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["DSC"],
     differencesFromHuawei: ["Policy model and integration scope differ."],
-    migrationToHuawei: ["Translate data classification and protection policies to DSC.", "Map governance workflows and remediation controls."]
+    migrationToHuawei: [
+      "Map detection/prevention policy scope, enforcement points, and response workflows. For Azure Microsoft Purview Data Security, the direct Huawei equivalence layer is DSC; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: DSC + DBSS + SecMaster. Treat DSC as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills policy/protected-resource tiers plus request/event/scan volume; Huawei usually bills WAF/CFW/DEW/DBSS/DSC billing by edition, protected assets, requests/events, or scans. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-security-health-advisor",
@@ -2165,7 +2701,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/googlecloud",
     huaweiEquivalentShortNames: ["DSC"],
     differencesFromHuawei: ["Risk finding model and governance controls differ."],
-    migrationToHuawei: ["Map posture checks and governance findings to DSC controls.", "Rebuild risk triage and policy enforcement workflows."]
+    migrationToHuawei: [
+      "Map detection/prevention policy scope, enforcement points, and response workflows. For Google Cloud Security Health Analytics, the direct Huawei equivalence layer is DSC; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: DSC + DBSS + SecMaster. Treat DSC as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills policy/protected-resource tiers plus request/event/scan volume; Huawei usually bills WAF/CFW/DEW/DBSS/DSC billing by edition, protected assets, requests/events, or scans. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "aws-rds-database-activity-streams",
@@ -2178,7 +2718,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["DBSS"],
     differencesFromHuawei: ["Activity feed architecture and integration pattern differ."],
-    migrationToHuawei: ["Map DB activity monitoring policies to DBSS.", "Rebuild audit event routing and security analytics integration."]
+    migrationToHuawei: [
+      "Map detection/prevention policy scope, enforcement points, and response workflows. For AWS RDS Database Activity Streams, the direct Huawei equivalence layer is DBSS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: DBSS + DSC. Treat DBSS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills protected resources, rule/policy count, request/event volume, or scan volume; Huawei usually bills WAF/CFW/DEW/DBSS/DSC billing by edition, protected assets, requests/events, or scans. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-defender-for-sql",
@@ -2191,7 +2735,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["DBSS"],
     differencesFromHuawei: ["Threat detection rule sets and assessment workflows differ."],
-    migrationToHuawei: ["Map SQL threat alerts and assessment policies to DBSS.", "Recreate database auditing and alert routing controls."]
+    migrationToHuawei: [
+      "Map detection/prevention policy scope, enforcement points, and response workflows. For Azure Microsoft Defender for SQL, the direct Huawei equivalence layer is DBSS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: DBSS + DSC. Treat DBSS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills policy/protected-resource tiers plus request/event/scan volume; Huawei usually bills WAF/CFW/DEW/DBSS/DSC billing by edition, protected assets, requests/events, or scans. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-cloud-sql-security-insights",
@@ -2204,7 +2752,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/googlecloud",
     huaweiEquivalentShortNames: ["DBSS"],
     differencesFromHuawei: ["Operational model and control surface differ.", "Audit integration patterns differ."],
-    migrationToHuawei: ["Map Cloud SQL audit and access controls into DBSS.", "Rebuild database security monitoring and alert workflows."]
+    migrationToHuawei: [
+      "Map detection/prevention policy scope, enforcement points, and response workflows. For Google Cloud Cloud SQL Security Insights, the direct Huawei equivalence layer is DBSS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: DBSS + DSC. Treat DBSS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills policy/protected-resource tiers plus request/event/scan volume; Huawei usually bills WAF/CFW/DEW/DBSS/DSC billing by edition, protected assets, requests/events, or scans. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "aws-inspector-container-security",
@@ -2217,7 +2769,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["CGS"],
     differencesFromHuawei: ["Scanning integration points and findings taxonomy differ."],
-    migrationToHuawei: ["Map container image scan policies to CGS.", "Rebuild vulnerability triage and remediation workflow."]
+    migrationToHuawei: [
+      "Map detection/prevention policy scope, enforcement points, and response workflows. For AWS Amazon Inspector (Container Security), the direct Huawei equivalence layer is CGS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CGS + CCE + SWR. Treat CGS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills protected resources, rule/policy count, request/event volume, or scan volume; Huawei usually bills WAF/CFW/DEW/DBSS/DSC billing by edition, protected assets, requests/events, or scans. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-defender-for-containers",
@@ -2230,7 +2786,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["CGS"],
     differencesFromHuawei: ["Threat detection integrations and policy model differ."],
-    migrationToHuawei: ["Map container security policies and alerts to CGS.", "Recreate runtime protection and vulnerability governance workflows."]
+    migrationToHuawei: [
+      "Map detection/prevention policy scope, enforcement points, and response workflows. For Azure Microsoft Defender for Containers, the direct Huawei equivalence layer is CGS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CGS + CCE + SWR. Treat CGS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills policy/protected-resource tiers plus request/event/scan volume; Huawei usually bills WAF/CFW/DEW/DBSS/DSC billing by edition, protected assets, requests/events, or scans. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-artifact-analysis-container-security",
@@ -2243,7 +2803,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/googlecloud",
     huaweiEquivalentShortNames: ["CGS"],
     differencesFromHuawei: ["Scan metadata and vulnerability feed model differ."],
-    migrationToHuawei: ["Map image scanning and risk policy workflows to CGS.", "Rebuild remediation and compliance gating controls."]
+    migrationToHuawei: [
+      "Map detection/prevention policy scope, enforcement points, and response workflows. For Google Cloud Artifact Analysis, the direct Huawei equivalence layer is CGS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CGS + CCE + SWR. Treat CGS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills policy/protected-resource tiers plus request/event/scan volume; Huawei usually bills WAF/CFW/DEW/DBSS/DSC billing by edition, protected assets, requests/events, or scans. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "aws-backup-vault-lock-ransomware",
@@ -2256,7 +2820,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["HSS", "CBR"],
     differencesFromHuawei: ["Immutability lock model and policy enforcement differ."],
-    migrationToHuawei: ["Map immutable retention requirements to Huawei backup/security controls.", "Rebuild anti-ransomware response and recovery runbooks."]
+    migrationToHuawei: [
+      "Map detection/prevention policy scope, enforcement points, and response workflows. For AWS AWS Backup Vault Lock, the direct Huawei equivalence layer is HSS + CBR; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: HSS + CBR + SecMaster. Treat HSS + CBR as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills protected resources, rule/policy count, request/event volume, or scan volume; Huawei usually bills WAF/CFW/DEW/DBSS/DSC billing by edition, protected assets, requests/events, or scans. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-backup-immutable-vault",
@@ -2269,7 +2837,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["HSS", "CBR"],
     differencesFromHuawei: ["Vault immutability and policy controls differ."],
-    migrationToHuawei: ["Translate immutable backup controls to Huawei backup/security policies.", "Rebuild ransomware recovery playbooks and validation checks."]
+    migrationToHuawei: [
+      "Map detection/prevention policy scope, enforcement points, and response workflows. For Azure Azure Backup (Immutable Vault), the direct Huawei equivalence layer is HSS + CBR; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: HSS + CBR + SecMaster. Treat HSS + CBR as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills policy/protected-resource tiers plus request/event/scan volume; Huawei usually bills WAF/CFW/DEW/DBSS/DSC billing by edition, protected assets, requests/events, or scans. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-backup-immutable-protection",
@@ -2282,7 +2854,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/googlecloud",
     huaweiEquivalentShortNames: ["HSS", "CBR"],
     differencesFromHuawei: ["Backup immutability implementation and policy workflow differ."],
-    migrationToHuawei: ["Map immutable retention and recovery controls to Huawei security and backup services.", "Recreate ransomware detection-to-recovery operational flow."]
+    migrationToHuawei: [
+      "Map detection/prevention policy scope, enforcement points, and response workflows. For Google Cloud Backup and DR (Immutable Protection), the direct Huawei equivalence layer is HSS + CBR; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: HSS + CBR + SecMaster. Treat HSS + CBR as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills policy/protected-resource tiers plus request/event/scan volume; Huawei usually bills WAF/CFW/DEW/DBSS/DSC billing by edition, protected assets, requests/events, or scans. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
 
   nh({
@@ -2296,7 +2872,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["SecMaster", "HSS"],
     differencesFromHuawei: ["Threat intel feeds and response automation differ."],
-    migrationToHuawei: ["Map detections and response playbooks to SecMaster."]
+    migrationToHuawei: [
+      "Map detection/prevention policy scope, enforcement points, and response workflows. For AWS Amazon GuardDuty, the direct Huawei equivalence layer is SecMaster + HSS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: SecMaster + CTS + LTS. Treat SecMaster + HSS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills protected resources, rule/policy count, request/event volume, or scan volume; Huawei usually bills WAF/CFW/DEW/DBSS/DSC billing by edition, protected assets, requests/events, or scans. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-defender-for-cloud",
@@ -2309,7 +2889,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["SecMaster", "HSS", "CGS"],
     differencesFromHuawei: ["Recommendation engine and regulatory baselines differ."],
-    migrationToHuawei: ["Recreate posture and incident response workflows."]
+    migrationToHuawei: [
+      "Map detection/prevention policy scope, enforcement points, and response workflows. For Azure Microsoft Defender for Cloud, the direct Huawei equivalence layer is SecMaster + HSS + CGS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: SecMaster + CTS + LTS. Treat SecMaster + HSS + CGS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills policy/protected-resource tiers plus request/event/scan volume; Huawei usually bills WAF/CFW/DEW/DBSS/DSC billing by edition, protected assets, requests/events, or scans. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-security-command-center",
@@ -2322,7 +2906,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/googlecloud",
     huaweiEquivalentShortNames: ["SecMaster"],
     differencesFromHuawei: ["Finding taxonomy and integrations differ."],
-    migrationToHuawei: ["Map findings and remediation workflows."]
+    migrationToHuawei: [
+      "Map detection/prevention policy scope, enforcement points, and response workflows. For Google Cloud Security Command Center, the direct Huawei equivalence layer is SecMaster; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: SecMaster + CTS + LTS. Treat SecMaster as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills policy/protected-resource tiers plus request/event/scan volume; Huawei usually bills WAF/CFW/DEW/DBSS/DSC billing by edition, protected assets, requests/events, or scans. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
 
   nh({
@@ -2336,7 +2924,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["EVS", "DSS"],
     differencesFromHuawei: ["Volume classes and performance tuning differ."],
-    migrationToHuawei: ["Map volume types, snapshots, and IOPS profiles."]
+    migrationToHuawei: [
+      "Map data durability tier, lifecycle policy, encryption, retention, and restore objectives. For AWS Amazon EBS, the direct Huawei equivalence layer is EVS + DSS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: EVS + CBR. Treat EVS + DSS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills GB-month capacity, request operations, retrieval, and transfer; Huawei usually bills OBS/EVS/SFS/CBR capacity, requests, retrieval/replication, and transfer. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-managed-disks",
@@ -2349,7 +2941,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["EVS", "DSS"],
     differencesFromHuawei: ["Disk tiers and bursting behavior differ."],
-    migrationToHuawei: ["Recreate disk policies and snapshot schedules."]
+    migrationToHuawei: [
+      "Map data durability tier, lifecycle policy, encryption, retention, and restore objectives. For Azure Azure Managed Disks, the direct Huawei equivalence layer is EVS + DSS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: EVS + CBR. Treat EVS + DSS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills GB-month capacity, transaction counts, retrieval/snapshot, and transfer; Huawei usually bills OBS/EVS/SFS/CBR capacity, requests, retrieval/replication, and transfer. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-persistent-disk",
@@ -2362,7 +2958,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/googlecloud",
     huaweiEquivalentShortNames: ["EVS"],
     differencesFromHuawei: ["Regional/zone replication options differ."],
-    migrationToHuawei: ["Map disk topology and backup retention."]
+    migrationToHuawei: [
+      "Map data durability tier, lifecycle policy, encryption, retention, and restore objectives. For Google Cloud Persistent Disk, the direct Huawei equivalence layer is EVS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: EVS + CBR. Treat EVS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills GB-month capacity, operation classes, retrieval, and transfer; Huawei usually bills OBS/EVS/SFS/CBR capacity, requests, retrieval/replication, and transfer. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "aws-efs",
@@ -2375,7 +2975,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["SFS"],
     differencesFromHuawei: ["Performance modes and lifecycle policy differ."],
-    migrationToHuawei: ["Reconfigure mount targets and file system policies."]
+    migrationToHuawei: [
+      "Map data durability tier, lifecycle policy, encryption, retention, and restore objectives. For AWS Amazon EFS, the direct Huawei equivalence layer is SFS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: SFS + CBR. Treat SFS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills GB-month capacity, request operations, retrieval, and transfer; Huawei usually bills OBS/EVS/SFS/CBR capacity, requests, retrieval/replication, and transfer. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-files",
@@ -2388,7 +2992,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["SFS"],
     differencesFromHuawei: ["Protocol and tiering options differ."],
-    migrationToHuawei: ["Migrate shares and update client mount config."]
+    migrationToHuawei: [
+      "Map data durability tier, lifecycle policy, encryption, retention, and restore objectives. For Azure Azure Files, the direct Huawei equivalence layer is SFS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: SFS + CBR. Treat SFS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills GB-month capacity, transaction counts, retrieval/snapshot, and transfer; Huawei usually bills OBS/EVS/SFS/CBR capacity, requests, retrieval/replication, and transfer. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-filestore",
@@ -2401,7 +3009,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/googlecloud",
     huaweiEquivalentShortNames: ["SFS"],
     differencesFromHuawei: ["Service tier and scaling model differ."],
-    migrationToHuawei: ["Map performance tier and data migration strategy."]
+    migrationToHuawei: [
+      "Map data durability tier, lifecycle policy, encryption, retention, and restore objectives. For Google Cloud Filestore, the direct Huawei equivalence layer is SFS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: SFS + CBR. Treat SFS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills GB-month capacity, operation classes, retrieval, and transfer; Huawei usually bills OBS/EVS/SFS/CBR capacity, requests, retrieval/replication, and transfer. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "aws-backup",
@@ -2414,7 +3026,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["CBR", "CSBS"],
     differencesFromHuawei: ["Vault model and policy structure differ."],
-    migrationToHuawei: ["Rebuild backup plans and retention schedules."]
+    migrationToHuawei: [
+      "Map data durability tier, lifecycle policy, encryption, retention, and restore objectives. For AWS AWS Backup, the direct Huawei equivalence layer is CBR + CSBS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CBR + CSBS + EVS. Treat CBR + CSBS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills GB-month capacity, request operations, retrieval, and transfer; Huawei usually bills OBS/EVS/SFS/CBR capacity, requests, retrieval/replication, and transfer. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-backup",
@@ -2427,7 +3043,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["CBR", "CSBS"],
     differencesFromHuawei: ["Vault and policy administration differ."],
-    migrationToHuawei: ["Map protection policies and recovery points."]
+    migrationToHuawei: [
+      "Map data durability tier, lifecycle policy, encryption, retention, and restore objectives. For Azure Azure Backup, the direct Huawei equivalence layer is CBR + CSBS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CBR + CSBS + EVS. Treat CBR + CSBS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills GB-month capacity, transaction counts, retrieval/snapshot, and transfer; Huawei usually bills OBS/EVS/SFS/CBR capacity, requests, retrieval/replication, and transfer. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-backup-and-dr",
@@ -2440,7 +3060,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/googlecloud",
     huaweiEquivalentShortNames: ["CBR"],
     differencesFromHuawei: ["Backup appliance and policy design differ."],
-    migrationToHuawei: ["Redesign backup topology and restore automation."]
+    migrationToHuawei: [
+      "Map data durability tier, lifecycle policy, encryption, retention, and restore objectives. For Google Cloud Backup and DR Service, the direct Huawei equivalence layer is CBR; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CBR + CSBS + EVS. Treat CBR as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills GB-month capacity, operation classes, retrieval, and transfer; Huawei usually bills OBS/EVS/SFS/CBR capacity, requests, retrieval/replication, and transfer. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "aws-elastic-disaster-recovery",
@@ -2453,7 +3077,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["SDRS", "SMS"],
     differencesFromHuawei: ["Replication workflow and orchestration differ."],
-    migrationToHuawei: ["Map failover runbooks and recovery objectives."]
+    migrationToHuawei: [
+      "Map data durability tier, lifecycle policy, encryption, retention, and restore objectives. For AWS AWS Elastic Disaster Recovery, the direct Huawei equivalence layer is SDRS + SMS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: SDRS + CBR + SMS. Treat SDRS + SMS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills GB-month capacity, request operations, retrieval, and transfer; Huawei usually bills OBS/EVS/SFS/CBR capacity, requests, retrieval/replication, and transfer. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-site-recovery",
@@ -2466,7 +3094,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["SDRS", "SMS"],
     differencesFromHuawei: ["Failover plans and replication limits differ."],
-    migrationToHuawei: ["Rebuild protection groups and failover testing."]
+    migrationToHuawei: [
+      "Map data durability tier, lifecycle policy, encryption, retention, and restore objectives. For Azure Azure Site Recovery, the direct Huawei equivalence layer is SDRS + SMS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: SDRS + CBR + SMS. Treat SDRS + SMS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills GB-month capacity, transaction counts, retrieval/snapshot, and transfer; Huawei usually bills OBS/EVS/SFS/CBR capacity, requests, retrieval/replication, and transfer. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-disaster-recovery",
@@ -2479,7 +3111,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/googlecloud",
     huaweiEquivalentShortNames: ["SDRS"],
     differencesFromHuawei: ["Pattern-based implementation differs from a single service."],
-    migrationToHuawei: ["Convert DR architecture and replication policy."]
+    migrationToHuawei: [
+      "Map data durability tier, lifecycle policy, encryption, retention, and restore objectives. For Google Cloud Disaster Recovery, the direct Huawei equivalence layer is SDRS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: SDRS + CBR + SMS. Treat SDRS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills GB-month capacity, operation classes, retrieval, and transfer; Huawei usually bills OBS/EVS/SFS/CBR capacity, requests, retrieval/replication, and transfer. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "aws-migration-hub",
@@ -2496,9 +3132,9 @@ const additionalEquivalentServices: NonHuaweiService[] = [
       "Pricing model differs: AWS Migration Hub core tracking is positioned as no-additional-charge, while Huawei MGC is no-additional-charge but uses paid underlying resources during execution."
     ],
     migrationToHuawei: [
-      "Map Migration Hub inventory, application groupings, and wave plans to MGC migration projects and readiness checkpoints.",
-      "Map execution components by domain: server cutovers to SMS, database replication to DRS, and object movement to OMS.",
-      "Rebuild progress dashboards with MGC plus operational telemetry in Cloud Eye/LTS for migration KPIs and blocker tracking."
+      "Map discovery/assessment, replication pipeline, and cutover checkpoints with rollback criteria. For AWS AWS Migration Hub, the direct Huawei equivalence layer is MGC; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: MGC + SMS + DRS + OMS. Treat MGC as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills migration task/runtime and transferred data plus source/target infrastructure costs; Huawei usually bills MGC governance plus SMS/OMS/CDM/DRS runtime, migrated volume, and network/resource consumption. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
     ]
   }),
   nh({
@@ -2516,9 +3152,9 @@ const additionalEquivalentServices: NonHuaweiService[] = [
       "Pricing model differs: Migration Center is listed with no additional service cost, while MGC itself is free but execution consumes paid Huawei services."
     ],
     migrationToHuawei: [
-      "Map discovered assets, dependency groups, and migration waves from Migration Center into MGC portfolios.",
-      "Translate rightsizing suggestions into Huawei ECS/BMS flavor mapping and storage/network target design.",
-      "Use MGC for governance and pair with SMS/DRS/OMS for execution tasks by workload type."
+      "Map discovery/assessment, replication pipeline, and cutover checkpoints with rollback criteria. For Google Cloud Migration Center, the direct Huawei equivalence layer is MGC; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: MGC + SMS + DRS + OMS. Treat MGC as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills migration tooling/runtime and transferred-data charges plus target infrastructure costs; Huawei usually bills MGC governance plus SMS/OMS/CDM/DRS runtime, migrated volume, and network/resource consumption. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
     ]
   }),
   nh({
@@ -2536,9 +3172,9 @@ const additionalEquivalentServices: NonHuaweiService[] = [
       "Pricing model differs: DataSync bills by transferred data volume (plus related storage/network costs), while OMS billing emphasizes migrated-data volume/API requests and source-side network egress."
     ],
     migrationToHuawei: [
-      "Map DataSync tasks for object endpoints directly to OMS migration jobs and preserve include/exclude filters, schedules, and retries.",
-      "For DataSync file-share patterns, combine SMS/SFS or CDM with OMS depending on whether data is file-based or object-based.",
-      "Validate checksums, metadata mapping, and storage-class/lifecycle behavior after cutover to OBS."
+      "Map data durability tier, lifecycle policy, encryption, retention, and restore objectives. For AWS AWS DataSync, the direct Huawei equivalence layer is OMS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: OMS + OBS + MGC. Treat OMS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills GB-month capacity, request operations, retrieval, and transfer; Huawei usually bills OBS/EVS/SFS/CBR capacity, requests, retrieval/replication, and transfer. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
     ]
   }),
   nh({
@@ -2556,9 +3192,9 @@ const additionalEquivalentServices: NonHuaweiService[] = [
       "Pricing model differs: Storage Mover has no additional service fee and relies on storage/network charges, while OMS charges by migrated data/API activity with source egress costs."
     ],
     migrationToHuawei: [
-      "Map Blob-target migration projects to OMS jobs where source/target are object-storage compatible.",
-      "For SMB/NFS migration portions, use a combination of SMS/SFS (file workload) and OMS (object workload) instead of OMS alone.",
-      "Rebuild transfer windows, endpoint credentials, and post-copy validation for metadata, ACL expectations, and checksum consistency."
+      "Map data durability tier, lifecycle policy, encryption, retention, and restore objectives. For Azure Azure Storage Mover, the direct Huawei equivalence layer is OMS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: OMS + OBS + MGC. Treat OMS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills GB-month capacity, transaction counts, retrieval/snapshot, and transfer; Huawei usually bills OBS/EVS/SFS/CBR capacity, requests, retrieval/replication, and transfer. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
     ]
   }),
   nh({
@@ -2576,9 +3212,9 @@ const additionalEquivalentServices: NonHuaweiService[] = [
       "Pricing model differs: STS is no-charge for agentless cloud-object transfers and charges per-GB for agent-based file transfers, while OMS charges migrated data/API requests and source egress."
     ],
     migrationToHuawei: [
-      "Map STS cloud-object transfer jobs and schedules to OMS tasks with equivalent prefixes and overwrite semantics.",
-      "For STS agent-based file transfer workloads, use SMS/SFS or CDM in combination with OMS based on target data model.",
-      "Validate object metadata, ACL translation constraints, and checksum outcomes after transfer to OBS."
+      "Map data durability tier, lifecycle policy, encryption, retention, and restore objectives. For Google Cloud Storage Transfer Service, the direct Huawei equivalence layer is OMS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: OMS + OBS + MGC. Treat OMS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills GB-month capacity, operation classes, retrieval, and transfer; Huawei usually bills OBS/EVS/SFS/CBR capacity, requests, retrieval/replication, and transfer. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
     ]
   }),
   nh({
@@ -2596,9 +3232,9 @@ const additionalEquivalentServices: NonHuaweiService[] = [
       "Pricing model differs: Glue pricing is resource/time and request based (for example job capacity runtime and catalog operations), while CDM pricing is tied to purchased migration compute specifications and duration."
     ],
     migrationToHuawei: [
-      "Map Glue connection metadata and transformation logic into CDM jobs; move complex SQL analytics transformations to DLI/DWS when CDM is insufficient.",
-      "Replace Glue Data Catalog dependencies with Huawei metadata/governance services and adjust lineage/governance flow.",
-      "Rebuild job schedules, retry strategy, and parallelism tuning with CDM runtime limits and throughput patterns."
+      "Map discovery/assessment, replication pipeline, and cutover checkpoints with rollback criteria. For AWS AWS Glue, the direct Huawei equivalence layer is CDM; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CDM + DLI + DWS. Treat CDM as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills migration task/runtime and transferred data plus source/target infrastructure costs; Huawei usually bills MGC governance plus SMS/OMS/CDM/DRS runtime, migrated volume, and network/resource consumption. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
     ]
   }),
   nh({
@@ -2616,9 +3252,9 @@ const additionalEquivalentServices: NonHuaweiService[] = [
       "Pricing model differs: ADF pricing is activity/orchestration and integration-runtime time based, while CDM pricing is primarily by migration cluster specification and runtime period."
     ],
     migrationToHuawei: [
-      "Translate ADF pipelines, datasets, and linked services into CDM job graphs, and split heavy transforms into DLI/DWS where needed.",
-      "Map trigger/schedule dependencies and parameterization patterns to CDM scheduling and task chaining.",
-      "Rebuild secret/credential integration and network paths (private links, security groups, VPC routes) for Huawei connectivity."
+      "Map discovery/assessment, replication pipeline, and cutover checkpoints with rollback criteria. For Azure Azure Data Factory, the direct Huawei equivalence layer is CDM; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CDM + DLI + DWS. Treat CDM as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills migration tooling charges (free or metered by component) plus source/target infrastructure costs; Huawei usually bills MGC governance plus SMS/OMS/CDM/DRS runtime, migrated volume, and network/resource consumption. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
     ]
   }),
   nh({
@@ -2636,9 +3272,9 @@ const additionalEquivalentServices: NonHuaweiService[] = [
       "Pricing model differs: Dataflow is metered by compute/memory and related pipeline resources over runtime, while CDM pricing is based on migration task resources and time windows."
     ],
     migrationToHuawei: [
-      "Map Dataflow templates to CDM where transformations are connector-friendly; route complex Beam logic to DLI/MRS jobs.",
-      "Separate streaming CDC-style flows from batch migration flows and map each to the right Huawei service combination (DRS/CDM/DLI).",
-      "Retune parallelism, checkpointing windows, and backpressure behavior for Huawei runtime characteristics."
+      "Map discovery/assessment, replication pipeline, and cutover checkpoints with rollback criteria. For Google Cloud Dataflow, the direct Huawei equivalence layer is CDM; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CDM + DLI + DWS. Treat CDM as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills migration tooling/runtime and transferred-data charges plus target infrastructure costs; Huawei usually bills MGC governance plus SMS/OMS/CDM/DRS runtime, migrated volume, and network/resource consumption. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
     ]
   }),
 
@@ -2657,9 +3293,9 @@ const additionalEquivalentServices: NonHuaweiService[] = [
       "Pricing model differs: MGN pricing references service and underlying AWS resource consumption during replication/testing/cutover, while Huawei SMS billing depends on migration resource usage plus destination/network resources."
     ],
     migrationToHuawei: [
-      "Map MGN source-server inventory and wave plans into MGC; execute replication and cutover in SMS.",
-      "Map MGN replication settings (RPO targets, test windows, cutover sequencing) to SMS migration tasks and validation checkpoints.",
-      "Use IMS for post-migration image standardization and CBR for rollback protection after production cutover."
+      "Map discovery/assessment, replication pipeline, and cutover checkpoints with rollback criteria. For AWS AWS Application Migration Service, the direct Huawei equivalence layer is SMS + MGC; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: SMS + MGC + IMS + CBR. Treat SMS + MGC as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills migration task/runtime and transferred data plus source/target infrastructure costs; Huawei usually bills MGC governance plus SMS/OMS/CDM/DRS runtime, migrated volume, and network/resource consumption. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
     ]
   }),
   nh({
@@ -2677,9 +3313,9 @@ const additionalEquivalentServices: NonHuaweiService[] = [
       "Pricing model differs: Azure Migrate service is free, with specific metered components (for example dependency analysis/server migration after free periods), while MGC is no-additional-charge and migration execution uses paid Huawei resources."
     ],
     migrationToHuawei: [
-      "Map discovered assets, dependency maps, and migration groups from Azure Migrate projects into MGC portfolios and wave plans.",
-      "Map server moves to SMS, database moves to DRS, and object/data moves to OMS/CDM according to workload type.",
-      "Preserve readiness gates by recreating test migration, cutover approval, and post-cutover validation checkpoints in MGC workflows."
+      "Map discovery/assessment, replication pipeline, and cutover checkpoints with rollback criteria. For Azure Azure Migrate, the direct Huawei equivalence layer is MGC + SMS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: MGC + SMS + DRS + OMS. Treat MGC + SMS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills migration tooling charges (free or metered by component) plus source/target infrastructure costs; Huawei usually bills MGC governance plus SMS/OMS/CDM/DRS runtime, migrated volume, and network/resource consumption. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
     ]
   }),
   nh({
@@ -2697,9 +3333,9 @@ const additionalEquivalentServices: NonHuaweiService[] = [
       "Pricing model differs: Azure Server Migration has a documented free period then per-instance monthly charge, while SMS pricing is based on Huawei migration/resource consumption plus target infrastructure."
     ],
     migrationToHuawei: [
-      "Map Azure replication appliances/agents, replication policy, and wave sequence to SMS task groups.",
-      "Mirror test migration and cutover runbooks in SMS, including downtime windows, rollback criteria, and validation scripts.",
-      "Use MGC for cross-wave tracking and combine with IMS/CBR for image baseline and recovery controls after cutover."
+      "Map discovery/assessment, replication pipeline, and cutover checkpoints with rollback criteria. For Azure Azure Migrate: Server Migration, the direct Huawei equivalence layer is SMS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: SMS + MGC + IMS + CBR. Treat SMS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills migration tooling charges (free or metered by component) plus source/target infrastructure costs; Huawei usually bills MGC governance plus SMS/OMS/CDM/DRS runtime, migrated volume, and network/resource consumption. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
     ]
   }),
   nh({
@@ -2717,9 +3353,9 @@ const additionalEquivalentServices: NonHuaweiService[] = [
       "Pricing model differs: Migrate to VMs is positioned as no-additional-charge tooling with underlying GCP resource costs, while Huawei SMS/MGC execution incurs Huawei resource and network charges."
     ],
     migrationToHuawei: [
-      "Map migration groups and source environment metadata to MGC waves and SMS execution batches.",
-      "Recreate replication sequencing, test migrations, and cutover windows in SMS with Huawei target flavor/network mapping.",
-      "Add post-migration hardening steps for IAM, backup, and observability to match prior GCP operational controls."
+      "Map discovery/assessment, replication pipeline, and cutover checkpoints with rollback criteria. For Google Cloud Migrate to Virtual Machines, the direct Huawei equivalence layer is SMS + MGC; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: SMS + MGC + IMS + CBR. Treat SMS + MGC as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills migration tooling/runtime and transferred-data charges plus target infrastructure costs; Huawei usually bills MGC governance plus SMS/OMS/CDM/DRS runtime, migrated volume, and network/resource consumption. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
     ]
   }),
 
@@ -2738,9 +3374,9 @@ const additionalEquivalentServices: NonHuaweiService[] = [
       "Pricing model differs: AWS DMS pricing is based on provisioned/serverless replication capacity runtime, while Huawei DRS billing depends on task type and runtime with additional source/target resource costs."
     ],
     migrationToHuawei: [
-      "Map DMS tasks to DRS task modes explicitly: one-time migration, ongoing synchronization, or DR replication.",
-      "Translate endpoint settings, table mappings, CDC start positions, and cutover sequencing into DRS task templates.",
-      "Benchmark throughput/latency and retune parallel load/CDC parameters because DMS and DRS task engines have different defaults."
+      "Map engine/version compatibility, HA topology, replication mode, and backup/restore behavior. For AWS AWS Database Migration Service, the direct Huawei equivalence layer is DRS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: DRS + RDS + GaussDB. Treat DRS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills instance or serverless capacity runtime plus storage, I/O, backup, and transfer; Huawei usually bills RDS/GaussDB/DDS runtime or DRS task billing plus storage, backup, and transfer. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
     ]
   }),
   nh({
@@ -2758,9 +3394,9 @@ const additionalEquivalentServices: NonHuaweiService[] = [
       "Pricing model differs: Azure DMS classic Standard tier is free and Premium is billed hourly after its free period, while Huawei DRS is billed by task/resource mode plus related infrastructure/network charges."
     ],
     migrationToHuawei: [
-      "Map Azure DMS project types to DRS modes (offline migration vs near-zero-downtime sync/CDC).",
-      "Translate assessment output, schema/data migration sequence, and cutover playbooks into DRS task orchestration.",
-      "Validate unsupported objects/features early and pair DRS with manual schema remediation where engine compatibility differs."
+      "Map engine/version compatibility, HA topology, replication mode, and backup/restore behavior. For Azure Azure Database Migration Service, the direct Huawei equivalence layer is DRS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: DRS + RDS + GaussDB. Treat DRS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills vCore/DTU or serverless runtime plus storage, backup, and transfer; Huawei usually bills RDS/GaussDB/DDS runtime or DRS task billing plus storage, backup, and transfer. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
     ]
   }),
   nh({
@@ -2778,9 +3414,9 @@ const additionalEquivalentServices: NonHuaweiService[] = [
       "Pricing model differs: Datastream is metered by processed data volume, while DRS pricing is tied to migration/sync task specification and runtime model."
     ],
     migrationToHuawei: [
-      "Map Datastream source configs, objects, and CDC positions to DRS synchronization tasks for target databases.",
-      "If Datastream feeds analytics lakes instead of databases, combine DRS/CDM/DLI depending on whether the target is transactional or analytical.",
-      "Rebuild stream monitoring, lag alerting, and cutover criteria with DRS task metrics and Huawei observability services."
+      "Map engine/version compatibility, HA topology, replication mode, and backup/restore behavior. For Google Cloud Datastream, the direct Huawei equivalence layer is DRS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: DRS + RDS + GaussDB. Treat DRS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills instance/runtime pricing plus storage, backup, and transfer; Huawei usually bills RDS/GaussDB/DDS runtime or DRS task billing plus storage, backup, and transfer. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
     ]
   }),
 
@@ -2795,7 +3431,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["ModelArts", "ModelArts Studio"],
     differencesFromHuawei: ["Studio UX and MLOps integrations differ."],
-    migrationToHuawei: ["Port training/inference pipelines and model registry."]
+    migrationToHuawei: [
+      "Map model/device lifecycle, trigger/event contracts, and deployment governance boundaries. For AWS Amazon SageMaker, the direct Huawei equivalence layer is ModelArts + ModelArts Studio; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: ModelArts + ModelArts Studio + OBS. Treat ModelArts + ModelArts Studio as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills training/inference runtime, endpoint uptime, and model storage; Huawei usually bills ModelArts/IoT service runtime plus endpoint/device/message operations. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-machine-learning",
@@ -2808,7 +3448,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["ModelArts", "ModelArts Studio"],
     differencesFromHuawei: ["Workspace and deployment endpoint models differ."],
-    migrationToHuawei: ["Adapt experiment tracking and deployment flow."]
+    migrationToHuawei: [
+      "Map model/device lifecycle, trigger/event contracts, and deployment governance boundaries. For Azure Azure Machine Learning, the direct Huawei equivalence layer is ModelArts + ModelArts Studio; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: ModelArts + ModelArts Studio + OBS. Treat ModelArts + ModelArts Studio as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills training/inference compute runtime, endpoint usage, and storage; Huawei usually bills ModelArts/IoT service runtime plus endpoint/device/message operations. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-vertex-ai",
@@ -2821,7 +3465,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/googlecloud",
     huaweiEquivalentShortNames: ["ModelArts", "ModelArts Studio"],
     differencesFromHuawei: ["Pipeline and model serving abstractions differ."],
-    migrationToHuawei: ["Convert pipelines and model serving endpoints."]
+    migrationToHuawei: [
+      "Map model/device lifecycle, trigger/event contracts, and deployment governance boundaries. For Google Cloud Vertex AI, the direct Huawei equivalence layer is ModelArts + ModelArts Studio; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: ModelArts + ModelArts Studio + OBS. Treat ModelArts + ModelArts Studio as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills training/inference runtime, endpoint usage, and storage; Huawei usually bills ModelArts/IoT service runtime plus endpoint/device/message operations. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "aws-iot-core",
@@ -2834,7 +3482,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["IoTDA", "IoTDM"],
     differencesFromHuawei: ["Device registry and rules engine behavior differ.", "Identity/certificate onboarding flows differ."],
-    migrationToHuawei: ["Map device registry, topics, and rules to IoTDA.", "Recreate certificate/device lifecycle and policy controls."]
+    migrationToHuawei: [
+      "Map model/device lifecycle, trigger/event contracts, and deployment governance boundaries. For AWS AWS IoT Core, the direct Huawei equivalence layer is IoTDA + IoTDM; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: IoTDA + IoTDM + DMS. Treat IoTDA + IoTDM as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills training/inference runtime, endpoint uptime, and device/message operations; Huawei usually bills ModelArts/IoT service runtime plus endpoint/device/message operations. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-iot-hub",
@@ -2847,7 +3499,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["IoTDA", "IoTDM"],
     differencesFromHuawei: ["Device twin and routing semantics differ.", "Provisioning and identity integration differ."],
-    migrationToHuawei: ["Translate device twins and message routes to IoTDA.", "Rebuild provisioning and device identity flows in IoTDM."]
+    migrationToHuawei: [
+      "Map model/device lifecycle, trigger/event contracts, and deployment governance boundaries. For Azure Azure IoT Hub, the direct Huawei equivalence layer is IoTDA + IoTDM; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: IoTDA + IoTDM + DMS. Treat IoTDA + IoTDM as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills training/inference runtime, endpoint usage, and device/message operations; Huawei usually bills ModelArts/IoT service runtime plus endpoint/device/message operations. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
 
   nh({
@@ -2861,7 +3517,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["CSS"],
     differencesFromHuawei: ["Version and plugin support differ."],
-    migrationToHuawei: ["Plan index migration and query compatibility."]
+    migrationToHuawei: [
+      "Map ingestion, transformation, query semantics, and governance/metadata dependencies. For AWS Amazon OpenSearch Service, the direct Huawei equivalence layer is CSS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CSS + DLI + OBS. Treat CSS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills query/compute runtime, scanned or processed data, and storage; Huawei usually bills DLI/DWS/MRS/CDM runtime or cluster-spec billing plus storage and transfer. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-ai-search",
@@ -2874,7 +3534,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["CSS"],
     differencesFromHuawei: ["Index design and ranking features differ."],
-    migrationToHuawei: ["Rebuild indexers, analyzers, and query patterns."]
+    migrationToHuawei: [
+      "Map ingestion, transformation, query semantics, and governance/metadata dependencies. For Azure Azure AI Search, the direct Huawei equivalence layer is CSS; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CSS + DLI + OBS. Treat CSS as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills activity/runtime units, compute pools, and stored/processed data; Huawei usually bills DLI/DWS/MRS/CDM runtime or cluster-spec billing plus storage and transfer. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
 
   nh({
@@ -2888,7 +3552,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["CodeArts Build"],
     differencesFromHuawei: ["Build environment setup and permissions differ."],
-    migrationToHuawei: ["Convert buildspec and environment variable setup."]
+    migrationToHuawei: [
+      "Map API/workflow stages, integration points, pipeline gates, and release controls. For AWS AWS CodeBuild, the direct Huawei equivalence layer is CodeArts Build; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CodeArts Build + CodeArts Pipeline. Treat CodeArts Build as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills pipeline/build/runtime minutes, request volume, artifact storage, or seat-based components; Huawei usually bills CodeArts/APIG/DMS runtime or request volume plus artifact/storage usage. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-pipelines-build",
@@ -2901,7 +3569,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["CodeArts Build", "CodeArts Pipeline"],
     differencesFromHuawei: ["YAML schema and agent pools differ."],
-    migrationToHuawei: ["Migrate pipeline YAML and secure variables."]
+    migrationToHuawei: [
+      "Map API/workflow stages, integration points, pipeline gates, and release controls. For Azure Azure Pipelines, the direct Huawei equivalence layer is CodeArts Build + CodeArts Pipeline; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CodeArts Build + CodeArts Pipeline. Treat CodeArts Build + CodeArts Pipeline as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills pipeline/runtime minutes, request units, artifact storage, or seat-based components; Huawei usually bills CodeArts/APIG/DMS runtime or request volume plus artifact/storage usage. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-cloud-build",
@@ -2914,7 +3586,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/googlecloud",
     huaweiEquivalentShortNames: ["CodeArts Build"],
     differencesFromHuawei: ["Build trigger and worker models differ."],
-    migrationToHuawei: ["Port triggers and artifact publishing steps."]
+    migrationToHuawei: [
+      "Map API/workflow stages, integration points, pipeline gates, and release controls. For Google Cloud Cloud Build, the direct Huawei equivalence layer is CodeArts Build; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CodeArts Build + CodeArts Pipeline. Treat CodeArts Build as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills runtime/request usage and artifact/data storage volume; Huawei usually bills CodeArts/APIG/DMS runtime or request volume plus artifact/storage usage. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "aws-codepipeline",
@@ -2927,7 +3603,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["CodeArts Pipeline", "CodeArts Deploy"],
     differencesFromHuawei: ["Stage/action model differs."],
-    migrationToHuawei: ["Translate pipeline stages and approval gates."]
+    migrationToHuawei: [
+      "Map API/workflow stages, integration points, pipeline gates, and release controls. For AWS AWS CodePipeline, the direct Huawei equivalence layer is CodeArts Pipeline + CodeArts Deploy; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CodeArts Pipeline + CodeArts Build + CodeArts Deploy. Treat CodeArts Pipeline + CodeArts Deploy as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills pipeline/build/runtime minutes, request volume, artifact storage, or seat-based components; Huawei usually bills CodeArts/APIG/DMS runtime or request volume plus artifact/storage usage. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-pipelines-cicd",
@@ -2940,7 +3620,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["CodeArts Pipeline", "CodeArts Deploy"],
     differencesFromHuawei: ["Release and environment model differ."],
-    migrationToHuawei: ["Recreate environments, gates, and release flow."]
+    migrationToHuawei: [
+      "Map API/workflow stages, integration points, pipeline gates, and release controls. For Azure Azure Pipelines, the direct Huawei equivalence layer is CodeArts Pipeline + CodeArts Deploy; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CodeArts Pipeline + CodeArts Build + CodeArts Deploy. Treat CodeArts Pipeline + CodeArts Deploy as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills pipeline/runtime minutes, request units, artifact storage, or seat-based components; Huawei usually bills CodeArts/APIG/DMS runtime or request volume plus artifact/storage usage. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-cloud-deploy",
@@ -2953,7 +3637,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/googlecloud",
     huaweiEquivalentShortNames: ["CodeArts Deploy", "CodeArts Pipeline"],
     differencesFromHuawei: ["Promotion pipeline and target model differ."],
-    migrationToHuawei: ["Map promotion flow and deployment strategies."]
+    migrationToHuawei: [
+      "Map API/workflow stages, integration points, pipeline gates, and release controls. For Google Cloud Cloud Deploy, the direct Huawei equivalence layer is CodeArts Deploy + CodeArts Pipeline; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CodeArts Pipeline + CodeArts Build + CodeArts Deploy. Treat CodeArts Deploy + CodeArts Pipeline as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills runtime/request usage and artifact/data storage volume; Huawei usually bills CodeArts/APIG/DMS runtime or request volume plus artifact/storage usage. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "aws-codeartifact",
@@ -2966,7 +3654,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["CodeArts Artifact"],
     differencesFromHuawei: ["Domain/repository structure differs."],
-    migrationToHuawei: ["Move packages and mirror upstream dependencies."]
+    migrationToHuawei: [
+      "Map API/workflow stages, integration points, pipeline gates, and release controls. For AWS AWS CodeArtifact, the direct Huawei equivalence layer is CodeArts Artifact; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CodeArts Artifact + SWR. Treat CodeArts Artifact as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills pipeline/build/runtime minutes, request volume, artifact storage, or seat-based components; Huawei usually bills CodeArts/APIG/DMS runtime or request volume plus artifact/storage usage. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-artifacts",
@@ -2979,7 +3671,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["CodeArts Artifact"],
     differencesFromHuawei: ["Feed permissions and upstream behavior differ."],
-    migrationToHuawei: ["Recreate feeds and package retention policies."]
+    migrationToHuawei: [
+      "Map API/workflow stages, integration points, pipeline gates, and release controls. For Azure Azure Artifacts, the direct Huawei equivalence layer is CodeArts Artifact; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CodeArts Artifact + SWR. Treat CodeArts Artifact as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills pipeline/runtime minutes, request units, artifact storage, or seat-based components; Huawei usually bills CodeArts/APIG/DMS runtime or request volume plus artifact/storage usage. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-artifact-registry-packages",
@@ -2992,7 +3688,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/googlecloud",
     huaweiEquivalentShortNames: ["CodeArts Artifact", "SWR"],
     differencesFromHuawei: ["Repository format and IAM behavior differ."],
-    migrationToHuawei: ["Migrate package repos and access tokens."]
+    migrationToHuawei: [
+      "Map API/workflow stages, integration points, pipeline gates, and release controls. For Google Cloud Artifact Registry, the direct Huawei equivalence layer is CodeArts Artifact + SWR; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CodeArts Artifact + SWR. Treat CodeArts Artifact + SWR as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills runtime/request usage and artifact/data storage volume; Huawei usually bills CodeArts/APIG/DMS runtime or request volume plus artifact/storage usage. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "aws-codecommit",
@@ -3005,7 +3705,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/amazonaws",
     huaweiEquivalentShortNames: ["CodeArts Repo"],
     differencesFromHuawei: ["Repository policy and integration ecosystem differ."],
-    migrationToHuawei: ["Mirror repositories and rebuild access controls."]
+    migrationToHuawei: [
+      "Map API/workflow stages, integration points, pipeline gates, and release controls. For AWS AWS CodeCommit, the direct Huawei equivalence layer is CodeArts Repo; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CodeArts Repo + CodeArts. Treat CodeArts Repo as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills pipeline/build/runtime minutes, request volume, artifact storage, or seat-based components; Huawei usually bills CodeArts/APIG/DMS runtime or request volume plus artifact/storage usage. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-repos",
@@ -3018,7 +3722,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/microsoftazure",
     huaweiEquivalentShortNames: ["CodeArts Repo"],
     differencesFromHuawei: ["Branch policy and workflow integration differ."],
-    migrationToHuawei: ["Migrate Git history and permissions."]
+    migrationToHuawei: [
+      "Map API/workflow stages, integration points, pipeline gates, and release controls. For Azure Azure Repos, the direct Huawei equivalence layer is CodeArts Repo; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CodeArts Repo + CodeArts. Treat CodeArts Repo as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills pipeline/runtime minutes, request units, artifact storage, or seat-based components; Huawei usually bills CodeArts/APIG/DMS runtime or request volume plus artifact/storage usage. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-source-repositories",
@@ -3031,7 +3739,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://cdn.simpleicons.org/googlecloud",
     huaweiEquivalentShortNames: ["CodeArts Repo"],
     differencesFromHuawei: ["Repository capabilities and lifecycle differ."],
-    migrationToHuawei: ["Export repositories and migrate branch protections."]
+    migrationToHuawei: [
+      "Map API/workflow stages, integration points, pipeline gates, and release controls. For Google Cloud Cloud Source Repositories, the direct Huawei equivalence layer is CodeArts Repo; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CodeArts Repo + CodeArts. Treat CodeArts Repo as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills runtime/request usage and artifact/data storage volume; Huawei usually bills CodeArts/APIG/DMS runtime or request volume plus artifact/storage usage. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "aws-fargate",
@@ -3044,7 +3756,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/compute/fargate.png",
     huaweiEquivalentShortNames: ["CCI", "CCI 2.0", "Flexus CCI"],
     differencesFromHuawei: ["Runtime integration and networking defaults differ."],
-    migrationToHuawei: ["Port runtime configs and validate networking/ingress behavior in CCI."]
+    migrationToHuawei: [
+      "Map compute shape/runtime, OS-image behavior, scaling policy, and placement/isolation semantics. For AWS AWS Fargate, the direct Huawei equivalence layer is CCI + CCI 2.0 + Flexus CCI; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CCI + CCE + SWR. Treat CCI + CCI 2.0 + Flexus CCI as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills primarily instance/runtime hours (often per-second) plus attached storage and network transfer; Huawei usually bills ECS/BMS/CCE/CCI runtime with EVS, bandwidth/traffic, and optional management add-ons. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-container-instances-runtime",
@@ -3057,7 +3773,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/compute/container-instances.png",
     huaweiEquivalentShortNames: ["CCI", "CCI 2.0", "Flexus CCI"],
     differencesFromHuawei: ["Container group model and VNet integration differ."],
-    migrationToHuawei: ["Map container group settings and network attachments to CCI."]
+    migrationToHuawei: [
+      "Map compute shape/runtime, OS-image behavior, scaling policy, and placement/isolation semantics. For Azure Azure Container Instances, the direct Huawei equivalence layer is CCI + CCI 2.0 + Flexus CCI; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CCI + CCE + SWR. Treat CCI + CCI 2.0 + Flexus CCI as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills primarily VM/runtime units plus managed control-plane charges and storage/network transfer; Huawei usually bills ECS/BMS/CCE/CCI runtime with EVS, bandwidth/traffic, and optional management add-ons. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-cloud-run-runtime",
@@ -3070,7 +3790,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/compute/run.png",
     huaweiEquivalentShortNames: ["CCI", "CCI 2.0", "Flexus CCI"],
     differencesFromHuawei: ["Request scaling model and service configuration differ."],
-    migrationToHuawei: ["Translate service runtime settings and networking policies to CCI."]
+    migrationToHuawei: [
+      "Map compute shape/runtime, OS-image behavior, scaling policy, and placement/isolation semantics. For Google Cloud Cloud Run, the direct Huawei equivalence layer is CCI + CCI 2.0 + Flexus CCI; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CCI + CCE + SWR. Treat CCI + CCI 2.0 + Flexus CCI as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills primarily per-second runtime/compute units plus storage and network transfer; Huawei usually bills ECS/BMS/CCE/CCI runtime with EVS, bandwidth/traffic, and optional management add-ons. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "aws-codestar-platform",
@@ -3083,7 +3807,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/devtools/codestar.png",
     huaweiEquivalentShortNames: ["CodeArts"],
     differencesFromHuawei: ["Integrated project templates and lifecycle tooling differ."],
-    migrationToHuawei: ["Recreate project templates, pipelines, and permission boundaries in CodeArts."]
+    migrationToHuawei: [
+      "Map API/workflow stages, integration points, pipeline gates, and release controls. For AWS AWS CodeStar, the direct Huawei equivalence layer is CodeArts; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CodeArts + CodeArts Pipeline + CodeArts Build. Treat CodeArts as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills pipeline/build/runtime minutes, request volume, artifact storage, or seat-based components; Huawei usually bills CodeArts/APIG/DMS runtime or request volume plus artifact/storage usage. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-devops-platform",
@@ -3096,7 +3824,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/devops/devops.png",
     huaweiEquivalentShortNames: ["CodeArts"],
     differencesFromHuawei: ["Project and organization model differs from CodeArts."],
-    migrationToHuawei: ["Map projects, repos, pipelines, and permissions into CodeArts."]
+    migrationToHuawei: [
+      "Map API/workflow stages, integration points, pipeline gates, and release controls. For Azure Azure DevOps, the direct Huawei equivalence layer is CodeArts; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CodeArts + CodeArts Pipeline + CodeArts Build. Treat CodeArts as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills pipeline/runtime minutes, request units, artifact storage, or seat-based components; Huawei usually bills CodeArts/APIG/DMS runtime or request volume plus artifact/storage usage. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-cloud-build-platform",
@@ -3109,7 +3841,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/devtools/build.png",
     huaweiEquivalentShortNames: ["CodeArts"],
     differencesFromHuawei: ["Pipeline composition and integration patterns differ."],
-    migrationToHuawei: ["Port build triggers, secrets, and delivery flow to CodeArts pipeline services."]
+    migrationToHuawei: [
+      "Map API/workflow stages, integration points, pipeline gates, and release controls. For Google Cloud Google Cloud Build, the direct Huawei equivalence layer is CodeArts; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CodeArts + CodeArts Pipeline + CodeArts Build. Treat CodeArts as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills runtime/request usage and artifact/data storage volume; Huawei usually bills CodeArts/APIG/DMS runtime or request volume plus artifact/storage usage. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "aws-codedeploy",
@@ -3122,7 +3858,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/devtools/codedeploy.png",
     huaweiEquivalentShortNames: ["CodeArts Deploy"],
     differencesFromHuawei: ["Deployment strategies and target definitions differ."],
-    migrationToHuawei: ["Rebuild release stages and rollout policies in CodeArts Deploy."]
+    migrationToHuawei: [
+      "Map API/workflow stages, integration points, pipeline gates, and release controls. For AWS AWS CodeDeploy, the direct Huawei equivalence layer is CodeArts Deploy; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CodeArts Deploy + CodeArts Pipeline. Treat CodeArts Deploy as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills pipeline/build/runtime minutes, request volume, artifact storage, or seat-based components; Huawei usually bills CodeArts/APIG/DMS runtime or request volume plus artifact/storage usage. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-pipelines-release",
@@ -3135,7 +3875,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/devops/pipelines.png",
     huaweiEquivalentShortNames: ["CodeArts Deploy"],
     differencesFromHuawei: ["Environment approvals and stage semantics differ."],
-    migrationToHuawei: ["Map release stages, approvals, and rollback flow into CodeArts Deploy."]
+    migrationToHuawei: [
+      "Map API/workflow stages, integration points, pipeline gates, and release controls. For Azure Azure Pipelines (Release), the direct Huawei equivalence layer is CodeArts Deploy; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CodeArts Deploy + CodeArts Pipeline. Treat CodeArts Deploy as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills pipeline/runtime minutes, request units, artifact storage, or seat-based components; Huawei usually bills CodeArts/APIG/DMS runtime or request volume plus artifact/storage usage. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-cloud-deploy-cd",
@@ -3148,7 +3892,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/devtools/build.png",
     huaweiEquivalentShortNames: ["CodeArts Deploy"],
     differencesFromHuawei: ["Target and promotion model differs from CodeArts."],
-    migrationToHuawei: ["Translate promotion rules and targets to CodeArts Deploy pipelines."]
+    migrationToHuawei: [
+      "Map API/workflow stages, integration points, pipeline gates, and release controls. For Google Cloud Cloud Deploy, the direct Huawei equivalence layer is CodeArts Deploy; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CodeArts Deploy + CodeArts Pipeline. Treat CodeArts Deploy as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills runtime/request usage and artifact/data storage volume; Huawei usually bills CodeArts/APIG/DMS runtime or request volume plus artifact/storage usage. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "aws-codeguru-quality",
@@ -3161,7 +3909,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/management/codeguru.png",
     huaweiEquivalentShortNames: ["CodeArts Check"],
     differencesFromHuawei: ["Code analysis rulesets and ecosystem integration differ."],
-    migrationToHuawei: ["Map quality gates and rule baselines to CodeArts Check."]
+    migrationToHuawei: [
+      "Map API/workflow stages, integration points, pipeline gates, and release controls. For AWS AWS CodeGuru, the direct Huawei equivalence layer is CodeArts Check; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CodeArts Check + CodeArts Governance. Treat CodeArts Check as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills pipeline/build/runtime minutes, request volume, artifact storage, or seat-based components; Huawei usually bills CodeArts/APIG/DMS runtime or request volume plus artifact/storage usage. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-devops-code-quality",
@@ -3174,7 +3926,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/devops/devops.png",
     huaweiEquivalentShortNames: ["CodeArts Check"],
     differencesFromHuawei: ["Quality gate and extension model differs."],
-    migrationToHuawei: ["Recreate quality checks and branch policies in CodeArts Check."]
+    migrationToHuawei: [
+      "Map API/workflow stages, integration points, pipeline gates, and release controls. For Azure Azure DevOps (Code Quality), the direct Huawei equivalence layer is CodeArts Check; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CodeArts Check + CodeArts Governance. Treat CodeArts Check as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills pipeline/runtime minutes, request units, artifact storage, or seat-based components; Huawei usually bills CodeArts/APIG/DMS runtime or request volume plus artifact/storage usage. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-binary-authorization-code-quality",
@@ -3187,7 +3943,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/compute/binary-authorization.png",
     huaweiEquivalentShortNames: ["CodeArts Check", "CodeArts Governance"],
     differencesFromHuawei: ["Policy enforcement scope differs from source-level code checks."],
-    migrationToHuawei: ["Map policy checks and deployment gates into CodeArts quality workflows."]
+    migrationToHuawei: [
+      "Map API/workflow stages, integration points, pipeline gates, and release controls. For Google Cloud Binary Authorization, the direct Huawei equivalence layer is CodeArts Check + CodeArts Governance; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CodeArts Check + CodeArts Governance. Treat CodeArts Check + CodeArts Governance as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills runtime/request usage and artifact/data storage volume; Huawei usually bills CodeArts/APIG/DMS runtime or request volume plus artifact/storage usage. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "aws-security-hub-governance",
@@ -3200,7 +3960,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/security/security-hub.png",
     huaweiEquivalentShortNames: ["CodeArts Governance"],
     differencesFromHuawei: ["Governance scope and integration focus differ."],
-    migrationToHuawei: ["Translate compliance controls and guardrails into CodeArts governance policies."]
+    migrationToHuawei: [
+      "Map API/workflow stages, integration points, pipeline gates, and release controls. For AWS AWS Security Hub, the direct Huawei equivalence layer is CodeArts Governance; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CodeArts Governance + CodeArts Check. Treat CodeArts Governance as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills pipeline/build/runtime minutes, request volume, artifact storage, or seat-based components; Huawei usually bills CodeArts/APIG/DMS runtime or request volume plus artifact/storage usage. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-devops-governance",
@@ -3213,7 +3977,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/devops/devops.png",
     huaweiEquivalentShortNames: ["CodeArts Governance"],
     differencesFromHuawei: ["Governance controls are distributed across tools and policies."],
-    migrationToHuawei: ["Consolidate governance checks into CodeArts governance modules."]
+    migrationToHuawei: [
+      "Map API/workflow stages, integration points, pipeline gates, and release controls. For Azure Azure DevOps (Governance), the direct Huawei equivalence layer is CodeArts Governance; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CodeArts Governance + CodeArts Check. Treat CodeArts Governance as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills pipeline/runtime minutes, request units, artifact storage, or seat-based components; Huawei usually bills CodeArts/APIG/DMS runtime or request volume plus artifact/storage usage. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "gcp-binary-authorization-governance",
@@ -3226,7 +3994,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/compute/binary-authorization.png",
     huaweiEquivalentShortNames: ["CodeArts Governance"],
     differencesFromHuawei: ["Focus is deployment policy rather than full SDLC governance."],
-    migrationToHuawei: ["Map admission and release policies to CodeArts governance controls."]
+    migrationToHuawei: [
+      "Map API/workflow stages, integration points, pipeline gates, and release controls. For Google Cloud Binary Authorization, the direct Huawei equivalence layer is CodeArts Governance; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CodeArts Governance + CodeArts Check. Treat CodeArts Governance as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Google Cloud usually bills runtime/request usage and artifact/data storage volume; Huawei usually bills CodeArts/APIG/DMS runtime or request volume plus artifact/storage usage. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "aws-device-farm-performance",
@@ -3239,7 +4011,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/mobile/device-farm.png",
     huaweiEquivalentShortNames: ["CodeArts PerfTest", "CodeArts TestPlan"],
     differencesFromHuawei: ["Primary focus is mobile/device testing scenarios."],
-    migrationToHuawei: ["Map test suites and execution workflows into CodeArts testing services."]
+    migrationToHuawei: [
+      "Map API/workflow stages, integration points, pipeline gates, and release controls. For AWS AWS Device Farm, the direct Huawei equivalence layer is CodeArts PerfTest + CodeArts TestPlan; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CodeArts PerfTest + CodeArts Pipeline. Treat CodeArts PerfTest + CodeArts TestPlan as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills pipeline/build/runtime minutes, request volume, artifact storage, or seat-based components; Huawei usually bills CodeArts/APIG/DMS runtime or request volume plus artifact/storage usage. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-load-testing-performance",
@@ -3252,7 +4028,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/devops/load-testing.png",
     huaweiEquivalentShortNames: ["CodeArts PerfTest"],
     differencesFromHuawei: ["Load generation and scenario model differ."],
-    migrationToHuawei: ["Recreate test scenarios and thresholds in CodeArts PerfTest."]
+    migrationToHuawei: [
+      "Map API/workflow stages, integration points, pipeline gates, and release controls. For Azure Azure Load Testing, the direct Huawei equivalence layer is CodeArts PerfTest; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CodeArts PerfTest + CodeArts Pipeline. Treat CodeArts PerfTest as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills pipeline/runtime minutes, request units, artifact storage, or seat-based components; Huawei usually bills CodeArts/APIG/DMS runtime or request volume plus artifact/storage usage. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "aws-codestar-requirements",
@@ -3265,7 +4045,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/devtools/codestar.png",
     huaweiEquivalentShortNames: ["CodeArts Req"],
     differencesFromHuawei: ["Requirements tracking is less centralized than CodeArts Req."],
-    migrationToHuawei: ["Consolidate requirement artifacts into CodeArts Req backlog workflows."]
+    migrationToHuawei: [
+      "Map API/workflow stages, integration points, pipeline gates, and release controls. For AWS AWS CodeStar, the direct Huawei equivalence layer is CodeArts Req; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CodeArts Req + CodeArts. Treat CodeArts Req as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills pipeline/build/runtime minutes, request volume, artifact storage, or seat-based components; Huawei usually bills CodeArts/APIG/DMS runtime or request volume plus artifact/storage usage. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-boards-requirements",
@@ -3278,7 +4062,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/devops/boards.png",
     huaweiEquivalentShortNames: ["CodeArts Req"],
     differencesFromHuawei: ["Work item model and process templates differ."],
-    migrationToHuawei: ["Map backlog hierarchy and iteration plans into CodeArts Req."]
+    migrationToHuawei: [
+      "Map API/workflow stages, integration points, pipeline gates, and release controls. For Azure Azure Boards, the direct Huawei equivalence layer is CodeArts Req; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CodeArts Req + CodeArts. Treat CodeArts Req as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills pipeline/runtime minutes, request units, artifact storage, or seat-based components; Huawei usually bills CodeArts/APIG/DMS runtime or request volume plus artifact/storage usage. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "aws-device-farm-test-management",
@@ -3291,7 +4079,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/mobile/device-farm.png",
     huaweiEquivalentShortNames: ["CodeArts TestPlan"],
     differencesFromHuawei: ["Test planning and test case management depth differs."],
-    migrationToHuawei: ["Move test plans and execution records into CodeArts TestPlan."]
+    migrationToHuawei: [
+      "Map API/workflow stages, integration points, pipeline gates, and release controls. For AWS AWS Device Farm, the direct Huawei equivalence layer is CodeArts TestPlan; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CodeArts TestPlan + CodeArts PerfTest. Treat CodeArts TestPlan as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: AWS usually bills pipeline/build/runtime minutes, request volume, artifact storage, or seat-based components; Huawei usually bills CodeArts/APIG/DMS runtime or request volume plus artifact/storage usage. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   }),
   nh({
     id: "azure-test-plans-management",
@@ -3304,7 +4096,11 @@ const additionalEquivalentServices: NonHuaweiService[] = [
     imageUrl: "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/devops/test-plans.png",
     huaweiEquivalentShortNames: ["CodeArts TestPlan"],
     differencesFromHuawei: ["Test suite structure and reporting semantics differ."],
-    migrationToHuawei: ["Map suites, test cases, and execution flow into CodeArts TestPlan."]
+    migrationToHuawei: [
+      "Map API/workflow stages, integration points, pipeline gates, and release controls. For Azure Azure Test Plans, the direct Huawei equivalence layer is CodeArts TestPlan; validate feature-by-feature parity for control plane, data plane, and operational behavior before cutover.",
+      "Use a composed Huawei migration pattern where needed: CodeArts TestPlan + CodeArts PerfTest. Treat CodeArts TestPlan as the core equivalent capability and use the additional services to cover integration, security, observability, and governance gaps.",
+      "Pricing model difference: Azure usually bills pipeline/runtime minutes, request units, artifact storage, or seat-based components; Huawei usually bills CodeArts/APIG/DMS runtime or request volume plus artifact/storage usage. Recalculate TCO with peak load, request volume, retention period, and cross-region/interconnect traffic before production migration."
+    ]
   })
 ];
 
