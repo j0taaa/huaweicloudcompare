@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { buildServiceMatrixRows } from "@/data/service-utils";
 import { type CloudProvider, type HuaweiService, type NonHuaweiService, type ServiceInfo } from "@/data/services";
 
@@ -51,7 +51,21 @@ const providers = [providerMeta.aws, providerMeta.azure, providerMeta.gcp, provi
 
 export function ServiceComparison({ services }: { services: ServiceInfo[] }) {
   const [query, setQuery] = useState("");
+  const searchInputRef = useRef<HTMLInputElement>(null);
   const serviceMatrixRows = useMemo(() => buildServiceMatrixRows(services, query), [services, query]);
+
+  useEffect(() => {
+    function handleKeydown(event: KeyboardEvent) {
+      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") {
+        event.preventDefault();
+        searchInputRef.current?.focus();
+        searchInputRef.current?.select();
+      }
+    }
+
+    window.addEventListener("keydown", handleKeydown);
+    return () => window.removeEventListener("keydown", handleKeydown);
+  }, []);
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-slate-100 via-slate-50 to-white">
@@ -83,9 +97,13 @@ export function ServiceComparison({ services }: { services: ServiceInfo[] }) {
         </header>
 
         <section className="sticky top-4 z-10 rounded-2xl border border-slate-200 bg-white/95 p-5 shadow-lg backdrop-blur">
-          <label htmlFor="service-search" className="mb-2 block text-sm font-semibold text-slate-700">Search services</label>
+          <div className="mb-2 flex items-center justify-between gap-3">
+            <label htmlFor="service-search" className="block text-sm font-semibold text-slate-700">Search services</label>
+            <span className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Ctrl + K</span>
+          </div>
           <div className="flex flex-col gap-3 md:flex-row">
             <input
+              ref={searchInputRef}
               id="service-search"
               value={query}
               onChange={(event) => setQuery(event.target.value)}
