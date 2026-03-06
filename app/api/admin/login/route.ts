@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { adminSessionCookieName, createAdminSession, verifyAdminPassword } from "@/lib/admin-auth";
+import { getExternalUrl } from "@/lib/request-origin";
 
 function redirectWith(request: NextRequest, query: Record<string, string>) {
-  const url = new URL("/admin", request.url);
+  const url = getExternalUrl(request, "/admin");
   Object.entries(query).forEach(([key, value]) => url.searchParams.set(key, value));
   return url;
 }

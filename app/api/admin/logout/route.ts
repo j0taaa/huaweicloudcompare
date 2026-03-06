@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { adminSessionCookieName, invalidateAdminSession } from "@/lib/admin-auth";
+import { getExternalUrl } from "@/lib/request-origin";
 
 export async function POST(request: NextRequest) {
   const token = request.cookies.get(adminSessionCookieName)?.value;
@@ -7,7 +8,7 @@ export async function POST(request: NextRequest) {
     await invalidateAdminSession(token);
   }
 
-  const response = NextResponse.redirect(new URL("/admin?message=Logged+out.", request.url), { status: 303 });
+  const response = NextResponse.redirect(getExternalUrl(request, "/admin?message=Logged+out."), { status: 303 });
   response.cookies.delete(adminSessionCookieName);
   return response;
 }

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { adminSessionCookieName, changeAdminPassword, requireAdminAuthentication } from "@/lib/admin-auth";
+import { getExternalUrl } from "@/lib/request-origin";
 
 export async function POST(request: NextRequest) {
   try {
@@ -8,7 +9,7 @@ export async function POST(request: NextRequest) {
     const password = String(formData.get("password") ?? "");
     const token = await changeAdminPassword(password);
 
-    const response = NextResponse.redirect(new URL("/admin?message=Password+updated.", request.url), { status: 303 });
+    const response = NextResponse.redirect(getExternalUrl(request, "/admin?message=Password+updated."), { status: 303 });
     response.cookies.set(adminSessionCookieName, token, {
       httpOnly: true,
       sameSite: "lax",
@@ -18,6 +19,9 @@ export async function POST(request: NextRequest) {
     });
     return response;
   } catch (error) {
-    return NextResponse.redirect(new URL(`/admin?error=${encodeURIComponent(error instanceof Error ? error.message : "Unable to change password.")}`, request.url), { status: 303 });
+    return NextResponse.redirect(
+      getExternalUrl(request, `/admin?error=${encodeURIComponent(error instanceof Error ? error.message : "Unable to change password.")}`),
+      { status: 303 }
+    );
   }
 }
