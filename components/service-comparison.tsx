@@ -61,7 +61,7 @@ export function ServiceComparison({ services }: { services: ServiceInfo[] }) {
             <div>
               <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#CF0A2C]">Huawei-focused cloud comparison</p>
               <h1 className="mt-2 text-3xl font-bold text-slate-900 md:text-4xl">Compare provider services against Huawei Cloud</h1>
-              <p className="mt-3 max-w-3xl text-slate-600">Click any AWS, Azure, or GCP service in the table to open a single-service comparison. Community members can suggest data fixes, and admins can moderate them from the website.</p>
+              <p className="mt-3 max-w-3xl text-slate-600">Click any AWS, Azure, or GCP service in the table to open a single-service comparison. Community members can also suggest data fixes for review.</p>
             </div>
             <div className="flex flex-wrap gap-2">
               <Link href="/docs/api" className="rounded-full border border-slate-300 bg-slate-50 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100">
@@ -69,9 +69,6 @@ export function ServiceComparison({ services }: { services: ServiceInfo[] }) {
               </Link>
               <Link href="/suggest" className="rounded-full border border-[#CF0A2C]/20 bg-[#CF0A2C]/5 px-4 py-2 text-sm font-semibold text-[#B10725] hover:bg-[#CF0A2C]/10">
                 Suggest Changes
-              </Link>
-              <Link href="/admin" className="rounded-full border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100">
-                Admin
               </Link>
             </div>
           </div>

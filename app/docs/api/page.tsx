@@ -52,7 +52,7 @@ export default function ApiDocsPage() {
         <section className="grid gap-6 md:grid-cols-2">
           <article className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
             <h2 className="text-xl font-semibold">Community Suggestions</h2>
-            <p className="mt-2 text-sm text-slate-600">Users can submit structured edit or add-service suggestions through `/api/suggestions` or the `/suggest` page. Admins approve or deny them from `/admin`.</p>
+            <p className="mt-2 text-sm text-slate-600">Users can submit structured edit or add-service suggestions through `/api/suggestions` or the `/suggest` page. Suggestions are reviewed privately before publication.</p>
             <div className="mt-4 rounded-2xl bg-slate-950 p-4 font-mono text-sm text-slate-100">
               <div>POST /api/suggestions</div>
               <div>Content-Type: application/json</div>
@@ -60,8 +60,8 @@ export default function ApiDocsPage() {
           </article>
 
           <article className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-            <h2 className="text-xl font-semibold">Admin Notes</h2>
-            <p className="mt-2 text-sm text-slate-600">The default admin password is `admin123`. Change it from `/admin` immediately after first login. Approved changes update the live catalog and can optionally be pushed back to GitHub when Git sync is configured.</p>
+            <h2 className="text-xl font-semibold">Publication Flow</h2>
+            <p className="mt-2 text-sm text-slate-600">Approved changes update the live catalog and can optionally be pushed back to GitHub when server-side Git sync is configured.</p>
           </article>
         </section>
       </div>

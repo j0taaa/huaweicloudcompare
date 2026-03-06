@@ -125,7 +125,7 @@ export function SuggestionForm({ services }: { services: ServiceInfo[] }) {
       return;
     }
 
-    setStatus({ kind: "success", message: "Suggestion submitted for admin review." });
+    setStatus({ kind: "success", message: "Suggestion submitted for review." });
     const first = services[0];
     setForm(first ? { ...emptyForm, ...applyServiceToForm(first) } : emptyForm);
   }
@@ -136,7 +136,7 @@ export function SuggestionForm({ services }: { services: ServiceInfo[] }) {
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.25em] text-[#CF0A2C]">Community Edits</p>
           <h1 className="mt-2 text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">Suggest a change</h1>
-          <p className="mt-3 max-w-3xl text-slate-600">Submit structured edits or propose a new service. Admins review every suggestion before it becomes part of the public catalog.</p>
+          <p className="mt-3 max-w-3xl text-slate-600">Submit structured edits or propose a new service. Every suggestion is reviewed before it becomes part of the public catalog.</p>
         </div>
 
         <div className="grid gap-4 md:grid-cols-2">
@@ -232,7 +232,7 @@ export function SuggestionForm({ services }: { services: ServiceInfo[] }) {
           <h2 className="text-lg font-semibold text-slate-900">How it works</h2>
           <ol className="mt-4 list-decimal space-y-2 pl-5 text-sm text-slate-600">
             <li>Submit a structured proposal.</li>
-            <li>An admin reviews it from `/admin`.</li>
+            <li>The suggestion is reviewed privately.</li>
             <li>If approved, the live catalog updates and Git sync is attempted when configured.</li>
           </ol>
         </section>

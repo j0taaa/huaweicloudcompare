@@ -20,7 +20,6 @@ export default async function AdminPage({
         <div className="mx-auto max-w-xl rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
           <p className="text-xs font-semibold uppercase tracking-[0.25em] text-[#CF0A2C]">Admin</p>
           <h1 className="mt-2 text-3xl font-bold tracking-tight text-slate-900">Moderation login</h1>
-          <p className="mt-3 text-sm text-slate-600">Default password: `admin123`. Change it immediately after logging in.</p>
 
           {searchParams?.error ? (
             <p className="mt-4 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{searchParams.error}</p>

@@ -17,8 +17,7 @@ export function getOpenApiSpec(baseUrl = "") {
     tags: [
       { name: "lookup", description: "Provider-specific service lookup" },
       { name: "search", description: "Search service rows from the comparison table" },
-      { name: "suggestions", description: "Submit community edit suggestions" },
-      { name: "admin", description: "Admin moderation endpoints using an auth cookie" }
+      { name: "suggestions", description: "Submit community edit suggestions" }
     ],
     paths: {
       "/api/aws/{service}": providerPath("aws"),
@@ -117,11 +116,7 @@ export function getOpenApiSpec(baseUrl = "") {
             "200": { description: "OpenAPI spec" }
           }
         }
-      },
-      "/api/admin/login": adminPost("Create an admin session"),
-      "/api/admin/logout": adminPost("Destroy the current admin session"),
-      "/api/admin/password": adminPost("Change the admin password"),
-      "/api/admin/review": adminPost("Approve or deny a pending suggestion")
+      }
     },
     components: {
       schemas: {
@@ -165,19 +160,6 @@ function providerPath(provider: string) {
         "404": {
           description: "No match found"
         }
-      }
-    }
-  };
-}
-
-function adminPost(summary: string) {
-  return {
-    post: {
-      tags: ["admin"],
-      summary,
-      responses: {
-        "303": { description: "Redirect back to /admin" },
-        "401": { description: "Unauthorized" }
       }
     }
   };
