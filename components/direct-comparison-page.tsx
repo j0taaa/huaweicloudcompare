@@ -3,8 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo } from "react";
-import { services } from "@/data/services";
 import { getFunctionCategory } from "@/data/category-utils";
+import { type ServiceInfo } from "@/data/services";
 
 type ProviderKey = "aws" | "azure" | "gcp";
 
@@ -51,7 +51,7 @@ type ServiceMapping = {
   };
 };
 
-function buildServiceMappings(): ServiceMapping[] {
+function buildServiceMappings(services: ServiceInfo[]): ServiceMapping[] {
   const grouped = new Map<string, ServiceMapping>();
 
   services.forEach((service) => {
@@ -72,7 +72,7 @@ function buildServiceMappings(): ServiceMapping[] {
             gcp: "Service model, defaults, and integrations differ from Huawei Cloud."
           },
           huaweiStrengths: ["Integrated with broader Huawei Cloud ecosystem.", "Migration path available via mapped capability rows."],
-          notableDifferences: ["Naming, pricing, and operational workflows vary by provider.", "Identity/network defaults often require explicit remapping."],
+          notableDifferences: ["Naming, pricing, and operational workflows vary by provider.", "Identity and network defaults often require explicit remapping."],
           migrationTips: ["Start with pilot workloads and benchmark performance.", "Validate IAM, network, and observability controls before cutover."]
         }
       });
@@ -88,37 +88,6 @@ function buildServiceMappings(): ServiceMapping[] {
   return Array.from(grouped.values());
 }
 
-const serviceMappings = buildServiceMappings();
-
-const serviceIcons: Record<string, string> = {
-  "Amazon EC2": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/compute/ec2.png",
-  "Amazon EKS": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/compute/elastic-kubernetes-service.png",
-  "Amazon S3": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/storage/simple-storage-service-s3.png",
-  "Amazon RDS": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/database/rds.png",
-  "AWS Lambda": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/compute/lambda.png",
-  "Amazon CloudFront": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/network/cloudfront.png",
-  "Azure Virtual Machines": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/compute/vm.png",
-  "Azure Kubernetes Service (AKS)": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/compute/kubernetes-services.png",
-  "Azure Blob Storage": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/storage/blob-storage.png",
-  "Azure SQL Database": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/database/sql-databases.png",
-  "Azure Database for PostgreSQL": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/database/database-for-postgresql-servers.png",
-  "Azure Functions": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/compute/function-apps.png",
-  "Azure Front Door": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/network/front-doors.png",
-  "Azure CDN": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/azure/network/cdn-profiles.png",
-  "Compute Engine": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/compute/compute-engine.png",
-  "Google Kubernetes Engine (GKE)": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/compute/kubernetes-engine.png",
-  "Cloud Storage": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/storage/storage.png",
-  "Cloud SQL": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/database/sql.png",
-  "Cloud Functions": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/compute/functions.png",
-  "Cloud CDN": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/gcp/network/cdn.png",
-  "Elastic Cloud Server (ECS)": "/service-icons/huawei-ecs.svg",
-  "Cloud Container Engine (CCE)": "/service-icons/huawei-cce.svg",
-  "Object Storage Service (OBS)": "/service-icons/huawei-obs.svg",
-  "Relational Database Service (RDS)": "/service-icons/huawei-rds.svg",
-  FunctionGraph: "/service-icons/huawei-functiongraph.svg",
-  "Content Delivery Network (CDN)": "/service-icons/huawei-cdn.svg"
-};
-
 const providerDefaultIcon: Record<ProviderKey | "huawei", string> = {
   aws: "/logos/aws.svg",
   azure: "/logos/azure.svg",
@@ -126,12 +95,12 @@ const providerDefaultIcon: Record<ProviderKey | "huawei", string> = {
   huawei: "/logos/huawei.svg"
 };
 
-const serviceIconByName = new Map(services.map((service) => [service.name, service.imageUrl]));
-
 export function DirectComparisonPage({
+  services,
   providerParam,
   initialQuery
 }: {
+  services: ServiceInfo[];
   providerParam?: string;
   initialQuery?: string;
 }) {
@@ -139,13 +108,16 @@ export function DirectComparisonPage({
   const provider = (providerParam === "azure" || providerParam === "gcp" ? providerParam : "aws") as ProviderKey;
   const normalizedQuery = query.toLowerCase();
 
+  const serviceMappings = useMemo(() => buildServiceMappings(services), [services]);
+  const serviceIconByName = useMemo(() => new Map(services.map((service) => [service.name, service.imageUrl])), [services]);
+
   const matchedMappings = useMemo(() => {
     if (!normalizedQuery) return [];
     return serviceMappings.filter((mapping) => {
       const candidates = [mapping.capability, ...mapping.aws, ...mapping.azure, ...mapping.gcp, ...mapping.huawei];
       return candidates.some((candidate) => candidate.toLowerCase().includes(normalizedQuery));
     });
-  }, [normalizedQuery]);
+  }, [normalizedQuery, serviceMappings]);
 
   return (
     <main className="min-h-screen bg-[#f5f5f7]">
@@ -161,7 +133,7 @@ export function DirectComparisonPage({
         </header>
 
         {query.length === 0 ? (
-          <p className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-700">No search query provided. Go back and search for a service/capability first.</p>
+          <p className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-700">No search query provided. Go back and search for a service or capability first.</p>
         ) : null}
 
         {matchedMappings.map((mapping) => (
@@ -173,21 +145,31 @@ export function DirectComparisonPage({
             </div>
 
             <div className="grid gap-5 md:grid-cols-2">
-              <ProviderColumn provider={provider} mapping={mapping} />
-              <ProviderColumn provider="huawei" mapping={mapping} main />
+              <ProviderColumn provider={provider} mapping={mapping} serviceIconByName={serviceIconByName} />
+              <ProviderColumn provider="huawei" mapping={mapping} serviceIconByName={serviceIconByName} main />
             </div>
           </article>
         ))}
 
         {query.length > 0 && matchedMappings.length === 0 ? (
-          <p className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-700">No mapping found for "{query}".</p>
+          <p className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-700">No mapping found for &quot;{query}&quot;.</p>
         ) : null}
       </div>
     </main>
   );
 }
 
-function ProviderColumn({ provider, mapping, main = false }: { provider: ProviderKey | "huawei"; mapping: (typeof serviceMappings)[number]; main?: boolean }) {
+function ProviderColumn({
+  provider,
+  mapping,
+  serviceIconByName,
+  main = false
+}: {
+  provider: ProviderKey | "huawei";
+  mapping: ServiceMapping;
+  serviceIconByName: Map<string, string>;
+  main?: boolean;
+}) {
   const services = provider === "aws" ? mapping.aws : provider === "azure" ? mapping.azure : provider === "gcp" ? mapping.gcp : mapping.huawei;
   const relative = provider === "aws" ? mapping.details.relativeComparison.aws : provider === "azure" ? mapping.details.relativeComparison.azure : provider === "gcp" ? mapping.details.relativeComparison.gcp : null;
 
@@ -202,13 +184,7 @@ function ProviderColumn({ provider, mapping, main = false }: { provider: Provide
         <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">Service</p>
         {services.map((service) => (
           <div key={service} className="flex items-center gap-2">
-            <Image
-              src={serviceIconByName.get(service) ?? serviceIcons[service] ?? providerDefaultIcon[provider]}
-              alt={`${service} icon`}
-              width={18}
-              height={18}
-              className="rounded-sm"
-            />
+            <Image src={serviceIconByName.get(service) ?? providerDefaultIcon[provider]} alt={`${service} icon`} width={18} height={18} className="rounded-sm" />
             <span className="text-sm font-medium text-slate-800">{service}</span>
           </div>
         ))}

@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import { services, type CloudProvider, type HuaweiService, type NonHuaweiService } from "@/data/services";
+import { findServiceComparison } from "@/data/service-utils";
+import { type CloudProvider, type HuaweiService, type NonHuaweiService } from "@/data/services";
+import { getCatalogServices } from "@/lib/catalog-store";
 
 type ProviderKey = CloudProvider;
 
@@ -43,22 +45,11 @@ const providerMeta: Record<ProviderKey, ProviderMeta> = {
   }
 };
 
-function findServices(serviceId?: string): { source?: NonHuaweiService; huawei: HuaweiService[] } {
-  if (!serviceId) return { huawei: [] };
+export const dynamic = "force-dynamic";
 
-  const source = services.find((service): service is NonHuaweiService => service.cloudProvider !== "huawei" && service.id === serviceId);
-  if (!source) return { huawei: [] };
-
-  const wanted = new Set(source.huaweiEquivalentShortNames.map((name) => name.toLowerCase()));
-  const huawei = services.filter(
-    (service): service is HuaweiService => service.cloudProvider === "huawei" && wanted.has(service.shortName.toLowerCase())
-  );
-
-  return { source, huawei };
-}
-
-export default function ComparisonPage({ searchParams }: { searchParams: { serviceId?: string } }) {
-  const { source, huawei } = findServices(searchParams.serviceId);
+export default async function ComparisonPage({ searchParams }: { searchParams: { serviceId?: string } }) {
+  const services = await getCatalogServices();
+  const { source, huawei } = findServiceComparison(services, searchParams.serviceId);
 
   return (
     <main className="min-h-screen bg-[#f5f5f7]">
@@ -75,7 +66,7 @@ export default function ComparisonPage({ searchParams }: { searchParams: { servi
 
         {!source ? (
           <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-            <p className="text-sm text-slate-700">No service selected. Go back and click any AWS/Azure/GCP service in the table.</p>
+            <p className="text-sm text-slate-700">No service selected. Go back and click any AWS, Azure, or GCP service in the table.</p>
           </section>
         ) : (
           <article className="space-y-6 rounded-3xl border border-slate-200 bg-white p-6 shadow-xl md:p-10">
@@ -111,9 +102,7 @@ function SourceProviderColumn({ service, provider }: { service: NonHuaweiService
           <span className="text-sm font-medium text-slate-800">{service.name}</span>
         </div>
         <p className="text-sm text-slate-700">Shortname: {service.shortName}</p>
-        <p className="text-sm text-slate-700">
-          Huawei equivalent shortnames: {service.huaweiEquivalentShortNames.length > 0 ? service.huaweiEquivalentShortNames.join(", ") : "None"}
-        </p>
+        <p className="text-sm text-slate-700">Huawei equivalent shortnames: {service.huaweiEquivalentShortNames.length > 0 ? service.huaweiEquivalentShortNames.join(", ") : "None"}</p>
         <p className="text-sm text-slate-700">Keywords: {service.keywords.join(", ")}</p>
       </div>
 
@@ -151,7 +140,7 @@ function HuaweiProviderColumn({ services }: { services: HuaweiService[] }) {
       {services.length > 0 ? (
         <>
           {services.map((service, index) => (
-            <div key={service.id} className={index === services.length - 1 ? "space-y-2" : "space-y-2 border-b border-slate-300/40 pb-4 mb-4"}>
+            <div key={service.id} className={index === services.length - 1 ? "space-y-2" : "mb-4 space-y-2 border-b border-slate-300/40 pb-4"}>
               <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">Huawei equivalent service</p>
               <div className="flex items-center gap-2">
                 <Image src={service.imageUrl} alt={`${service.name} icon`} width={18} height={18} className="rounded-sm" />

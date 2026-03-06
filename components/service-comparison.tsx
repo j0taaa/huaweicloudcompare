@@ -3,8 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { services, type CloudProvider, type HuaweiService, type NonHuaweiService } from "@/data/services";
-import { categoryRank, getFunctionCategory } from "@/data/category-utils";
+import { buildServiceMatrixRows } from "@/data/service-utils";
+import { type CloudProvider, type HuaweiService, type NonHuaweiService, type ServiceInfo } from "@/data/services";
 
 type CompareProviderKey = CloudProvider;
 
@@ -14,16 +14,6 @@ type ProviderMeta = {
   logo: string;
   cardTint: string;
   borderTint: string;
-};
-
-type ServiceMatrixRow = {
-  category: string;
-  generalFunction: string;
-  aws: NonHuaweiService[];
-  azure: NonHuaweiService[];
-  gcp: NonHuaweiService[];
-  huawei: HuaweiService[];
-  searchableText: string;
 };
 
 const providerMeta: Record<CompareProviderKey, ProviderMeta> = {
@@ -59,63 +49,32 @@ const providerMeta: Record<CompareProviderKey, ProviderMeta> = {
 
 const providers = [providerMeta.aws, providerMeta.azure, providerMeta.gcp, providerMeta.huawei] as const;
 
-export function ServiceComparison() {
+export function ServiceComparison({ services }: { services: ServiceInfo[] }) {
   const [query, setQuery] = useState("");
-
-  const normalizedQuery = query.trim().toLowerCase();
-
-  const serviceMatrixRows = useMemo<ServiceMatrixRow[]>(() => {
-    const grouped = new Map<string, ServiceMatrixRow>();
-
-    services.forEach((service) => {
-      const key = service.generalFunction;
-      if (!grouped.has(key)) {
-        grouped.set(key, {
-          category: getFunctionCategory(key),
-          generalFunction: key,
-          aws: [],
-          azure: [],
-          gcp: [],
-          huawei: [],
-          searchableText: ""
-        });
-      }
-
-      const row = grouped.get(key)!;
-      if (service.cloudProvider === "aws") row.aws.push(service);
-      if (service.cloudProvider === "azure") row.azure.push(service);
-      if (service.cloudProvider === "gcp") row.gcp.push(service);
-      if (service.cloudProvider === "huawei") row.huawei.push(service);
-    });
-
-    return Array.from(grouped.values())
-      .map((row) => ({
-        ...row,
-        searchableText: [
-          row.generalFunction,
-          ...row.aws.map((s) => `${s.name} ${s.shortName} ${s.keywords.join(" ")}`),
-          ...row.azure.map((s) => `${s.name} ${s.shortName} ${s.keywords.join(" ")}`),
-          ...row.gcp.map((s) => `${s.name} ${s.shortName} ${s.keywords.join(" ")}`),
-          ...row.huawei.map((s) => `${s.name} ${s.shortName} ${s.keywords.join(" ")}`)
-        ]
-          .join(" ")
-          .toLowerCase()
-      }))
-      .sort((a, b) => {
-        const catDiff = categoryRank(a.category) - categoryRank(b.category);
-        if (catDiff !== 0) return catDiff;
-        return a.generalFunction.localeCompare(b.generalFunction);
-      })
-      .filter((row) => (normalizedQuery ? row.searchableText.includes(normalizedQuery) : true));
-  }, [normalizedQuery]);
+  const serviceMatrixRows = useMemo(() => buildServiceMatrixRows(services, query), [services, query]);
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-slate-100 via-slate-50 to-white">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-8 p-6 md:p-10">
         <header className="rounded-3xl border border-white/70 bg-white p-6 shadow-lg md:p-8">
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#CF0A2C]">Huawei-focused cloud comparison</p>
-          <h1 className="mt-2 text-3xl font-bold text-slate-900 md:text-4xl">Compare provider services against Huawei Cloud</h1>
-          <p className="mt-3 max-w-3xl text-slate-600">Click any AWS/Azure/GCP service in the table to open a single-service comparison route against Huawei Cloud equivalent services.</p>
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#CF0A2C]">Huawei-focused cloud comparison</p>
+              <h1 className="mt-2 text-3xl font-bold text-slate-900 md:text-4xl">Compare provider services against Huawei Cloud</h1>
+              <p className="mt-3 max-w-3xl text-slate-600">Click any AWS, Azure, or GCP service in the table to open a single-service comparison. Community members can suggest data fixes, and admins can moderate them from the website.</p>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              <Link href="/docs/api" className="rounded-full border border-slate-300 bg-slate-50 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100">
+                API Docs
+              </Link>
+              <Link href="/suggest" className="rounded-full border border-[#CF0A2C]/20 bg-[#CF0A2C]/5 px-4 py-2 text-sm font-semibold text-[#B10725] hover:bg-[#CF0A2C]/10">
+                Suggest Changes
+              </Link>
+              <Link href="/admin" className="rounded-full border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100">
+                Admin
+              </Link>
+            </div>
+          </div>
           <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {providers.map((provider) => (
               <div key={provider.key} className={`flex items-center gap-3 rounded-xl border px-3 py-2 shadow-sm ${provider.borderTint} ${provider.cardTint}`}>
@@ -174,7 +133,7 @@ export function ServiceComparison() {
                   const rows: JSX.Element[] = [];
                   if (showCategoryHeader) {
                     rows.push(
-                      <tr key={`${row.category}-header`} className="bg-slate-50 border-y border-slate-200">
+                      <tr key={`${row.category}-header`} className="border-y border-slate-200 bg-slate-50">
                         <td colSpan={5} className="px-1.5 py-1.5 text-[9px] font-bold uppercase tracking-tight text-slate-600 md:px-3 md:py-2 md:text-xs md:tracking-wider">{row.category}</td>
                       </tr>
                     );
